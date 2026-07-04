@@ -6,7 +6,7 @@ import HeroSection from "@/components/HeroSection";
 import TrustSection from "@/components/TrustSection";
 import FeaturedProject from "@/components/FeaturedProject";
 import ProjectsOverview from "@/components/ProjectsOverview";
-import LeadCapture from "@/components/LeadCapture";
+import ContactCallout from "@/components/ContactCallout";
 import Footer from "@/components/Footer";
 import ChatBotButton from "@/components/WhatsAppButton";
 
@@ -34,7 +34,7 @@ const Index = () => {
         <TrustSection />
         <FeaturedProject />
         <ProjectsOverview />
-        <LeadCapture />
+        <ContactCallout />
       </main>
       <Footer />
       <ChatBotButton />
