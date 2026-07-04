@@ -14,6 +14,116 @@ export type Database = {
   }
   public: {
     Tables: {
+      analytics_events: {
+        Row: {
+          country: string | null
+          device: string | null
+          event_type: string
+          id: number
+          occurred_at: string
+          path: string
+          referrer_host: string | null
+          visitor_hash: string
+        }
+        Insert: {
+          country?: string | null
+          device?: string | null
+          event_type?: string
+          id?: never
+          occurred_at?: string
+          path: string
+          referrer_host?: string | null
+          visitor_hash: string
+        }
+        Update: {
+          country?: string | null
+          device?: string | null
+          event_type?: string
+          id?: never
+          occurred_at?: string
+          path?: string
+          referrer_host?: string | null
+          visitor_hash?: string
+        }
+        Relationships: []
+      }
+      availability: {
+        Row: {
+          active: boolean
+          created_at: string
+          end_time: string
+          id: string
+          slot_minutes: number
+          start_time: string
+          weekday: number
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          end_time: string
+          id?: string
+          slot_minutes?: number
+          start_time: string
+          weekday: number
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          end_time?: string
+          id?: string
+          slot_minutes?: number
+          start_time?: string
+          weekday?: number
+        }
+        Relationships: []
+      }
+      bookings: {
+        Row: {
+          contact_id: string
+          created_at: string
+          date: string
+          details: Json
+          id: string
+          notes: string | null
+          source: string
+          status: string
+          time: string
+          updated_at: string
+        }
+        Insert: {
+          contact_id: string
+          created_at?: string
+          date: string
+          details?: Json
+          id?: string
+          notes?: string | null
+          source?: string
+          status?: string
+          time: string
+          updated_at?: string
+        }
+        Update: {
+          contact_id?: string
+          created_at?: string
+          date?: string
+          details?: Json
+          id?: string
+          notes?: string | null
+          source?: string
+          status?: string
+          time?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       chat_logs: {
         Row: {
           bot_response: string | null
@@ -35,6 +145,102 @@ export type Database = {
           id?: string
           source?: string
           user_message?: string
+        }
+        Relationships: []
+      }
+      contacts: {
+        Row: {
+          branch: string | null
+          created_at: string
+          details: Json
+          email: string | null
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          source_submission_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          branch?: string | null
+          created_at?: string
+          details?: Json
+          email?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          source_submission_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          branch?: string | null
+          created_at?: string
+          details?: Json
+          email?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          source_submission_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      inquiries: {
+        Row: {
+          created_at: string
+          details: Json
+          email: string | null
+          id: string
+          language: string
+          message: string | null
+          name: string
+          phone: string | null
+          status: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          details?: Json
+          email?: string | null
+          id?: string
+          language?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          status?: string
+          type?: string
+        }
+        Update: {
+          created_at?: string
+          details?: Json
+          email?: string | null
+          id?: string
+          language?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          status?: string
+          type?: string
+        }
+        Relationships: []
+      }
+      kit_meta: {
+        Row: {
+          contract_version: number
+          id: boolean
+          updated_at: string
+        }
+        Insert: {
+          contract_version: number
+          id?: boolean
+          updated_at?: string
+        }
+        Update: {
+          contract_version?: number
+          id?: boolean
+          updated_at?: string
         }
         Relationships: []
       }
@@ -65,6 +271,71 @@ export type Database = {
           message?: string | null
           phone?: string
           source?: string
+        }
+        Relationships: []
+      }
+      notification_outbox: {
+        Row: {
+          booking_id: string | null
+          created_at: string
+          event: string
+          id: string
+          payload: Json
+          recipient: string
+          sent_at: string | null
+          status: string
+          to_phone: string | null
+        }
+        Insert: {
+          booking_id?: string | null
+          created_at?: string
+          event: string
+          id?: string
+          payload?: Json
+          recipient?: string
+          sent_at?: string | null
+          status?: string
+          to_phone?: string | null
+        }
+        Update: {
+          booking_id?: string | null
+          created_at?: string
+          event?: string
+          id?: string
+          payload?: Json
+          recipient?: string
+          sent_at?: string | null
+          status?: string
+          to_phone?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_outbox_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
         }
         Relationships: []
       }
@@ -104,6 +375,24 @@ export type Database = {
         }
         Relationships: []
       }
+      site_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value?: string
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -130,12 +419,71 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      analytics_by_country: {
+        Args: { p_from: string; p_to: string }
+        Returns: {
+          country: string
+          pageviews: number
+          unique_visitors: number
+        }[]
+      }
+      analytics_conversions: {
+        Args: { p_from: string; p_to: string }
+        Returns: Json
+      }
+      analytics_sources: {
+        Args: { p_from: string; p_to: string }
+        Returns: {
+          pageviews: number
+          referrer_host: string
+          source: string
+        }[]
+      }
+      analytics_top_pages: {
+        Args: { p_from: string; p_limit?: number; p_to: string }
+        Returns: {
+          pageviews: number
+          path: string
+          unique_visitors: number
+        }[]
+      }
+      analytics_traffic: {
+        Args: { p_from: string; p_to: string }
+        Returns: {
+          day: string
+          pageviews: number
+          unique_visitors: number
+        }[]
+      }
+      get_available_slots: {
+        Args: { p_from: string; p_to: string }
+        Returns: {
+          slot_date: string
+          slot_time: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      kit_timezone: { Args: never; Returns: string }
+      request_booking: {
+        Args: {
+          p_name: string
+          p_notes: string
+          p_phone: string
+          p_project: string
+          p_slot_date: string
+          p_slot_time: string
+        }
+        Returns: Json
+      }
+      reschedule_booking: {
+        Args: { p_booking_id: string; p_slot_date: string; p_slot_time: string }
+        Returns: Json
       }
     }
     Enums: {
