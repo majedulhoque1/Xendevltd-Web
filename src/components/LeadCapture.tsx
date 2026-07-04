@@ -12,12 +12,23 @@ const LeadCapture = () => {
     phone: "",
     message: "",
   });
+  const [trap, setTrap] = useState(""); // honeypot — must stay empty; bots auto-fill every input
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
+    // Honeypot: a filled trap means a bot — pretend success, write nothing.
+    if (trap) {
+      toast({
+        title: "Thank you for showing interest!",
+        description: "We will get back to you shortly.",
+      });
+      setFormData({ name: "", phone: "", message: "" });
+      return;
+    }
+
     // Validate form data
     const validation = leadSchema.safeParse({
       full_name: formData.name,
@@ -37,12 +48,11 @@ const LeadCapture = () => {
     setIsSubmitting(true);
 
     try {
-      // Save to Supabase leads table
-      const { error: dbError } = await supabase.from("leads").insert({
-        full_name: validation.data.full_name,
+      const { error: dbError } = await supabase.from("inquiries").insert({
+        type: "contact",
+        name: validation.data.full_name,
         phone: validation.data.phone,
         message: validation.data.message || null,
-        source: "contact_form",
       });
 
       if (dbError) {
@@ -178,6 +188,16 @@ const LeadCapture = () => {
             className="card-premium p-8 lg:p-10"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Honeypot: visually hidden, off-screen, not tab-reachable. Leave empty. */}
+              <input
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={trap}
+                onChange={(e) => setTrap(e.target.value)}
+                aria-hidden="true"
+                style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+              />
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
