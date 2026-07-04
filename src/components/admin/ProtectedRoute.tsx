@@ -5,7 +5,7 @@ import { useIsAdmin } from "@/hooks/useIsAdmin";
 
 export function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isAuthenticated, isLoading } = useAdminAuth();
-  const { data: isAdmin, isLoading: roleLoading } = useIsAdmin();
+  const { data: isAdmin, isLoading: roleLoading } = useIsAdmin(isAuthenticated);
 
   if (isLoading || (isAuthenticated && roleLoading)) {
     return (

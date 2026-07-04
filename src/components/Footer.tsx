@@ -1,5 +1,6 @@
 import { ArrowRight, Facebook, Instagram, Linkedin, Youtube } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import xenLogo from "@/assets/xen-logo.png";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
@@ -160,14 +161,12 @@ const Footer = () => {
           <p>
             © {currentYear} Xen Developments Ltd. All rights reserved.
           </p>
-          <a
-            href="https://xendevltd.lovable.app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/admin/login"
             className="text-background/50 hover:text-background/80 transition-colors text-xs mr-20 md:mr-24"
           >
             Admin Login
-          </a>
+          </Link>
         </motion.div>
       </div>
     </footer>
