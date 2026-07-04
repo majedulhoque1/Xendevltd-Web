@@ -6,7 +6,7 @@
 
 **Architecture:** Apply the kit's portable SQL contract (idempotent migrations) to Xen's existing Supabase project, adapting `request_booking`'s intake fields for real estate. Add two new public pages (`/schedule-visit`, `/contact`) reusing Xen's existing shadcn components and animation style. Add an `/admin/*` route tree in the same Vite SPA, gated by Supabase Auth + `has_role('admin')`, with four dependency-light screens (plain tables, no new UI library).
 
-**Tech Stack:** Vite + React 18 + TypeScript + react-router-dom v6 + @tanstack/react-query + shadcn/ui + Tailwind v3 + Supabase (Postgres + Auth) + Bun. Migrations applied via the Supabase Management API (curl) using the PAT already present in `.env` as `VITE_PERSONAL_ACCESS_TOKEN`.
+**Tech Stack:** Vite + React 18 + TypeScript + react-router-dom v6 + @tanstack/react-query + shadcn/ui + Tailwind v3 + Supabase (Postgres + Auth) + Bun. Migrations applied via the Supabase Management API (curl) using the PAT already present in `.env` as `SUPABASE_ACCESS_TOKEN`.
 
 **Reference material (read, don't duplicate):** `d:/EXPERIUS/Websites/Booking_CRM.kit/contract/README.md` (data model + RPCs), `docs/superpowers/specs/2026-07-04-booking-admin-design.md` (this repo, the approved design).
 
@@ -33,7 +33,7 @@
 Run (do not print the token itself in any step beyond this internal use):
 
 ```bash
-PAT=$(grep VITE_PERSONAL_ACCESS_TOKEN "d:/EXPERIUS/Websites/Xen-Development-Limited-main/.env" | sed -E 's/.*="?([^"]+)"?/\1/')
+PAT=$(grep SUPABASE_ACCESS_TOKEN "d:/EXPERIUS/Websites/Xen-Development-Limited-main/.env" | sed -E 's/.*="?([^"]+)"?/\1/')
 curl -s -H "Authorization: Bearer $PAT" -H "User-Agent: curl/xen-migrate" \
   "https://api.supabase.com/v1/projects/erdbnkemhezvjdhfqjtq" | head -c 200
 ```
@@ -53,7 +53,7 @@ All SQL files go in `supabase/migrations/` in this repo, following the existing 
 Apply each file to Xen's live Supabase via the Management API's SQL endpoint:
 
 ```bash
-PAT=$(grep VITE_PERSONAL_ACCESS_TOKEN "d:/EXPERIUS/Websites/Xen-Development-Limited-main/.env" | sed -E 's/.*="?([^"]+)"?/\1/')
+PAT=$(grep SUPABASE_ACCESS_TOKEN "d:/EXPERIUS/Websites/Xen-Development-Limited-main/.env" | sed -E 's/.*="?([^"]+)"?/\1/')
 apply_sql() {
   local file="$1"
   local body
@@ -698,7 +698,7 @@ Run Step 2 again, then Step 3 again — `backfilled_inquiries` must be unchanged
 - [ ] **Step 1: Fetch the generated types via the Management API**
 
 ```bash
-PAT=$(grep VITE_PERSONAL_ACCESS_TOKEN "d:/EXPERIUS/Websites/Xen-Development-Limited-main/.env" | sed -E 's/.*="?([^"]+)"?/\1/')
+PAT=$(grep SUPABASE_ACCESS_TOKEN "d:/EXPERIUS/Websites/Xen-Development-Limited-main/.env" | sed -E 's/.*="?([^"]+)"?/\1/')
 curl -s -H "Authorization: Bearer $PAT" -H "User-Agent: curl/xen-migrate" \
   "https://api.supabase.com/v1/projects/erdbnkemhezvjdhfqjtq/types/typescript" \
   -o /tmp/xen_types_new.ts

@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 
-# Secrets — never commit (contains VITE_PERSONAL_ACCESS_TOKEN, a Supabase Management API PAT)
+# Secrets — never commit (contains SUPABASE_ACCESS_TOKEN, a Supabase Management API PAT)
 .env
 .env.*
 !.env.example
