@@ -160,7 +160,7 @@ const HeroSection = (_props: HeroSectionProps) => {
               Explore Xen Tasmee
             </Link>
             <Link
-              to="/contact"
+              to="/schedule-visit"
               className="hero-cta font-sans inline-flex items-center justify-center h-12 px-7 text-sm bg-black/30 backdrop-blur-md border border-white/30 text-white font-medium tracking-wide rounded-full transition-all duration-300 hover:bg-black/40"
             >
               Book A Visit
