@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Menu, X, Moon, Sun, Globe, Camera, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import xenLogo from "@/assets/xen-logo.png";
+import xenLogoMark from "@/assets/xen-logo-mark.png";
 
 interface NavigationProps {
   isDark: boolean;
@@ -17,12 +17,8 @@ const NAV_LINKS = [
 
 const Logo = ({ compact = false, large = false }: { compact?: boolean; large?: boolean }) => (
   <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="Xen Developments — Home">
-    <span
-      className={`flex items-center justify-center rounded-md bg-[#FCF9F8] overflow-hidden shrink-0 ${
-        large ? "w-9 h-9" : "w-8 h-8"
-      }`}
-    >
-      <img src={xenLogo} alt="" className="w-full h-full object-cover scale-125" />
+    <span className={`flex items-center justify-center shrink-0 ${large ? "w-9 h-9" : "w-8 h-8"}`}>
+      <img src={xenLogoMark} alt="" className="w-full h-full object-contain" />
     </span>
     {!compact && (
       <span className={`font-serif text-white leading-none ${large ? "text-xl" : "text-lg"}`}>Xen</span>
@@ -94,7 +90,7 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
             </button>
 
             <span className="justify-self-center">
-              <Logo large />
+              <Logo compact large />
             </span>
 
             <button
