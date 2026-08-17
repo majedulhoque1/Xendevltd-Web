@@ -70,7 +70,7 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
   return (
     <>
       <motion.nav
-        className="fixed top-4 md:top-6 left-0 right-0 z-50 px-4"
+        className="fixed top-4 md:top-6 left-0 right-0 z-50 px-6"
         animate={isMobileMenuOpen || isPillVisible ? "visible" : "hidden"}
         variants={{
           visible: { y: 0, opacity: 1 },
@@ -78,7 +78,7 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
         }}
         transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        <div className="mx-auto flex items-center rounded-lg border border-white/10 bg-ink/85 backdrop-blur-md shadow-lg shadow-black/10 w-full px-4 py-3.5 lg:w-auto lg:max-w-fit lg:justify-between lg:gap-6 lg:px-6 lg:py-2">
+        <div className="mx-auto flex items-center rounded-lg border border-white/10 bg-ink/85 backdrop-blur-md shadow-lg shadow-black/10 w-full h-[50px] px-6 py-2 lg:h-auto lg:w-auto lg:max-w-fit lg:justify-between lg:gap-6 lg:px-6 lg:py-2">
           {/* Mobile: hamburger — centered logo — theme toggle, as a 3-up bar */}
           <div className="grid grid-cols-3 items-center w-full lg:hidden">
             <button
