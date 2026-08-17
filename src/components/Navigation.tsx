@@ -15,12 +15,18 @@ const NAV_LINKS = [
   { label: "Contact", to: "/contact" },
 ];
 
-const Logo = ({ compact = false }: { compact?: boolean }) => (
+const Logo = ({ compact = false, large = false }: { compact?: boolean; large?: boolean }) => (
   <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="Xen Developments — Home">
-    <span className="flex items-center justify-center w-8 h-8 rounded-md bg-[#FCF9F8] overflow-hidden shrink-0">
+    <span
+      className={`flex items-center justify-center rounded-md bg-[#FCF9F8] overflow-hidden shrink-0 ${
+        large ? "w-9 h-9" : "w-8 h-8"
+      }`}
+    >
       <img src={xenLogo} alt="" className="w-full h-full object-cover scale-125" />
     </span>
-    {!compact && <span className="font-serif text-white text-lg leading-none">Xen</span>}
+    {!compact && (
+      <span className={`font-serif text-white leading-none ${large ? "text-xl" : "text-lg"}`}>Xen</span>
+    )}
   </Link>
 );
 
@@ -76,21 +82,35 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
         }}
         transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        <div
-          className="mx-auto flex items-center justify-between gap-2 md:gap-6 rounded-lg border border-white/10 bg-ink/85 backdrop-blur-md px-3 py-2 md:px-6 md:py-2 shadow-lg shadow-black/10 max-w-fit"
-        >
-          {/* Mobile: hamburger */}
-          <button
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="lg:hidden p-1.5 text-white/90 hover:text-white transition-colors"
-            aria-label="Open menu"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
+        <div className="mx-auto flex items-center rounded-lg border border-white/10 bg-ink/85 backdrop-blur-md shadow-lg shadow-black/10 w-full px-4 py-3.5 lg:w-auto lg:max-w-fit lg:justify-between lg:gap-6 lg:px-6 lg:py-2">
+          {/* Mobile: hamburger — centered logo — theme toggle, as a 3-up bar */}
+          <div className="grid grid-cols-3 items-center w-full lg:hidden">
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="justify-self-start p-1 text-white/90 hover:text-white transition-colors"
+              aria-label="Open menu"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
 
-          <Logo compact />
+            <span className="justify-self-center">
+              <Logo large />
+            </span>
 
-          {/* Desktop links */}
+            <button
+              onClick={onThemeToggle}
+              className="justify-self-end p-1 text-white/80 hover:text-white transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+          </div>
+
+          {/* Desktop: compact logo + links + theme toggle + contact pill */}
+          <div className="hidden lg:flex">
+            <Logo compact />
+          </div>
+
           <div className="hidden lg:flex items-center gap-7 px-2">
             {NAV_LINKS.map((link) => (
               <Link
@@ -107,7 +127,7 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
 
           <button
             onClick={onThemeToggle}
-            className="p-1.5 text-white/80 hover:text-white transition-colors shrink-0"
+            className="hidden lg:block p-1.5 text-white/80 hover:text-white transition-colors shrink-0"
             aria-label="Toggle dark mode"
           >
             {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
