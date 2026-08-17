@@ -88,22 +88,13 @@ const HeroSection = ({ isDark }: HeroSectionProps) => {
         transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
         className="relative z-10 container-wide pb-10 md:pb-14"
       >
-        <div className="rounded-2xl border border-white/15 bg-black/30 backdrop-blur-sm grid grid-cols-2 md:grid-cols-4">
-          {STATS.map((stat, i) => {
-            const mobileBorderLeft = i % 2 === 1;
-            const mobileBorderTop = i >= 2;
-            return (
-              <div
-                key={stat.label}
-                className={`flex flex-col items-center justify-center text-center py-6 px-3 border-white/10
-                  ${mobileBorderLeft ? "border-l" : ""} ${mobileBorderTop ? "border-t" : ""}
-                  md:border-t-0 md:first:border-l-0 md:border-l`}
-              >
-                <CountUp value={stat.value} className="font-serif text-4xl md:text-5xl text-sage leading-none" />
-                <div className="text-xs md:text-sm text-white/70 mt-2">{stat.label}</div>
-              </div>
-            );
-          })}
+        <div className="rounded-sm border border-white/15 bg-black/30 backdrop-blur-sm p-6 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          {STATS.map((stat) => (
+            <div key={stat.label} className="flex flex-col items-start text-left">
+              <CountUp value={stat.value} className="font-serif text-4xl md:text-5xl text-sage leading-none" />
+              <div className="text-xs md:text-sm text-white/70 mt-2">{stat.label}</div>
+            </div>
+          ))}
         </div>
       </motion.div>
     </section>
