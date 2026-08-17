@@ -3,9 +3,9 @@ import { useSubmissions, type Submission, type SubmissionStatus } from "@/hooks/
 import { Badge } from "@/components/ui/badge";
 
 const TONE: Record<SubmissionStatus, string> = {
-  new: "bg-sky-50 text-sky-700",
-  contacted: "bg-amber-50 text-amber-700",
-  closed: "bg-stone-100 text-stone-600",
+  new: "bg-sky-50 text-sky-700 dark:bg-sky-500/10 dark:text-sky-400",
+  contacted: "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400",
+  closed: "bg-stone-100 text-stone-600 dark:bg-stone-500/10 dark:text-stone-400",
 };
 const digits = (p: string) => p.replace(/[^\d]/g, "");
 
@@ -23,7 +23,7 @@ const AdminSubmissions = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Submissions</h2>
+        <h2 className="text-2xl font-semibold tracking-tight text-foreground">Submissions</h2>
         <p className="mt-1.5 text-sm text-muted-foreground">
           Incoming inquiries from the website. Review, contact, then add to CRM.
         </p>
@@ -36,10 +36,10 @@ const AdminSubmissions = () => {
           No submissions yet.
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+        <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
+              <tr className="border-b border-border bg-secondary/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
                 <th className="px-4 py-3 font-semibold">Name</th>
                 <th className="px-4 py-3 font-semibold">Phone</th>
                 <th className="px-4 py-3 font-semibold">Message</th>
@@ -50,7 +50,7 @@ const AdminSubmissions = () => {
             </thead>
             <tbody>
               {submissions.map((r) => (
-                <tr key={r.id} className="border-b border-border/60 last:border-0">
+                <tr key={r.id} className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/30">
                   <td className="px-4 py-3 font-medium text-foreground">{r.name}</td>
                   <td className="px-4 py-3 text-muted-foreground">{r.phone ?? "—"}</td>
                   <td className="max-w-[240px] truncate px-4 py-3 text-muted-foreground" title={r.message ?? ""}>

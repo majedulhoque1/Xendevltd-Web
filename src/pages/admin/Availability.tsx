@@ -119,7 +119,7 @@ const AdminAvailability = () => {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2 className="text-xl font-semibold tracking-tight text-foreground">Availability</h2>
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground">Availability</h2>
           <p className="mt-1.5 text-sm text-muted-foreground">
             Define the weekly windows visitors can book site visits in.
           </p>
@@ -156,7 +156,11 @@ const AdminAvailability = () => {
                         <span className="text-muted-foreground">{w.slot_minutes} min slots</span>
                         <Badge
                           variant="outline"
-                          className={w.active ? "bg-emerald-50 text-emerald-700" : "bg-stone-100 text-stone-600"}
+                          className={
+                            w.active
+                              ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
+                              : "bg-stone-100 text-stone-600 dark:bg-stone-500/10 dark:text-stone-400"
+                          }
                         >
                           {w.active ? "Active" : "Off"}
                         </Badge>

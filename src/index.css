@@ -124,6 +124,17 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Gruppo', sans-serif;
   }
+
+  /* Admin panel is a functional data tool, not a marketing surface —
+     override the display heading font with the body sans for legibility. */
+  .admin-shell h1,
+  .admin-shell h2,
+  .admin-shell h3,
+  .admin-shell h4,
+  .admin-shell h5,
+  .admin-shell h6 {
+    font-family: 'Montserrat', sans-serif;
+  }
 }
 
 @layer components {

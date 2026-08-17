@@ -39,7 +39,7 @@ const AdminCRM = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">CRM</h2>
+        <h2 className="text-2xl font-semibold tracking-tight text-foreground">CRM</h2>
         <p className="mt-1.5 text-sm text-muted-foreground">
           Leads captured from bookings and inquiries. Add private notes.
         </p>

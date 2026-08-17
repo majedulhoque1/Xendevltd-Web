@@ -12,9 +12,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 const TONE: Record<BookingStatus, string> = {
-  pending: "bg-amber-50 text-amber-700",
-  confirmed: "bg-emerald-50 text-emerald-700",
-  cancelled: "bg-stone-100 text-stone-600",
+  pending: "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400",
+  confirmed: "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400",
+  cancelled: "bg-stone-100 text-stone-600 dark:bg-stone-500/10 dark:text-stone-400",
 };
 
 const AdminBookings = () => {
@@ -38,7 +38,7 @@ const AdminBookings = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Bookings</h2>
+        <h2 className="text-2xl font-semibold tracking-tight text-foreground">Bookings</h2>
         <p className="mt-1.5 text-sm text-muted-foreground">
           Confirm, cancel, or reschedule site-visit bookings.
         </p>
@@ -51,10 +51,10 @@ const AdminBookings = () => {
           No bookings yet.
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+        <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
+              <tr className="border-b border-border bg-secondary/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
                 <th className="px-4 py-3 font-semibold">Date</th>
                 <th className="px-4 py-3 font-semibold">Time</th>
                 <th className="px-4 py-3 font-semibold">Contact</th>
@@ -65,7 +65,7 @@ const AdminBookings = () => {
             </thead>
             <tbody>
               {bookings.map((b) => (
-                <tr key={b.id} className="border-b border-border/60 last:border-0">
+                <tr key={b.id} className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/30">
                   <td className="px-4 py-3 text-foreground">
                     {new Date(`${b.date}T00:00`).toLocaleDateString("en-GB", {
                       day: "2-digit",

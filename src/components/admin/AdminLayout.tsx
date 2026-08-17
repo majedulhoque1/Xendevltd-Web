@@ -14,8 +14,8 @@ export function AdminLayout() {
   const { signOut } = useAdminAuth();
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-border bg-card">
+    <div className="admin-shell min-h-screen bg-background text-foreground">
+      <header className="border-b border-border bg-card shadow-sm">
         <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <span className="font-serif text-lg font-semibold text-foreground">Xen Admin</span>
           <nav className="flex items-center gap-1 overflow-x-auto">
@@ -27,7 +27,7 @@ export function AdminLayout() {
                   cn(
                     "flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap",
                     isActive
-                      ? "bg-primary/10 text-primary"
+                      ? "bg-primary/10 text-primary ring-1 ring-inset ring-primary/20"
                       : "text-muted-foreground hover:bg-secondary hover:text-foreground",
                   )
                 }
