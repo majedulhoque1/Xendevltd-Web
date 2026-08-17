@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import { Menu, X, Moon, Sun, Globe, Camera, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import xenLogo from "@/assets/xen-logo.png";
@@ -25,6 +26,8 @@ const Logo = ({ compact = false }: { compact?: boolean }) => (
 
 const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isPillVisible, setIsPillVisible] = useState(true);
+  const lastScrollY = useRef(0);
   const location = useLocation();
 
   useEffect(() => {
@@ -38,14 +41,43 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
     };
   }, [isMobileMenuOpen]);
 
+  // Hide the floating pill while scrolling down past the first screen so it
+  // never sits on top of a heading mid-scroll; reveal it again on scroll-up.
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const scrolledDown = y > lastScrollY.current + 4;
+      const scrolledUp = y < lastScrollY.current - 4;
+      if (y < 80) {
+        setIsPillVisible(true);
+      } else if (scrolledDown) {
+        setIsPillVisible(false);
+      } else if (scrolledUp) {
+        setIsPillVisible(true);
+      }
+      lastScrollY.current = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const isActive = (to: string) =>
     to === "/" ? location.pathname === "/" : location.pathname.startsWith(to);
 
   return (
     <>
-      <nav className="fixed top-4 md:top-6 left-0 right-0 z-50 px-4">
+      <motion.nav
+        className="fixed top-4 md:top-6 left-0 right-0 z-50 px-4"
+        animate={isMobileMenuOpen || isPillVisible ? "visible" : "hidden"}
+        variants={{
+          visible: { y: 0, opacity: 1 },
+          hidden: { y: -24, opacity: 0 },
+        }}
+        transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+      >
         <div
-          className="mx-auto flex items-center justify-between gap-2 md:gap-6 rounded-full border border-white/10 bg-ink/85 backdrop-blur-md px-3 py-2 md:px-4 md:py-2.5 shadow-lg shadow-black/10 max-w-fit"
+          className="mx-auto flex items-center justify-between gap-2 md:gap-6 rounded-lg border border-white/10 bg-ink/85 backdrop-blur-md px-3 py-2 md:px-6 md:py-2 shadow-lg shadow-black/10 max-w-fit"
         >
           {/* Mobile: hamburger */}
           <button
@@ -88,7 +120,7 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
             Contact Us
           </Link>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Full-screen mobile menu overlay */}
       <div

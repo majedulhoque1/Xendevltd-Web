@@ -85,8 +85,8 @@ const TrustSection = () => (
           </ul>
         </div>
 
-        {/* Right — 2x2 badge grid */}
-        <div className="grid grid-cols-2 gap-4">
+        {/* Badge stack — single column on mobile, 2x2 from sm up */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {BADGES.map((badge, index) => (
             <motion.div
               key={badge.title}
@@ -94,7 +94,7 @@ const TrustSection = () => (
               whileInView={{ opacity: 1, y: 0 }}
               viewport={VP}
               transition={{ duration: 0.7, delay: index * 0.12, ease: EASE }}
-              className="bg-card border border-border rounded-xl p-6 md:p-8 text-center flex flex-col items-center justify-center min-h-[190px]"
+              className="bg-card border border-sage rounded-xl px-6 py-10 md:py-12 text-center flex flex-col items-center justify-center"
             >
               <badge.icon className="w-8 h-8 text-primary mb-4" strokeWidth={1.5} />
               <p className="font-serif text-xl md:text-2xl font-semibold">{badge.title}</p>
