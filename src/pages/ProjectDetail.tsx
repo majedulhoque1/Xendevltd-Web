@@ -1,410 +1,270 @@
-import { ArrowLeft, Waves, MapPin, Calendar, Home, CheckCircle, Building2, Layers, Ruler, Maximize, LayoutGrid, ListChecks, Compass } from "lucide-react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link, useParams, Navigate } from "react-router-dom";
-import { useEffect } from "react";
+import { MapPin, ArrowLeft, ArrowRight, Info, MapPinned, CheckSquare, Layout, Waves } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ChatBotButton from "@/components/WhatsAppButton";
-import xenLakeviewTasmeeAsset from "@/assets/Xen_Lakeview_Tasmee.jpeg";
-import upcomingBananiAsset from "@/assets/Upcoming_Banani.jpeg";
-import upcomingJolshiriAsset from "@/assets/Upcoming_Jolshiri.jpeg";
-import project07DesktopAsset from "@/assets/Project_07_Desktop.png";
-import project41DesktopAsset from "@/assets/Project_41_Desktop.png";
-import project21DesktopAsset from "@/assets/Project_21_Desktop.png";
-import lakeviewTasmeeDesktopAsset from "@/assets/Lakeview_Tasmee_Desktop.png";
-import project41Asset from "@/assets/Completed_DOHS_Chittagong.jpeg";
+import { getProjectBySlug, PROJECTS } from "@/data/projects";
+import projectLakeside from "@/assets/project-lakeside.jpg";
+import projectRoadsideFront from "@/assets/project-roadside-front.jpg";
+import projectRoadsidePerspective from "@/assets/project-roadside-perspective.png";
 
-const projects = [
-  {
-    id: 1,
-    slug: "xen-lakeview-tasmee",
-    name: "Lakeview Tasmee",
-    status: "On-going",
-    location: "Plot 38, Rd: 504, Sec: 14, Jolshiri Abashon, Dhaka",
-    badge: "Lakeview Project",
-    description: "A premium residential development featuring dual-aspect design with open street frontage and uninterrupted lake views. Experience lakeside serenity with modern architectural excellence.",
-    fullDescription: "Jolshiri Lakeview Residence represents the pinnacle of modern living in Dhaka. This exclusive development combines the tranquility of lakeside living with contemporary architectural design. Each residence is thoughtfully crafted to maximize natural light and ventilation while offering stunning views of the surrounding landscape.",
-    features: ["Lake View", "Dual Aspect Design", "Premium Finishes", "Modern Architecture", "24/7 Security", "Covered Parking"],
-    amenities: ["Swimming Pool", "Fitness Center", "Children's Play Area", "Community Hall", "Landscaped Gardens"],
-    expectedCompletion: "2026",
-    image: xenLakeviewTasmeeAsset,
-    desktopImage: lakeviewTasmeeDesktopAsset,
-    gallery: [xenLakeviewTasmeeAsset],
-    buildingType: "Residential Apartment",
-    totalFloors: "G+8 (9 Stories)",
-    floorArea: "2850 sft",
-    configuration: "4 Beds, 5 Baths, 7 Balcony/Verandas",
-    frontageNE: "30' Green + 200' Lake + 8' Walking Track",
-    frontageSW: "40' Wide Road",
-  },
-  {
-    id: 8,
-    slug: "upcoming-banani",
-    name: "Project 21",
-    status: "Up-coming",
-    location: "Block B, Rd 18, Plot 21, Banani, Dhaka",
-    badge: null,
-    description: "",
-    fullDescription: "Details coming soon.",
-    features: ["TBD"],
-    amenities: ["TBD"],
-    expectedCompletion: "TBD",
-    image: upcomingBananiAsset,
-    desktopImage: project21DesktopAsset,
-    gallery: [],
-    buildingType: "—",
-    totalFloors: "—",
-    floorArea: "—",
-    configuration: "—",
-  },
-  {
-    id: 9,
-    slug: "project-07",
-    name: "Project 07",
-    status: "On-going",
-    location: "Sec 8, Rd 403, Plot 07, Jolshiri, Dhaka",
-    badge: null,
-    description: "Details coming soon.",
-    fullDescription: "Details coming soon.",
-    features: ["TBD"],
-    amenities: ["TBD"],
-    expectedCompletion: "TBD",
-    image: upcomingJolshiriAsset,
-    desktopImage: project07DesktopAsset,
-    gallery: [],
-    buildingType: "—",
-    totalFloors: "—",
-    floorArea: "—",
-    configuration: "—",
-  },
-  {
-    id: 10,
-    slug: "project-41",
-    name: "Project 41",
-    status: "On-going",
-    location: "Road 2, Plot 41, DOHS Chittagong",
-    badge: null,
-    description: "",
-    fullDescription: "Details coming soon.",
-    features: ["TBD"],
-    amenities: ["TBD"],
-    expectedCompletion: "TBD",
-    image: project41Asset,
-    desktopImage: project41DesktopAsset,
-    gallery: [],
-    buildingType: "—",
-    totalFloors: "—",
-    floorArea: "—",
-    configuration: "—",
-  },
-];
+const EASE = [0.25, 0.1, 0.25, 1] as const;
+
+const TABS = [
+  { id: "about", label: "About", icon: Info },
+  { id: "location", label: "Location", icon: MapPinned },
+  { id: "features", label: "Key Features", icon: CheckSquare },
+  { id: "floor", label: "Floor Plans", icon: Layout },
+] as const;
+
+const FALLBACK_GALLERY = [projectLakeside, projectRoadsideFront, projectRoadsidePerspective];
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const { isDark, toggleTheme } = useTheme();
+  const [activeTab, setActiveTab] = useState<(typeof TABS)[number]["id"]>("about");
+  const scrollerRef = useRef<HTMLDivElement>(null);
 
-  const project = projects.find((p) => p.slug === slug);
+  const project = slug ? getProjectBySlug(slug) : undefined;
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [slug]);
 
   if (!project) {
     return <Navigate to="/projects" replace />;
   }
 
+  const otherProjects = PROJECTS.filter((p) => p.slug !== project.slug).slice(0, 6);
+  const gallery = project.gallery ?? FALLBACK_GALLERY;
+
+  const scroll = (dir: 1 | -1) => {
+    scrollerRef.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
+  };
+
+  const tabContent: Record<(typeof TABS)[number]["id"], string[]> = {
+    about: project.vision ?? [project.description],
+    location: [
+      `Located within ${project.location}, ${project.name} is positioned in one of the area's most sought-after residential zones.`,
+    ],
+    features:
+      project.features.length > 0
+        ? project.features
+        : ["Quality construction throughout", "Modern architectural design"],
+    floor: ["Detailed floor plans are available on request — contact our team for the full unit layout brochure."],
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-500">
       <Navigation isDark={isDark} onThemeToggle={toggleTheme} />
 
-      <main className="pt-20">
-        {/* Breadcrumb */}
-        <section className="py-4 bg-secondary/30">
-          <div className="container-wide">
-            <nav className="w-full px-4 py-2 project-breadcrumb">
-              <ol className="breadcrumb-row flex flex-wrap items-center gap-x-1 gap-y-1 text-xs text-left w-full">
-                <li className="flex items-center breadcrumb-mobile-back">
-                  <Link to="/projects" aria-label="Back to Projects" className="text-muted-foreground hover:text-foreground" style={{ fontSize: "14px", marginRight: "6px", color: "inherit" }}>
-                    ←
-                  </Link>
-                </li>
-                <li className="flex items-center breadcrumb-hide-mobile">
-                  <Link to="/" className="text-muted-foreground hover:text-foreground">
-                    <Home className="h-3 w-3" />
-                  </Link>
-                </li>
-                <li className="text-muted-foreground breadcrumb-hide-mobile">/</li>
-                <li className="flex items-center breadcrumb-hide-mobile">
-                  <Link to="/projects" className="text-muted-foreground hover:text-foreground">Projects</Link>
-                </li>
-                <li className="text-muted-foreground breadcrumb-hide-mobile">/</li>
-                <li className="flex items-center">
-                  <Link
-                    to={`/projects?filter=${
-                      project.status === "On-going"
-                        ? "ongoing"
-                        : project.status === "Up-coming"
-                        ? "upcoming"
-                        : "completed"
-                    }`}
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    {project.status === "On-going"
-                      ? "Ongoing"
-                      : project.status === "Up-coming"
-                      ? "Upcoming"
-                      : "Completed"}
-                  </Link>
-                </li>
-                <li className="text-muted-foreground">/</li>
-                <li className="flex items-center">
-                  <span className="text-foreground font-medium">{project.name}</span>
-                </li>
-              </ol>
-            </nav>
-          </div>
-        </section>
+      <main className="pt-28 md:pt-32 pb-20 md:pb-28">
+        <div className="container-wide">
+          <nav className="text-sm text-muted-foreground mb-6">
+            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+            <span className="mx-2">›</span>
+            <Link to="/projects" className="hover:text-primary transition-colors">Projects</Link>
+            <span className="mx-2">›</span>
+            <span className="text-foreground font-medium">{project.name}</span>
+          </nav>
 
-        {/* Hero Section */}
-        <section className="relative">
-          <div
-            className={`h-[70vh] md:h-[85vh] overflow-hidden ${
-              project.image ? "" : "bg-gradient-to-br from-secondary to-muted"
-            }`}
+          {/* Hero */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, ease: EASE }}
+            className="relative rounded-2xl overflow-hidden min-h-[460px] sm:min-h-0 sm:aspect-[16/10] md:aspect-[2/1]"
           >
-            {project.image ? (
-              <>
-                <img
-                  src={project.image}
-                  alt={project.name}
-                  className={`w-full h-full object-cover object-center ${
-                    (project as any).desktopImage ? "md:hidden" : ""
-                  }`}
-                />
-                {(project as any).desktopImage && (
-                  <img
-                    src={(project as any).desktopImage}
-                    alt={project.name}
-                    className="hidden md:block w-full h-full object-cover object-center"
-                  />
-                )}
-              </>
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <span className="text-muted-foreground">Image Coming Soon</span>
+            <img src={project.image} alt={project.name} className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+            <div className="absolute inset-0 p-6 md:p-10 flex flex-col justify-end">
+              <span className="inline-flex w-fit items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-wider mb-4">
+                {project.status}
+              </span>
+              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                <div>
+                  <h1 className="font-serif text-white text-4xl sm:text-5xl leading-tight">{project.name}</h1>
+                  <div className="flex items-center gap-2 text-white/80 mt-3">
+                    <MapPin className="w-4 h-4" />
+                    {project.location}
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-3 shrink-0">
+                  <Link to="/schedule-visit" className="btn-primary">
+                    Schedule a Visit
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm border border-white/60 text-white font-medium hover:bg-white/10 transition-colors"
+                  >
+                    Download Brochure
+                  </Link>
+                </div>
               </div>
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-          </div>
+            </div>
+          </motion.div>
 
-          {/* Project Title Overlay */}
-          <div className="absolute bottom-0 left-0 right-0">
-            <div className="container-wide pb-8">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="flex flex-wrap items-center gap-3 mb-3">
-                  <span
-                    className={`inline-flex items-center px-3 py-1 text-xs uppercase tracking-wider rounded-full ${
-                      project.status === "On-going"
-                        ? "bg-primary text-primary-foreground"
-                        : project.status === "Up-coming"
-                        ? "bg-gold text-white"
-                        : "bg-secondary text-secondary-foreground"
+          {/* Body */}
+          <div className="grid lg:grid-cols-[320px_1fr] gap-8 lg:gap-10 mt-10 min-w-0">
+            {/* Left rail */}
+            <div className="flex flex-col gap-6 min-w-0">
+              {project.specs && (
+                <div className="bg-ink text-white rounded-xl p-6">
+                  <h3 className="font-serif text-xl mb-4">Project Specifications</h3>
+                  <div className="border-t border-white/10 divide-y divide-white/10">
+                    {Object.entries(project.specs).map(([key, value]) => (
+                      <div key={key} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 py-3 text-sm">
+                        <span className="text-white/50 capitalize">
+                          {key.replace(/([A-Z])/g, " $1")}
+                        </span>
+                        <span className="font-medium text-right">{value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {project.badge && (
+                <div className="border border-border rounded-xl p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Waves className="w-4 h-4 text-primary" />
+                    <h3 className="font-serif text-lg">{project.badge}</h3>
+                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Strategically positioned to maximize open frontage, with residences
+                    enjoying uninterrupted views and a design that responds directly to the
+                    natural topography.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Right — tabs + content */}
+            <div className="min-w-0">
+              <div className="flex gap-6 border-b border-border overflow-x-auto">
+                {TABS.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`pb-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors flex items-center gap-2 ${
+                      activeTab === tab.id
+                        ? "border-primary text-foreground"
+                        : "border-transparent text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    {project.status}
-                  </span>
-                  {project.badge && (
-                    <span className="inline-flex items-center px-3 py-1 text-xs bg-background/90 backdrop-blur-sm rounded-full">
-                      <Waves className="w-3 h-3 mr-1 text-primary" />
-                      {project.badge}
+                    <tab.icon className="w-4 h-4" />
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              <div className="py-8 min-h-[140px]">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="space-y-4"
+                  >
+                    {activeTab === "features" ? (
+                      <ul className="space-y-3">
+                        {tabContent.features.map((f) => (
+                          <li key={f} className="flex items-center gap-3 text-foreground">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      tabContent[activeTab].map((para, i) => (
+                        <p key={i} className="text-muted-foreground leading-relaxed">
+                          {para}
+                        </p>
+                      ))
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              <h2 className="font-serif text-2xl md:text-3xl mb-6">Gallery</h2>
+              <div className="columns-2 gap-4 [column-fill:_balance]">
+                {gallery.map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt={`${project.name} — view ${i + 1}`}
+                    className="w-full rounded-lg mb-4 break-inside-avoid"
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Explore more */}
+        {otherProjects.length > 0 && (
+          <section className="container-wide mt-16 md:mt-20 pt-12 border-t border-border">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="font-serif text-2xl md:text-3xl">Explore More Portfolios</h2>
+              <div className="hidden sm:flex gap-2">
+                <button
+                  onClick={() => scroll(-1)}
+                  aria-label="Scroll left"
+                  className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => scroll(1)}
+                  aria-label="Scroll right"
+                  className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+            <div
+              ref={scrollerRef}
+              className="flex gap-6 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            >
+              {otherProjects.map((p) => (
+                <Link
+                  key={p.slug}
+                  to={`/projects/${p.slug}`}
+                  className="shrink-0 w-[300px] snap-start rounded-xl overflow-hidden border border-border group"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <img
+                      src={p.image}
+                      alt={p.name}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <span className="absolute top-3 right-3 inline-flex items-center px-2.5 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full bg-background/90 text-foreground">
+                      {p.status}
                     </span>
-                  )}
-                </div>
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-gruppo font-semibold text-white drop-shadow-lg">
-                  {project.name}
-                </h1>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Project Details */}
-        <section className="section-padding">
-          <div className="container-wide">
-            <div className="grid lg:grid-cols-3 gap-12">
-              {/* Main Content */}
-              <div className="lg:col-span-2">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                >
-                  <h2 className="text-2xl font-gruppo font-semibold mb-4">About This Project</h2>
-                  <p className="body-large text-muted-foreground mb-6">
-                    {project.fullDescription}
-                  </p>
-
-                  {/* Features */}
-                  <h3 className="text-xl font-gruppo font-semibold mb-4 mt-8">Key Features</h3>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {project.features.map((feature, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center gap-2 p-3 bg-secondary/50 rounded-lg"
-                      >
-                        <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                        <span className="text-sm">{feature}</span>
-                      </div>
-                    ))}
                   </div>
-
-                  {/* Amenities */}
-                  <h3 className="text-xl font-gruppo font-semibold mb-4 mt-8">Amenities</h3>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {project.amenities.map((amenity, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center gap-2 p-3 bg-secondary/50 rounded-lg"
-                      >
-                        <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                        <span className="text-sm">{amenity}</span>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* Sidebar */}
-              <div className="lg:col-span-1">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="card-premium p-6 sticky top-24"
-                >
-                  <h3 className="text-lg font-gruppo font-semibold mb-4">Project Details</h3>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
-                      <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <div>
-                        <span className="text-xs text-muted-foreground uppercase tracking-wider">Location</span>
-                        <p className="text-sm font-medium">{project.location}</p>
-                      </div>
+                  <div className="p-5">
+                    <h3 className="font-serif text-lg mb-1.5">{p.name}</h3>
+                    <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                      {p.description || "A Xen Developments project."}
+                    </p>
+                    <div className="border-t border-border pt-3 flex items-center justify-between text-xs">
+                      <span className="text-muted-foreground">{p.location}</span>
+                      <span className="inline-flex items-center gap-1 font-semibold text-primary uppercase tracking-wide">
+                        View Details <ArrowRight className="w-3 h-3" />
+                      </span>
                     </div>
-
-                    <div className="flex items-start gap-3">
-                      <Calendar className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <div>
-                        <span className="text-xs text-muted-foreground uppercase tracking-wider">
-                          {project.status === "Completed" ? "Status" : "Expected Completion"}
-                        </span>
-                        <p className="text-sm font-medium">{project.expectedCompletion}</p>
-                      </div>
-                    </div>
-
-                    {"buildingType" in project && (project as any).buildingType && (
-                      <div className="flex items-start gap-3">
-                        <Building2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="text-xs text-muted-foreground uppercase tracking-wider">Building Type</span>
-                          <p className="text-sm font-medium">{(project as any).buildingType}</p>
-                        </div>
-                      </div>
-                    )}
-                    {"totalFloors" in project && (project as any).totalFloors && (
-                      <div className="flex items-start gap-3">
-                        <Layers className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="text-xs text-muted-foreground uppercase tracking-wider">Total Floors</span>
-                          <p className="text-sm font-medium">{(project as any).totalFloors}</p>
-                        </div>
-                      </div>
-                    )}
-                    {"landArea" in project && (project as any).landArea && (
-                      <div className="flex items-start gap-3">
-                        <Ruler className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="text-xs text-muted-foreground uppercase tracking-wider">Land Area</span>
-                          <p className="text-sm font-medium">{(project as any).landArea}</p>
-                        </div>
-                      </div>
-                    )}
-                    {"apartmentSize" in project && (project as any).apartmentSize && (
-                      <div className="flex items-start gap-3">
-                        <Maximize className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="text-xs text-muted-foreground uppercase tracking-wider">Apartment Size</span>
-                          <p className="text-sm font-medium">{(project as any).apartmentSize}</p>
-                        </div>
-                      </div>
-                    )}
-                    {"floorArea" in project && (project as any).floorArea && (
-                      <div className="flex items-start gap-3">
-                        <Maximize className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="text-xs text-muted-foreground uppercase tracking-wider">Floor Area</span>
-                          <p className="text-sm font-medium">{(project as any).floorArea}</p>
-                        </div>
-                      </div>
-                    )}
-                    {"configuration" in project && (project as any).configuration && (
-                      <div className="flex items-start gap-3">
-                        <LayoutGrid className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="text-xs text-muted-foreground uppercase tracking-wider">Configuration</span>
-                          <p className="text-sm font-medium">{(project as any).configuration}</p>
-                        </div>
-                      </div>
-                    )}
-                    {"frontageNE" in project && (project as any).frontageNE && (
-                      <div className="flex items-start gap-3">
-                        <Compass className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="text-xs text-muted-foreground uppercase tracking-wider">Frontage (NE)</span>
-                          <p className="text-sm font-medium">{(project as any).frontageNE}</p>
-                        </div>
-                      </div>
-                    )}
-                    {"frontageSW" in project && (project as any).frontageSW && (
-                      <div className="flex items-start gap-3">
-                        <Compass className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="text-xs text-muted-foreground uppercase tracking-wider">Frontage (SW)</span>
-                          <p className="text-sm font-medium">{(project as any).frontageSW}</p>
-                        </div>
-                      </div>
-                    )}
-                    {"availableFloors" in project && (project as any).availableFloors && (
-                      <div className="flex items-start gap-3">
-                        <ListChecks className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <div>
-                          <span className="text-xs text-muted-foreground uppercase tracking-wider">Available Floors</span>
-                          <p className="text-sm font-medium">{(project as any).availableFloors}</p>
-                        </div>
-                      </div>
-                    )}
                   </div>
-
-                  <div className="border-t border-border mt-6 pt-6">
-                    <Link to="/#contact" className="btn-primary w-full">
-                      {project.status === "Up-coming" ? "Register Interest" : "Schedule a Visit"}
-                    </Link>
-                    <Link to="/projects" className="btn-secondary w-full mt-3">
-                      <ArrowLeft className="w-4 h-4 mr-2" />
-                      Back to Projects
-                    </Link>
-                  </div>
-                </motion.div>
-              </div>
+                </Link>
+              ))}
             </div>
-          </div>
-        </section>
+          </section>
+        )}
       </main>
 
       <Footer />

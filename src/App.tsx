@@ -10,6 +10,7 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Projects from "./pages/Projects";
+import ProjectsCategory from "./pages/ProjectsCategory";
 import ProjectDetail from "./pages/ProjectDetail";
 import ScheduleVisit from "./pages/ScheduleVisit";
 import Contact from "./pages/Contact";
@@ -33,6 +34,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/completed" element={<ProjectsCategory status="Completed" />} />
+            <Route path="/projects/upcoming" element={<ProjectsCategory status="Up-coming" />} />
+            <Route path="/projects/ongoing" element={<ProjectsCategory status="On-going" />} />
             <Route path="/projects/:slug" element={<ProjectDetail />} />
             <Route path="/schedule-visit" element={<ScheduleVisit />} />
             <Route path="/contact" element={<Contact />} />

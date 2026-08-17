@@ -1,119 +1,110 @@
-import { CheckCircle, ArrowRight } from "lucide-react";
+import { CheckCircle, Recycle, MapPin, Building2, Ruler, ShieldCheck, HeartHandshake } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import CountUp from "@/components/CountUp";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
+const VP = { once: true, margin: "0px 0px -50px 0px", amount: 0.15 } as const;
 
-const TrustSection = () => {
-  const trustPoints = [
-    "Commitment to quality construction and premium materials",
-    "Thoughtful design approach prioritizing light and space",
-    "Track record of responsible, on-time development",
-  ];
+const TRUST_POINTS = [
+  {
+    icon: CheckCircle,
+    title: "Uncompromising Structural Integrity",
+    description: "Engineered beyond standard codes for maximum earthquake resilience.",
+  },
+  {
+    icon: Recycle,
+    title: "Sustainable & Green Design",
+    description: "Optimized for natural light, cross-ventilation, and energy efficiency.",
+  },
+  {
+    icon: MapPin,
+    title: "Prime, Handpicked Locations",
+    description: "Strategically situated in Dhaka's most sought-after neighborhoods.",
+  },
+];
 
-  const stats = [
-    { value: "15+", label: "Years of Excellence" },
-    { value: "20+", label: "Projects Delivered" },
-    { value: "500+", label: "Happy Families" },
-    { value: "100%", label: "On-time Delivery" },
-  ];
+const BADGES = [
+  { icon: Building2, title: "BNBC Code", caption: "Strictly Adhered" },
+  { icon: Ruler, title: "Grade A", caption: "Materials Used" },
+  { icon: ShieldCheck, title: "RAJUK", caption: "100% Approved" },
+  { icon: HeartHandshake, title: "Transparent", caption: "Handover Process" },
+];
 
-  return (
-    <section id="trust" className="section-padding bg-secondary/30">
-      <div className="container-wide">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left Content */}
-          <div>
-            <motion.span
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "0px 0px -50px 0px", amount: 0.15 }}
-              transition={{ duration: 0.8, ease: EASE }}
-              className="label-caps mb-4 block"
-            >
-              Our Promise
-            </motion.span>
-            <motion.h2
+const TrustSection = () => (
+  <section id="trust" className="section-padding bg-background">
+    <div className="container-wide">
+      <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-start">
+        {/* Left */}
+        <div>
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={VP}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="label-caps mb-4 block"
+          >
+            Our Promise
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={VP}
+            transition={{ duration: 1.0, ease: EASE }}
+            className="heading-section mb-6"
+          >
+            Building Trust Through Structural Integrity
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={VP}
+            transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
+            className="body-large mb-8"
+          >
+            We don't just build apartments; we engineer enduring homes. Every Xen Development
+            is a testament to our commitment to quality, sustainability, and the long-term
+            well-being of our residents.
+          </motion.p>
+
+          <ul className="space-y-6">
+            {TRUST_POINTS.map((point, index) => (
+              <motion.li
+                key={point.title}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={VP}
+                transition={{ duration: 0.8, delay: 0.2 + index * 0.15, ease: EASE }}
+                className="flex items-start gap-3"
+              >
+                <point.icon className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+                <div>
+                  <p className="font-semibold">{point.title}</p>
+                  <p className="text-sm text-muted-foreground mt-0.5">{point.description}</p>
+                </div>
+              </motion.li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Right — 2x2 badge grid */}
+        <div className="grid grid-cols-2 gap-4">
+          {BADGES.map((badge, index) => (
+            <motion.div
+              key={badge.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -50px 0px", amount: 0.15 }}
-              transition={{ duration: 1.0, ease: EASE }}
-              className="heading-section mb-6"
+              viewport={VP}
+              transition={{ duration: 0.7, delay: index * 0.12, ease: EASE }}
+              className="bg-card border border-border rounded-xl p-6 md:p-8 text-center flex flex-col items-center justify-center min-h-[190px]"
             >
-              Why Buyers Trust Xen Developments
-            </motion.h2>
-            <div className="accent-line mb-8" />
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "0px 0px -50px 0px", amount: 0.15 }}
-              transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
-              className="body-large mb-8"
-            >
-              We focus on rare locations, open layouts, and thoughtful planning
-              — selecting sites that offer light, airflow, and long-term
-              livability, not just density.
-            </motion.p>
-
-            <ul className="space-y-4 mb-10">
-              {trustPoints.map((point, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "0px 0px -50px 0px", amount: 0.15 }}
-                  transition={{ duration: 0.8, delay: 0.3 + index * 0.2, ease: EASE }}
-                  className="flex items-start gap-3 body-regular"
-                >
-                  <CheckCircle className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span>{point}</span>
-                </motion.li>
-              ))}
-            </ul>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true, margin: "0px 0px -50px 0px", amount: 0.15 }}
-              transition={{ duration: 0.8, delay: 1.1, ease: EASE }}
-            >
-              <Link
-                to="/about"
-                className="btn-ghost text-primary p-0 group inline-flex items-center"
-              >
-                Learn More About Xen
-                <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
+              <badge.icon className="w-8 h-8 text-primary mb-4" strokeWidth={1.5} />
+              <p className="font-serif text-xl md:text-2xl font-semibold">{badge.title}</p>
+              <p className="text-sm text-muted-foreground mt-1">{badge.caption}</p>
             </motion.div>
-          </div>
-
-          {/* Right Content - Stats */}
-          <div className="grid grid-cols-2 gap-6">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "0px 0px -50px 0px", amount: 0.15 }}
-                transition={{ duration: 0.9, delay: index * 0.15, ease: EASE }}
-                whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                className="card-premium p-8 text-center"
-              >
-                <CountUp
-                  value={stat.value}
-                  className="text-5xl font-serif font-semibold text-primary"
-                />
-                <p className="mt-2 text-muted-foreground text-sm">
-                  {stat.label}
-                </p>
-              </motion.div>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 export default TrustSection;

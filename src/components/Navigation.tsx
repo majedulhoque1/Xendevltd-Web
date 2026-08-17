@@ -1,176 +1,177 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Moon, Sun, Globe, Camera, Users } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import xenLogo from "@/assets/xen-logo.png";
-import ThemeToggle from "./ThemeToggle";
 
 interface NavigationProps {
   isDark: boolean;
   onThemeToggle: () => void;
 }
 
+const NAV_LINKS = [
+  { label: "Projects", to: "/projects" },
+  { label: "About", to: "/about" },
+  { label: "Contact", to: "/contact" },
+];
+
+const Logo = ({ compact = false }: { compact?: boolean }) => (
+  <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="Xen Developments — Home">
+    <span className="flex items-center justify-center w-8 h-8 rounded-md bg-[#FCF9F8] overflow-hidden shrink-0">
+      <img src={xenLogo} alt="" className="w-full h-full object-cover scale-125" />
+    </span>
+    {!compact && <span className="font-serif text-white text-lg leading-none">Xen</span>}
+  </Link>
+);
+
 const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [contactInView, setContactInView] = useState(false);
   const location = useLocation();
-  const isHome = location.pathname === "/";
-  const overHero = isHome && !isScrolled;
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isMobileMenuOpen]);
 
-  // Scrollspy for the #contact section on the home page
-  useEffect(() => {
-    if (!isHome) {
-      setContactInView(false);
-      return;
-    }
-    const el = document.getElementById("contact");
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setContactInView(entry.isIntersecting),
-      { rootMargin: "-40% 0px -40% 0px", threshold: 0 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [isHome, location.pathname]);
-
-  const isProjectsActive = location.pathname.startsWith("/projects");
-  const isAboutActive = location.pathname.startsWith("/about");
-  const isContactActive = isHome && contactInView;
-
-  const linkClass = (active: boolean) =>
-    `relative text-sm font-medium transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:bg-primary after:transition-all after:duration-300 ${
-      active ? "after:w-full" : "after:w-0 hover:after:w-full"
-    } ${
-      active
-        ? overHero
-          ? "text-white"
-          : "text-primary"
-        : overHero
-        ? "text-white/90 hover:text-white"
-        : "text-foreground/80 hover:text-primary"
-    }`;
-
-  const mobileLinkClass = (active: boolean) =>
-    `block py-2 text-lg font-medium transition-colors ${
-      active ? "text-primary" : "text-foreground hover:text-primary"
-    }`;
+  const isActive = (to: string) =>
+    to === "/" ? location.pathname === "/" : location.pathname.startsWith(to);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        overHero
-          ? "bg-transparent pt-6 pb-4"
-          : "bg-background/95 backdrop-blur-lg border-b border-border/50 py-3"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="relative flex items-center justify-between h-14">
-          {/* Logo */}
-          <a href="/" className="flex items-center group">
-            <img
-              src={xenLogo}
-              alt="Xen Developments"
-              className="h-10 w-auto transition-all duration-300 group-hover:scale-105"
-            />
-          </a>
-
-          {/* Desktop Navigation — Centered Links in Glassmorphic Pill */}
-          <div
-            className={`hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center gap-8 rounded-full px-8 py-2.5 backdrop-blur-md border transition-all duration-500 ${
-              !overHero
-                ? "bg-background/60 border-border/40"
-                : "bg-white/5 border-white/10"
-            }`}
+    <>
+      <nav className="fixed top-4 md:top-6 left-0 right-0 z-50 px-4">
+        <div
+          className="mx-auto flex items-center justify-between gap-2 md:gap-6 rounded-full border border-white/10 bg-ink/85 backdrop-blur-md px-3 py-2 md:px-4 md:py-2.5 shadow-lg shadow-black/10 max-w-fit"
+        >
+          {/* Mobile: hamburger */}
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="lg:hidden p-1.5 text-white/90 hover:text-white transition-colors"
+            aria-label="Open menu"
           >
-            <Link to="/projects" className={linkClass(isProjectsActive)}>
-              Projects
-            </Link>
-            <Link to="/about" className={linkClass(isAboutActive)}>
-              About
-            </Link>
-            <Link to="/#contact" className={linkClass(isContactActive)}>
-              Contact
-            </Link>
+            <Menu className="w-5 h-5" />
+          </button>
+
+          <Logo compact />
+
+          {/* Desktop links */}
+          <div className="hidden lg:flex items-center gap-7 px-2">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`text-sm font-medium transition-colors ${
+                  isActive(link.to) ? "text-white" : "text-white/70 hover:text-white"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
-          {/* Right Side — Theme toggle + CTA */}
-          <div className="hidden lg:flex items-center gap-3">
-            <ThemeToggle isDark={isDark} onToggle={onThemeToggle} />
-            <a
-              href="tel:+8801717192730"
-              className="inline-flex items-center justify-center px-5 py-2.5 bg-primary text-primary-foreground text-sm font-medium rounded-full hover:bg-primary/90 transition-colors"
-            >
-              Call Now: 01717-19-27-30
-            </a>
-          </div>
+          <button
+            onClick={onThemeToggle}
+            className="p-1.5 text-white/80 hover:text-white transition-colors shrink-0"
+            aria-label="Toggle dark mode"
+          >
+            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
 
-          {/* Mobile Menu Button + Call Now + Theme Toggle */}
-          <div className="flex items-center gap-2 lg:hidden">
-            <a
-              href="tel:+8801717192730"
-              className="nav-call-mobile inline-flex items-center justify-center px-2.5 py-1.5 bg-primary text-primary-foreground text-[11px] font-medium rounded-full hover:bg-primary/90 transition-colors"
+          <Link
+            to="/contact"
+            className="hidden lg:inline-flex items-center justify-center px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap"
+          >
+            Contact Us
+          </Link>
+        </div>
+      </nav>
+
+      {/* Full-screen mobile menu overlay */}
+      <div
+        className={`fixed inset-0 z-[60] bg-ink transition-opacity duration-300 lg:hidden ${
+          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className="flex items-center justify-between px-5 pt-5">
+          <Logo />
+          <button
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="p-2 text-white/90 hover:text-white transition-colors"
+            aria-label="Close menu"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <div className="flex flex-col px-6 pt-10 gap-1">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className="font-serif text-4xl text-white py-3 hover:text-primary transition-colors"
             >
-              Call Now
-            </a>
-            <ThemeToggle isDark={isDark} onToggle={onThemeToggle} />
+              {link.label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="mx-6 mt-8 border-t border-white/10" />
+
+        <div className="px-6 mt-8 flex flex-col gap-6">
+          <div className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-3.5">
+            <span className="flex items-center gap-2.5 text-white/90 text-sm font-medium">
+              <Moon className="w-4 h-4" /> Appearance
+            </span>
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`p-2 transition-colors ${!overHero ? "text-foreground" : "text-white"}`}
-              aria-label="Toggle menu"
+              onClick={onThemeToggle}
+              role="switch"
+              aria-checked={isDark}
+              aria-label="Toggle dark mode"
+              className={`relative w-11 h-6 rounded-full transition-colors ${
+                isDark ? "bg-primary" : "bg-white/20"
+              }`}
             >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
+              <span
+                className={`absolute top-0.5 w-5 h-5 rounded-full bg-white transition-all ${
+                  isDark ? "left-[22px]" : "left-0.5"
+                }`}
+              />
             </button>
           </div>
-        </div>
-      </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden bg-background/95 backdrop-blur-lg border-t border-border animate-fade-in">
-          <div className="max-w-7xl mx-auto px-4 md:px-8 py-6 space-y-4">
-            <Link
-              to="/projects"
-              className={mobileLinkClass(isProjectsActive)}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Projects
-            </Link>
-            <Link
-              to="/about"
-              className={mobileLinkClass(isAboutActive)}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              About
-            </Link>
-            <Link
-              to="/#contact"
-              className={mobileLinkClass(isContactActive)}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Contact
-            </Link>
-            <a
-              href="tel:+8801717192730"
-              className="inline-flex items-center justify-center w-full px-5 py-3 bg-primary text-primary-foreground text-sm font-medium rounded-full hover:bg-primary/90 transition-colors mt-4"
-            >
-              Call Now: 01717-19-27-30
+          <Link
+            to="/contact"
+            className="w-full inline-flex items-center justify-center px-5 py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
+          >
+            Contact Us
+          </Link>
+
+          <div className="text-center">
+            <a href="tel:+8801717192730" className="text-white/70 text-sm tracking-wide hover:text-white transition-colors">
+              01717-19-27-30
             </a>
           </div>
+
+          <div className="flex items-center justify-center gap-5">
+            <a href="#" aria-label="Website" className="text-white/70 hover:text-white transition-colors">
+              <Globe className="w-5 h-5" />
+            </a>
+            <a href="#" aria-label="Instagram" className="text-white/70 hover:text-white transition-colors">
+              <Camera className="w-5 h-5" />
+            </a>
+            <a href="#" aria-label="Community" className="text-white/70 hover:text-white transition-colors">
+              <Users className="w-5 h-5" />
+            </a>
+          </div>
+
+          <p className="text-center text-white/40 text-xs">© {new Date().getFullYear()} Xen Developments.</p>
         </div>
-      )}
-    </nav>
+      </div>
+    </>
   );
 };
 

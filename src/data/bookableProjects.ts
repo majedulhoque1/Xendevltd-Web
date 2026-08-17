@@ -7,7 +7,7 @@
 // this list is the single source of truth for the Schedule-a-Visit dropdown.
 // Update it here when a development opens for or closes to visits.
 export const BOOKABLE_PROJECTS: string[] = [
-  "Lakeview Tasmee",
+  "Xen Lakeview Tasmee",
   "Project 41",
   "Project 07",
   "Project 21",

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useInView } from "framer-motion";
 
 interface CountUpProps {
   value: string;
@@ -16,8 +15,24 @@ const CountUp = ({ value, duration = 1.5, className }: CountUpProps) => {
   const hasMatch = !!match;
 
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -50px 0px", amount: 0.15 });
+  const [inView, setInView] = useState(false);
   const [count, setCount] = useState(0);
+
+  // Native IntersectionObserver — triggers as soon as any part of the element
+  // is visible, so it fires reliably even when it starts partly below the fold
+  // on short mobile viewports.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || inView) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { threshold: 0, rootMargin: "0px 0px 150px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [inView]);
 
   useEffect(() => {
     if (!inView || !hasMatch) return;

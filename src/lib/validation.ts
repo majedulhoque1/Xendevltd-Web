@@ -19,6 +19,13 @@ export const leadSchema = z.object({
     .max(1000, "Message must be less than 1000 characters")
     .optional()
     .or(z.literal("")),
+  email: z
+    .string()
+    .trim()
+    .email("Invalid email address")
+    .optional()
+    .or(z.literal("")),
+  project: z.string().trim().optional().or(z.literal("")),
 });
 
 // Chat message validation schema

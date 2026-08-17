@@ -1,9 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Gruppo&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
-.font-gruppo { font-family: 'Gruppo', sans-serif; }
-/* Preserve Playfair Display for stats numbers via font-serif utility */
+.font-gruppo { font-family: 'Fraunces', serif; }
+/* font-serif utility (tailwind) is remapped to Fraunces below */
 
 @tailwind base;
 @tailwind components;
@@ -11,103 +10,103 @@
 
 @layer base {
   :root {
-    /* Light Mode - Premium Architectural */
-    --background: 30 15% 98%;
-    --foreground: 180 8% 12%;
+    /* Light Mode — Xen Dev. v4 (Figma) */
+    --background: 15 40% 98%;      /* #FCF9F8 */
+    --foreground: 150 3% 13%;      /* #212322 ink */
 
-    --card: 30 10% 97%;
-    --card-foreground: 180 8% 12%;
+    --card: 0 9% 94%;              /* #F0EDED surface */
+    --card-foreground: 150 3% 13%;
 
-    --popover: 30 15% 98%;
-    --popover-foreground: 180 8% 12%;
+    --popover: 15 40% 98%;
+    --popover-foreground: 150 3% 13%;
 
-    /* Deep Forest Green - derived from Xen logo */
-    --primary: 158 32% 22%;
-    --primary-foreground: 30 15% 98%;
+    /* Deep forest green from the Figma palette */
+    --primary: 154 47% 10%;        /* #0E271C */
+    --primary-foreground: 15 40% 98%;
 
-    --secondary: 160 6% 93%;
-    --secondary-foreground: 180 8% 18%;
+    --secondary: 15 18% 96%;       /* #F6F3F2 surface-alt */
+    --secondary-foreground: 150 3% 13%;
 
-    --muted: 160 4% 91%;
-    --muted-foreground: 180 6% 42%;
+    --muted: 0 9% 94%;             /* surface */
+    --muted-foreground: 150 4% 40%;
 
-    --accent: 158 28% 28%;
-    --accent-foreground: 30 15% 98%;
+    --accent: 154 40% 16%;
+    --accent-foreground: 15 40% 98%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 160 6% 86%;
-    --input: 160 6% 86%;
-    --ring: 158 32% 22%;
+    --border: 150 6% 88%;
+    --input: 0 9% 94%;
+    --ring: 154 47% 10%;
 
-    --radius: 0.25rem;
+    --radius: 0.75rem;
 
-    /* Custom tokens */
-    --hero-overlay: 180 10% 8%;
-    --gold: 158 32% 26%;
-    --gold-muted: 158 15% 65%;
-    --cream: 30 12% 96%;
-    --charcoal: 180 10% 12%;
-    --warm-gray: 180 4% 52%;
+    /* Figma-exact custom tokens */
+    --surface: 0 9% 94%;           /* #F0EDED */
+    --surface-alt: 15 18% 96%;     /* #F6F3F2 */
+    --ink: 150 3% 13%;             /* #212322 */
+    --sage: 120 5% 77%;            /* #C2C8C2 — hero stat numerals */
+    --hero-overlay: 150 3% 13%;
 
     /* Sidebar */
-    --sidebar-background: 30 10% 97%;
-    --sidebar-foreground: 180 8% 22%;
-    --sidebar-primary: 158 32% 22%;
-    --sidebar-primary-foreground: 30 15% 98%;
-    --sidebar-accent: 160 6% 93%;
-    --sidebar-accent-foreground: 180 8% 18%;
-    --sidebar-border: 160 6% 86%;
-    --sidebar-ring: 158 32% 22%;
+    --sidebar-background: 15 18% 96%;
+    --sidebar-foreground: 150 3% 18%;
+    --sidebar-primary: 154 47% 10%;
+    --sidebar-primary-foreground: 15 40% 98%;
+    --sidebar-accent: 0 9% 94%;
+    --sidebar-accent-foreground: 150 3% 18%;
+    --sidebar-border: 150 6% 88%;
+    --sidebar-ring: 154 47% 10%;
   }
 
   .dark {
-    /* Dark Mode - Deep Charcoal */
-    --background: 180 12% 7%;
-    --foreground: 30 8% 94%;
+    /* Dark Mode — derived from the Figma's own ink/surface palette
+       (no dark frames were exported; the nav's moon toggle confirms
+       dark mode is intended, so the theme is built from the same tokens) */
+    --background: 150 3% 13%;      /* #212322 ink */
+    --foreground: 15 20% 94%;
 
-    --card: 180 10% 10%;
-    --card-foreground: 30 8% 94%;
+    --card: 150 4% 17%;
+    --card-foreground: 15 20% 94%;
 
-    --popover: 180 12% 9%;
-    --popover-foreground: 30 8% 94%;
+    --popover: 150 3% 13%;
+    --popover-foreground: 15 20% 94%;
 
-    /* Brighter green for dark mode visibility */
-    --primary: 158 38% 38%;
-    --primary-foreground: 180 12% 7%;
+    /* Brighter green for dark-mode contrast */
+    --primary: 153 43% 42%;        /* #3D9970 */
+    --primary-foreground: 150 3% 10%;
 
-    --secondary: 180 8% 16%;
-    --secondary-foreground: 30 6% 88%;
+    --secondary: 150 4% 20%;
+    --secondary-foreground: 15 20% 94%;
 
-    --muted: 180 6% 18%;
-    --muted-foreground: 30 4% 58%;
+    --muted: 150 4% 17%;
+    --muted-foreground: 150 3% 60%;
 
-    --accent: 158 32% 42%;
-    --accent-foreground: 180 12% 7%;
+    --accent: 154 48% 35%;
+    --accent-foreground: 15 20% 96%;
 
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 180 6% 20%;
-    --input: 180 6% 20%;
-    --ring: 158 38% 38%;
+    --border: 150 4% 24%;
+    --input: 150 4% 20%;
+    --ring: 153 43% 42%;
 
-    --hero-overlay: 180 15% 4%;
-    --gold: 158 40% 40%;
-    --gold-muted: 158 20% 32%;
-    --cream: 30 6% 88%;
-    --charcoal: 180 12% 7%;
-    --warm-gray: 30 3% 52%;
+    --surface: 150 4% 17%;
+    --surface-alt: 150 4% 20%;
+    --ink: 150 3% 13%;
+    --sage: 120 5% 77%;
+    --hero-overlay: 150 5% 6%;
 
-    --sidebar-background: 180 10% 9%;
-    --sidebar-foreground: 30 6% 88%;
-    --sidebar-primary: 158 38% 38%;
-    --sidebar-primary-foreground: 180 12% 7%;
-    --sidebar-accent: 180 8% 16%;
-    --sidebar-accent-foreground: 30 6% 88%;
-    --sidebar-border: 180 6% 20%;
-    --sidebar-ring: 158 38% 38%;
+    --sidebar-background: 150 4% 15%;
+    --sidebar-foreground: 15 20% 90%;
+    --sidebar-primary: 153 43% 42%;
+    --sidebar-primary-foreground: 150 3% 10%;
+    --sidebar-accent: 150 4% 20%;
+    --sidebar-accent-foreground: 15 20% 90%;
+    --sidebar-border: 150 4% 24%;
+    --sidebar-ring: 153 43% 42%;
   }
 }
 
@@ -118,11 +117,12 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Gruppo', sans-serif;
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'SOFT' 0, 'WONK' 1;
   }
 
   /* Admin panel is a functional data tool, not a marketing surface —
@@ -133,24 +133,25 @@
   .admin-shell h4,
   .admin-shell h5,
   .admin-shell h6 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-variation-settings: normal;
   }
 }
 
 @layer components {
   .heading-hero {
     @apply text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-medium tracking-tight leading-tight;
-    font-family: 'Gruppo', sans-serif;
+    font-family: 'Fraunces', serif;
   }
 
   .heading-section {
     @apply text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight;
-    font-family: 'Gruppo', sans-serif;
+    font-family: 'Fraunces', serif;
   }
 
   .heading-subsection {
     @apply text-2xl md:text-3xl font-semibold tracking-tight;
-    font-family: 'Gruppo', sans-serif;
+    font-family: 'Fraunces', serif;
   }
 
   .body-large {
@@ -162,16 +163,16 @@
   }
 
   .label-caps {
-    @apply text-xs uppercase tracking-[0.2em] font-medium text-muted-foreground;
+    @apply text-xs uppercase tracking-[0.2em] font-semibold text-muted-foreground;
   }
 
   /* Premium button styles - consistent sizing */
   .btn-primary {
-    @apply inline-flex items-center justify-center h-12 px-7 text-sm bg-primary text-primary-foreground font-medium tracking-wide transition-all duration-300 hover:bg-primary/90;
+    @apply inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm bg-primary text-primary-foreground font-medium tracking-wide transition-all duration-300 hover:bg-primary/90;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center h-12 px-7 text-sm border border-border font-medium tracking-wide transition-all duration-300 hover:bg-secondary hover:border-secondary;
+    @apply inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm border border-border font-medium tracking-wide transition-all duration-300 hover:bg-secondary hover:border-secondary;
   }
 
   .btn-ghost {
@@ -184,7 +185,7 @@
 
   /* Card styles */
   .card-premium {
-    @apply bg-card border border-border/50 shadow-sm transition-all duration-300 hover:shadow-md;
+    @apply bg-card border border-border/50 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md;
   }
 
   /* Tab styles */

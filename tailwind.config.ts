@@ -47,11 +47,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        gold: "hsl(var(--gold))",
-        "gold-muted": "hsl(var(--gold-muted))",
-        cream: "hsl(var(--cream))",
-        charcoal: "hsl(var(--charcoal))",
-        "warm-gray": "hsl(var(--warm-gray))",
+        surface: "hsl(var(--surface))",
+        "surface-alt": "hsl(var(--surface-alt))",
+        ink: "hsl(var(--ink))",
+        sage: "hsl(var(--sage))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -64,9 +63,9 @@ export default {
         },
       },
       fontFamily: {
-        serif: ["'Playfair Display'", "serif"],
-        sans: ["'Montserrat'", "sans-serif"],
-        gruppo: ["'Gruppo'", "sans-serif"],
+        serif: ["'Fraunces'", "serif"],
+        sans: ["'Plus Jakarta Sans'", "sans-serif"],
+        gruppo: ["'Fraunces'", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
