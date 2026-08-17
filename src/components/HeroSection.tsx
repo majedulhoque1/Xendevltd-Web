@@ -41,42 +41,44 @@ const HeroSection = ({ isDark }: HeroSectionProps) => {
 
       <div className="h-24 md:h-28 shrink-0" />
 
-      <div className="relative z-10 flex-1 flex flex-col justify-center container-wide py-10 md:py-16">
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: EASE }}
-          className="font-serif font-semibold text-white text-[2.75rem] leading-[1.08] sm:text-6xl md:text-7xl max-w-3xl"
-        >
-          Dhaka's Premium Addresses, Engineered for Generations
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
-          className="text-white/75 text-base md:text-lg leading-relaxed max-w-xl mt-6"
-        >
-          Built on a foundation of structural integrity and uncompromising trust. We create
-          enduring investment value through meticulous engineering and premium architectural
-          substance.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
-          className="flex flex-wrap gap-4 mt-8"
-        >
-          <Link to="/projects" className="btn-primary">
-            Explore Developments
-          </Link>
-          <Link
-            to="/contact"
-            className="inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm border border-white/60 text-white font-medium tracking-wide transition-all duration-300 hover:bg-white/10"
+      <div className="relative z-10 flex-1 flex flex-col justify-center container-wide w-full py-10 md:py-16">
+        <div className="lg:max-w-[760px] lg:pb-12">
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: EASE }}
+            className="font-serif font-semibold text-white text-[2.75rem] leading-[1.08] sm:text-6xl md:text-7xl max-w-3xl"
           >
-            Inquire Now
-          </Link>
-        </motion.div>
+            Dhaka's Premium Addresses, Engineered for Generations
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
+            className="text-white/75 text-base md:text-lg leading-relaxed max-w-xl mt-6"
+          >
+            Built on a foundation of structural integrity and uncompromising trust. We create
+            enduring investment value through meticulous engineering and premium architectural
+            substance.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
+            className="flex flex-wrap gap-4 mt-8"
+          >
+            <Link to="/projects" className="btn-primary">
+              Explore Developments
+            </Link>
+            <Link
+              to="/contact"
+              className="inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm border border-white/60 text-white font-medium tracking-wide transition-all duration-300 hover:bg-white/10"
+            >
+              Inquire Now
+            </Link>
+          </motion.div>
+        </div>
       </div>
 
       {/* Stats bar */}

@@ -88,8 +88,8 @@ const FeaturedProject = () => {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-10">
           {/* Left — image + thumbnail selector */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={VP}
             transition={{ duration: 0.7, ease: EASE }}
           >
@@ -129,8 +129,8 @@ const FeaturedProject = () => {
 
           {/* Right — dark tabbed panel */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={VP}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
             className="bg-ink text-white rounded-xl p-6 md:p-8 flex flex-col"
