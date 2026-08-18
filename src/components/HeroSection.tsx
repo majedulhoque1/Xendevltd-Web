@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import heroImageAsset from "@/assets/Xen_Tasmee_Hero.png";
-import heroImageDarkAsset from "@/assets/Xen_Tasmee_Hero_Dark.png";
+import heroImageDesktop from "@/assets/hero-lakeview-desktop.jpg";
+import heroImageMobile from "@/assets/hero-lakeview-mobile.jpg";
 import CountUp from "@/components/CountUp";
 
 interface HeroSectionProps {
@@ -18,24 +18,19 @@ const STATS = [
   { value: "100%", label: "On-time Delivery" },
 ];
 
-const HeroSection = ({ isDark }: HeroSectionProps) => {
+const HeroSection = ({}: HeroSectionProps) => {
   return (
     <section className="relative w-full min-h-[820px] flex flex-col overflow-hidden bg-ink">
-      {/* Background photo — day/night crossfade */}
+      {/* Background photo — Xen Lakeview Tasmee at dusk, mobile/desktop crops */}
       <div className="absolute inset-0">
-        <img
-          src={heroImageAsset}
-          alt="Xen Lakeview Tasmee at dusk"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms]"
-          style={{ opacity: isDark ? 0 : 1 }}
-        />
-        <img
-          src={heroImageDarkAsset}
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1200ms]"
-          style={{ opacity: isDark ? 1 : 0 }}
-        />
+        <picture>
+          <source media="(min-width: 768px)" srcSet={heroImageDesktop} />
+          <img
+            src={heroImageMobile}
+            alt="Xen Lakeview Tasmee at dusk"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
       </div>
 
