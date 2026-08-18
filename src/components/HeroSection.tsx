@@ -88,7 +88,7 @@ const HeroSection = ({ isDark }: HeroSectionProps) => {
         transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
         className="relative z-10 container-wide w-full pb-10 md:pb-14"
       >
-        <div className="rounded-sm border border-white/15 bg-black/30 backdrop-blur-sm p-6 grid grid-cols-1 gap-6 md:grid-cols-4 md:gap-6">
+        <div className="rounded-sm border border-white/15 bg-black/30 backdrop-blur-sm p-6 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
           {STATS.map((stat) => (
             <div key={stat.label} className="flex flex-col items-start text-left">
               <CountUp value={stat.value} className="font-serif text-4xl md:text-5xl text-[#CCE9D8] leading-none" />
