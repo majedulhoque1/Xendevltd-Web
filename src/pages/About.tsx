@@ -61,40 +61,42 @@ const About = () => {
       <main className="pt-28 md:pt-32">
         {/* Breadcrumb + hero */}
         <section className="container-wide">
-          <nav className="text-sm text-muted-foreground mb-8">
-            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-            <span className="mx-2">›</span>
-            <span className="text-foreground font-medium">About</span>
-          </nav>
+          <div className="max-w-[896px] flex flex-col gap-6">
+            <nav className="text-sm text-muted-foreground">
+              <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+              <span className="mx-2">›</span>
+              <span className="text-foreground font-medium">About</span>
+            </nav>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-            className="font-serif text-4xl sm:text-5xl md:text-6xl leading-[1.1] max-w-3xl"
-          >
-            Where Vision Meets Engineering.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
-            className="body-large max-w-2xl mt-6"
-          >
-            We build Dhaka's skyline on structural integrity, premium materials, and
-            lasting value.
-          </motion.p>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: EASE }}
+              className="font-serif text-4xl sm:text-5xl md:text-6xl leading-[1.1]"
+            >
+              Where Vision Meets Engineering.
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
+              className="body-large"
+            >
+              We build Dhaka's skyline on structural integrity, premium materials, and
+              lasting value.
+            </motion.p>
+          </div>
         </section>
 
-        {/* Foundation + Philosophy split */}
+        {/* Company Narrative — bento grid */}
         <section className="container-wide mt-14 md:mt-16">
-          <div className="grid lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={VP}
               transition={{ duration: 0.7, ease: EASE }}
-              className="relative rounded-xl border border-border overflow-hidden h-[280px] lg:h-[420px]"
+              className="relative rounded border border-border overflow-hidden aspect-[350/600] lg:aspect-[760/600] lg:col-span-8"
             >
               <img src={craneAsset} alt="Xen construction site" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
@@ -107,13 +109,13 @@ const About = () => {
               </div>
             </motion.div>
 
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 lg:col-span-4">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={VP}
                 transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-                className="border-l-2 border-primary bg-surface rounded-r-xl p-6 md:p-8"
+                className="border-l-2 border-primary bg-surface rounded p-6 md:p-8 aspect-[368/250] flex flex-col justify-center shrink-0"
               >
                 <h3 className="font-serif text-2xl mb-3">The Xen Philosophy</h3>
                 <p className="text-muted-foreground">
@@ -133,7 +135,7 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={VP}
                 transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
-                className="rounded-xl overflow-hidden h-[160px] md:h-[200px]"
+                className="rounded overflow-hidden aspect-[368/417.56] flex-1"
               >
                 <img src={facadeAsset} alt="Xen facade detail" className="w-full h-full object-cover" />
               </motion.div>
