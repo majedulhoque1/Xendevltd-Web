@@ -85,13 +85,14 @@ const FeaturedProject = () => {
           {project.name}
         </motion.h2>
 
-        <div className="grid lg:grid-cols-[2fr_1fr] rounded-sm border border-sage shadow-sm overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] rounded-sm border border-sage shadow-sm overflow-hidden">
           {/* Left — image + thumbnail selector */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={VP}
             transition={{ duration: 0.7, ease: EASE }}
+            className="min-w-0"
           >
             <div className="relative aspect-[3/2] overflow-hidden">
               <AnimatePresence mode="wait">
@@ -133,7 +134,7 @@ const FeaturedProject = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={VP}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-            className="bg-ink text-white p-6 md:p-8 flex flex-col"
+            className="min-w-0 bg-ink text-white p-6 md:p-8 flex flex-col"
           >
             <div className="flex gap-6 border-b border-white/10 overflow-x-auto">
               {TABS.map((tab) => (
@@ -165,7 +166,7 @@ const FeaturedProject = () => {
               </AnimatePresence>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 mb-6">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-5 mb-6">
               {specRows.map((row) => (
                 <div key={row.label}>
                   <p className="text-white/45 text-xs font-bold mb-1">{row.label}</p>
