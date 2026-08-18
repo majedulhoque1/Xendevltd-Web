@@ -94,13 +94,15 @@ const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={VP}
               transition={{ duration: 0.7, ease: EASE }}
-              className="rounded-xl border border-border overflow-hidden flex flex-col h-full"
+              className="relative rounded-xl border border-border overflow-hidden h-[280px] lg:h-[420px]"
             >
-              <img src={craneAsset} alt="Xen construction site" className="w-full flex-1 min-h-[220px] object-cover" />
-              <div className="p-6 md:p-8 shrink-0">
-                <h3 className="font-serif text-2xl mb-3">Our Foundation</h3>
-                <p className="text-muted-foreground">
-                  True luxury is built on structural permanence — not just finishes.
+              <img src={craneAsset} alt="Xen construction site" className="absolute inset-0 w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+              <div className="relative h-full flex flex-col justify-end p-6 md:p-8">
+                <h3 className="font-serif text-2xl mb-2 text-white">Our Foundation</h3>
+                <p className="text-white/70">
+                  Built on the premise that true luxury is derived from structural
+                  permanence and meticulous planning.
                 </p>
               </div>
             </motion.div>
@@ -115,10 +117,15 @@ const About = () => {
               >
                 <h3 className="font-serif text-2xl mb-3">The Xen Philosophy</h3>
                 <p className="text-muted-foreground">
-                  Xen bridges bold architectural vision with rigorous engineering. Every
-                  project is a long-term contribution to the city — planned meticulously,
-                  built with Grade A materials, and held to international codes, for
-                  generations of stability.
+                  Xen was founded to bridge the gap between ambitious architectural
+                  vision and rigorous engineering execution. We view every project not
+                  just as a development, but as a long-term contribution to the urban
+                  fabric.
+                </p>
+                <p className="text-muted-foreground mt-4">
+                  Our process prioritizes meticulous planning, sourcing only Grade A
+                  materials, and adhering strictly to international building codes to
+                  ensure generations of stability.
                 </p>
               </motion.div>
               <motion.div
@@ -126,7 +133,7 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={VP}
                 transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
-                className="rounded-xl overflow-hidden flex-1 min-h-[180px]"
+                className="rounded-xl overflow-hidden h-[160px] md:h-[200px]"
               >
                 <img src={facadeAsset} alt="Xen facade detail" className="w-full h-full object-cover" />
               </motion.div>
