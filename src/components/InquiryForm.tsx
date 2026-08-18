@@ -34,13 +34,15 @@ const InquiryForm = ({
 
   const fieldCls =
     variant === "boxed"
-      ? "w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all duration-300 placeholder:text-muted-foreground/70"
+      ? "w-full px-4 py-3 rounded bg-surface-alt border border-sage focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all duration-300 placeholder:text-muted-foreground/70"
       : "w-full px-0 py-3 bg-card/60 border-0 border-b-2 border-foreground/80 focus:border-primary outline-none transition-all duration-300 placeholder:text-muted-foreground/60";
 
   const labelCls =
     variant === "boxed"
       ? "block text-sm font-semibold mb-2"
       : "block text-sm font-semibold mb-2 font-serif";
+
+  const formSpacingCls = variant === "boxed" ? "space-y-6" : "space-y-5";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -110,7 +112,7 @@ const InquiryForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`space-y-5 ${className}`}>
+    <form onSubmit={handleSubmit} className={`${formSpacingCls} ${className}`}>
       <input
         type="text"
         tabIndex={-1}

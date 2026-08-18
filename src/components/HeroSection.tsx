@@ -47,7 +47,7 @@ const HeroSection = ({ isDark }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: EASE }}
-            className="font-serif font-semibold text-white text-[2.75rem] leading-[1.08] sm:text-6xl md:text-7xl max-w-3xl"
+            className="font-serif font-semibold text-white text-[2rem] leading-[1.2] sm:text-6xl sm:leading-[1.08] md:text-[4rem] md:leading-[1.1] max-w-3xl"
           >
             Dhaka's Premium Addresses, Engineered for Generations
           </motion.h1>
@@ -55,7 +55,7 @@ const HeroSection = ({ isDark }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
-            className="text-white/75 text-base md:text-lg leading-relaxed max-w-xl mt-6"
+            className="text-white/75 text-base md:text-lg leading-[1.8] md:leading-relaxed max-w-xl mt-6"
           >
             Built on a foundation of structural integrity and uncompromising trust. We create
             enduring investment value through meticulous engineering and premium architectural
@@ -66,14 +66,14 @@ const HeroSection = ({ isDark }: HeroSectionProps) => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
-            className="flex flex-wrap gap-4 mt-8"
+            className="flex flex-col items-start gap-4 mt-4 sm:flex-row sm:flex-wrap sm:items-center sm:mt-8"
           >
             <Link to="/projects" className="btn-primary">
               Explore Developments
             </Link>
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm border border-white/60 text-white font-medium tracking-wide transition-all duration-300 hover:bg-white/10"
+              className="inline-flex items-center justify-center h-12 px-8 rounded text-sm border border-white text-white font-semibold tracking-wide transition-all duration-300 hover:bg-white/10"
             >
               Inquire Now
             </Link>
@@ -86,12 +86,12 @@ const HeroSection = ({ isDark }: HeroSectionProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
-        className="relative z-10 container-wide pb-10 md:pb-14"
+        className="relative z-10 container-wide w-full pb-10 md:pb-14"
       >
-        <div className="rounded-sm border border-white/15 bg-black/30 backdrop-blur-sm p-6 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+        <div className="rounded-sm border border-white/15 bg-black/30 backdrop-blur-sm p-6 grid grid-cols-1 gap-6 md:grid-cols-4 md:gap-6">
           {STATS.map((stat) => (
             <div key={stat.label} className="flex flex-col items-start text-left">
-              <CountUp value={stat.value} className="font-serif text-4xl md:text-5xl text-sage leading-none" />
+              <CountUp value={stat.value} className="font-serif text-4xl md:text-5xl text-[#CCE9D8] leading-none" />
               <div className="text-xs md:text-sm text-white/70 mt-2">{stat.label}</div>
             </div>
           ))}

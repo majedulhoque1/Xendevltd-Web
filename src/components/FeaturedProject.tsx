@@ -20,7 +20,7 @@ const TABS = [
   { id: "about", label: "About", icon: Info },
   { id: "features", label: "Key Features", icon: CheckSquare },
   { id: "location", label: "Location", icon: MapPin },
-  { id: "floor", label: "Floor", icon: Layout },
+  { id: "floor", label: "Floor Plans", icon: Layout },
 ] as const;
 
 const project = getProjectBySlug("xen-lakeview-tasmee")!;
@@ -85,7 +85,7 @@ const FeaturedProject = () => {
           {project.name}
         </motion.h2>
 
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-10">
+        <div className="grid lg:grid-cols-[2fr_1fr] rounded-sm border border-sage shadow-sm overflow-hidden">
           {/* Left — image + thumbnail selector */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -93,7 +93,7 @@ const FeaturedProject = () => {
             viewport={VP}
             transition={{ duration: 0.7, ease: EASE }}
           >
-            <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
+            <div className="relative aspect-[3/2] overflow-hidden">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={selected}
@@ -106,17 +106,17 @@ const FeaturedProject = () => {
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               </AnimatePresence>
-              <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink/80 backdrop-blur-sm text-white text-xs font-medium">
+              <span className="absolute top-6 left-6 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink/80 backdrop-blur-sm text-white text-xs font-medium">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 RAJUK Approved
               </span>
             </div>
-            <div className="grid grid-cols-4 gap-2.5 mt-3">
+            <div className="grid grid-cols-4 gap-2 p-4 bg-surface-alt">
               {[...THUMBS, THUMBS[0]].map((thumb, i) => (
                 <button
                   key={i}
                   onClick={() => setSelected(i % THUMBS.length)}
-                  className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
+                  className={`relative aspect-[8/5] rounded overflow-hidden border-2 transition-colors ${
                     selected === i % THUMBS.length ? "border-primary" : "border-transparent opacity-70 hover:opacity-100"
                   }`}
                   aria-label={`View ${thumb.label}`}
@@ -133,7 +133,7 @@ const FeaturedProject = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={VP}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-            className="bg-ink text-white rounded-xl p-6 md:p-8 flex flex-col"
+            className="bg-ink text-white p-6 md:p-8 flex flex-col"
           >
             <div className="flex gap-6 border-b border-white/10 overflow-x-auto">
               {TABS.map((tab) => (
@@ -142,7 +142,7 @@ const FeaturedProject = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`pb-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
                     activeTab === tab.id
-                      ? "border-primary text-white"
+                      ? "border-[#CCE9D8] text-[#CCE9D8]"
                       : "border-transparent text-white/50 hover:text-white/80"
                   }`}
                 >
@@ -165,19 +165,28 @@ const FeaturedProject = () => {
               </AnimatePresence>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-6 gap-y-5 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 mb-6">
               {specRows.map((row) => (
                 <div key={row.label}>
-                  <p className="text-white/45 text-xs mb-1">{row.label}</p>
+                  <p className="text-white/45 text-xs font-bold mb-1">{row.label}</p>
                   <p className="font-medium">{row.value}</p>
                 </div>
               ))}
             </div>
 
-            <div className="border-t border-white/10 pt-6 mt-auto">
+            <div className="border-t border-white/10 pt-6 mt-auto flex flex-col gap-4">
+              <div>
+                <p className="text-white/45 text-xs font-bold mb-1.5">Starting From</p>
+                <p className="flex items-baseline gap-2">
+                  <span className="font-serif text-2xl text-[#CCE9D8]">
+                    ৳ {project.specs?.priceRange?.replace(/^From\s+/i, "").replace(/\s+BDT$/i, "") ?? "—"}
+                  </span>
+                  <span className="text-white/70 text-sm font-semibold">BDT</span>
+                </p>
+              </div>
               <Link
                 to={`/projects/${project.slug}`}
-                className="w-full inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm bg-primary text-primary-foreground font-medium tracking-wide hover:bg-primary/90 transition-colors"
+                className="w-full inline-flex items-center justify-center h-12 px-7 rounded text-sm bg-primary text-primary-foreground font-semibold tracking-wide hover:bg-primary/90 transition-colors"
               >
                 <Download className="mr-2 w-4 h-4" />
                 Download Brochure

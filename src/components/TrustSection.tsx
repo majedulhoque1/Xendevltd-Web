@@ -40,7 +40,7 @@ const TrustSection = () => (
             whileInView={{ opacity: 1 }}
             viewport={VP}
             transition={{ duration: 0.8, ease: EASE }}
-            className="label-caps mb-4 block"
+            className="label-caps mb-2 block"
           >
             Our Promise
           </motion.span>
@@ -49,7 +49,7 @@ const TrustSection = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={VP}
             transition={{ duration: 1.0, ease: EASE }}
-            className="heading-section mb-6"
+            className="heading-section mb-8"
           >
             Building Trust Through Structural Integrity
           </motion.h2>
@@ -65,7 +65,7 @@ const TrustSection = () => (
             well-being of our residents.
           </motion.p>
 
-          <ul className="space-y-6">
+          <ul className="space-y-4">
             {TRUST_POINTS.map((point, index) => (
               <motion.li
                 key={point.title}
@@ -86,7 +86,7 @@ const TrustSection = () => (
         </div>
 
         {/* Badge stack — single column on mobile, 2x2 from sm up */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-0 sm:grid-cols-2 sm:gap-4">
           {BADGES.map((badge, index) => (
             <motion.div
               key={badge.title}
@@ -94,11 +94,11 @@ const TrustSection = () => (
               whileInView={{ opacity: 1, y: 0 }}
               viewport={VP}
               transition={{ duration: 0.7, delay: index * 0.12, ease: EASE }}
-              className="bg-card border border-sage rounded-xl px-6 py-10 md:py-12 text-center flex flex-col items-center justify-center"
+              className="bg-card border border-sage rounded-sm px-6 py-6 sm:py-10 md:py-12 text-center flex flex-col items-center justify-center"
             >
               <badge.icon className="w-8 h-8 text-primary mb-4" strokeWidth={1.5} />
-              <p className="font-serif text-xl md:text-2xl font-semibold">{badge.title}</p>
-              <p className="text-sm text-muted-foreground mt-1">{badge.caption}</p>
+              <p className="font-serif text-2xl font-medium">{badge.title}</p>
+              <p className="text-sm text-muted-foreground mt-2">{badge.caption}</p>
             </motion.div>
           ))}
         </div>

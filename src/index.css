@@ -168,11 +168,11 @@
 
   /* Premium button styles - consistent sizing */
   .btn-primary {
-    @apply inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm bg-primary text-primary-foreground font-medium tracking-wide transition-all duration-300 hover:bg-primary/90;
+    @apply inline-flex items-center justify-center h-12 px-7 rounded text-sm bg-primary text-primary-foreground font-semibold tracking-wide transition-all duration-300 hover:bg-primary/90;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm border border-border font-medium tracking-wide transition-all duration-300 hover:bg-secondary hover:border-secondary;
+    @apply inline-flex items-center justify-center h-12 px-7 rounded text-sm border border-border font-semibold tracking-wide transition-all duration-300 hover:bg-secondary hover:border-secondary;
   }
 
   .btn-ghost {

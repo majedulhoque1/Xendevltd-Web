@@ -22,7 +22,7 @@ const ContactCallout = () => (
             whileInView={{ opacity: 1 }}
             viewport={VP}
             transition={{ duration: 0.8, ease: EASE }}
-            className="label-caps mb-4 block"
+            className="label-caps mb-2 block"
           >
             Connect With Us
           </motion.span>
@@ -31,7 +31,7 @@ const ContactCallout = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={VP}
             transition={{ duration: 1.0, ease: EASE }}
-            className="heading-section mb-6"
+            className="heading-section mb-4"
           >
             Start Your Journey Home
           </motion.h2>
@@ -40,22 +40,22 @@ const ContactCallout = () => (
             whileInView={{ opacity: 1 }}
             viewport={VP}
             transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
-            className="body-large mb-10"
+            className="body-large mb-12"
           >
             Whether you're looking for your dream residence or a prime commercial space, our
             team is ready to guide you through our portfolio.
           </motion.p>
 
-          <div className="space-y-4">
+          <div className="space-y-6">
             {CONTACT_ROWS.map((row, index) => {
               const content = (
                 <>
-                  <span className="flex items-center justify-center w-11 h-11 rounded-lg bg-card border border-border shrink-0">
+                  <span className="flex items-center justify-center w-11 h-11 rounded-lg bg-primary/10 shrink-0">
                     <row.icon className="w-5 h-5 text-primary" />
                   </span>
                   <div>
                     <p className="font-semibold text-sm">{row.label}</p>
-                    <p className="text-muted-foreground text-sm mt-0.5">{row.value}</p>
+                    <p className="text-muted-foreground text-base mt-0.5">{row.value}</p>
                   </div>
                 </>
               );
@@ -87,7 +87,7 @@ const ContactCallout = () => (
           whileInView={{ opacity: 1, y: 0 }}
           viewport={VP}
           transition={{ duration: 0.9, ease: EASE }}
-          className="bg-card border border-border rounded-2xl p-6 md:p-8"
+          className="bg-background border border-sage rounded-2xl p-8"
         >
           <InquiryForm variant="boxed" submitLabel="Send Inquiry" />
         </motion.div>

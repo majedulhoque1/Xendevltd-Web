@@ -18,18 +18,16 @@ const Footer = () => {
 
   return (
     <footer className="bg-ink text-white">
-      <div className="container-wide py-14 md:py-16">
+      <div className="container-wide py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)] gap-10 md:gap-8">
           {/* Brand */}
           <div className="min-w-0">
             <Link to="/" className="inline-flex items-center gap-3 mb-4">
-              <span className="flex items-center justify-center w-11 h-11 rounded-lg bg-[#FCF9F8] overflow-hidden shrink-0">
-                <img src={xenLogo} alt="" className="w-full h-full object-cover scale-125" />
+              <span className="flex items-center justify-center w-10 h-10 shrink-0">
+                <img src={xenLogo} alt="" className="w-full h-full object-contain" />
               </span>
-              <span className="font-serif text-xl text-white leading-tight">
-                Xen Developments
-                <br />
-                Ltd.
+              <span className="font-serif text-2xl text-white leading-tight">
+                Xen Developments Ltd.
               </span>
             </Link>
             <p className="text-white/50 text-sm">
@@ -39,11 +37,11 @@ const Footer = () => {
 
           {/* Properties */}
           <div className="min-w-0">
-            <h4 className="font-semibold text-white mb-4">Properties</h4>
+            <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-white mb-4">Properties</h4>
             <ul className="space-y-3">
               {PROPERTY_LINKS.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.to} className="text-white/60 hover:text-white transition-colors text-sm">
+                  <Link to={link.to} className="text-white/60 hover:text-white transition-colors text-base">
                     {link.label}
                   </Link>
                 </li>
@@ -53,11 +51,11 @@ const Footer = () => {
 
           {/* Corporate */}
           <div className="min-w-0">
-            <h4 className="font-semibold text-white mb-4">Corporate</h4>
+            <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-white mb-4">Corporate</h4>
             <ul className="space-y-3">
               {CORPORATE_LINKS.map((link) => (
                 <li key={link.label}>
-                  <Link to={link.to} className="text-white/60 hover:text-white transition-colors text-sm">
+                  <Link to={link.to} className="text-white/60 hover:text-white transition-colors text-base">
                     {link.label}
                   </Link>
                 </li>
