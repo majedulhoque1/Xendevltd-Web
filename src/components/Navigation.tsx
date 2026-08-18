@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Menu, X, Moon, Sun, Globe, Camera, Users } from "lucide-react";
+import { Menu, X, Moon, Sun, Facebook, Instagram, Linkedin } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import xenLogoMark from "@/assets/xen-logo-mark.png";
 
@@ -205,14 +205,20 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
           </div>
 
           <div className="flex items-center justify-center gap-5">
-            <a href="#" aria-label="Website" className="text-white/70 hover:text-white transition-colors">
-              <Globe className="w-5 h-5" />
+            <a
+              href="https://www.facebook.com/XenDevelopments"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="text-white/70 hover:text-white transition-colors"
+            >
+              <Facebook className="w-5 h-5" />
             </a>
             <a href="#" aria-label="Instagram" className="text-white/70 hover:text-white transition-colors">
-              <Camera className="w-5 h-5" />
+              <Instagram className="w-5 h-5" />
             </a>
-            <a href="#" aria-label="Community" className="text-white/70 hover:text-white transition-colors">
-              <Users className="w-5 h-5" />
+            <a href="#" aria-label="LinkedIn" className="text-white/70 hover:text-white transition-colors">
+              <Linkedin className="w-5 h-5" />
             </a>
           </div>
 
