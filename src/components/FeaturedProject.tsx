@@ -51,8 +51,8 @@ const FeaturedProject = () => {
     ),
     location: (
       <p className="text-white/70 leading-relaxed">
-        Located within {project.location}, this development enjoys a rare dual advantage —
-        open street access at the front and uninterrupted lake views at the rear.
+        Set within {project.location}, with open street access at the front and
+        uninterrupted lake views at the rear.
       </p>
     ),
     floor: (

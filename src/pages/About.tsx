@@ -25,25 +25,25 @@ const TENETS = [
     icon: Compass,
     title: "Structural Integrity",
     description:
-      "Adherence to strict BNBC Codes and international standards, ensuring buildings that withstand the test of time and elements.",
+      "Built to strict BNBC and international codes — engineered to withstand time and the elements.",
   },
   {
     icon: Gem,
     title: "Premium Materials",
     description:
-      "Sourcing only Grade A materials, from the foundation steel to the finishing tiles, prioritizing durability and aesthetic refinement.",
+      "Only Grade A materials, from foundation steel to finishing tiles — durable and refined.",
   },
   {
     icon: Clock,
     title: "On-Time Delivery",
     description:
-      "A transparent construction process and rigorous project management guarantee that timelines are commitments, not estimates.",
+      "A transparent process and rigorous management — timelines are commitments, not estimates.",
   },
   {
     icon: BadgeCheck,
     title: "Quality Assurance",
     description:
-      "Fully RAJUK approved projects undergoing multi-stage quality checks by independent engineering consultants.",
+      "RAJUK approved, and checked at every stage by independent engineers.",
   },
 ];
 
@@ -73,7 +73,7 @@ const About = () => {
             transition={{ duration: 0.7, ease: EASE }}
             className="font-serif text-4xl sm:text-5xl md:text-6xl leading-[1.1] max-w-3xl"
           >
-            Xen: The Fusion of Executive Vision &amp; Engineering Excellence.
+            Where Vision Meets Engineering.
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -81,8 +81,8 @@ const About = () => {
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
             className="body-large max-w-2xl mt-6"
           >
-            Dedicated to redefining Dhaka's skyline through uncompromising structural
-            integrity, premium materials, and a commitment to long-term architectural value.
+            We build Dhaka's skyline on structural integrity, premium materials, and
+            lasting value.
           </motion.p>
         </section>
 
@@ -100,8 +100,7 @@ const About = () => {
               <div className="p-6 md:p-8 shrink-0">
                 <h3 className="font-serif text-2xl mb-3">Our Foundation</h3>
                 <p className="text-muted-foreground">
-                  Built on the premise that true luxury is derived from structural
-                  permanence and meticulous planning.
+                  True luxury is built on structural permanence — not just finishes.
                 </p>
               </div>
             </motion.div>
@@ -116,11 +115,9 @@ const About = () => {
               >
                 <h3 className="font-serif text-2xl mb-3">The Xen Philosophy</h3>
                 <p className="text-muted-foreground">
-                  Xen was founded to bridge the gap between ambitious architectural vision
-                  and rigorous engineering execution. We view every project not just as a
-                  development, but as a long-term contribution to the urban fabric. Our
-                  process prioritizes meticulous planning, sourcing only Grade A materials,
-                  and adhering strictly to international building codes to ensure
+                  Xen bridges bold architectural vision with rigorous engineering. Every
+                  project is a long-term contribution to the city — planned meticulously,
+                  built with Grade A materials, and held to international codes, for
                   generations of stability.
                 </p>
               </motion.div>
@@ -206,8 +203,7 @@ const About = () => {
             <div>
               <h2 className="font-serif text-3xl md:text-4xl mb-3">Interested in a Project?</h2>
               <p className="text-white/60 max-w-md">
-                Discuss your requirements with our dedicated executive team to find the
-                perfect investment or residential space.
+                Talk to our team and find the right space for you.
               </p>
             </div>
             <div className="flex flex-wrap gap-4 shrink-0">

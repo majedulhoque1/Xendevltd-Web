@@ -48,7 +48,7 @@ const ProjectDetail = () => {
   const tabContent: Record<(typeof TABS)[number]["id"], string[]> = {
     about: project.vision ?? [project.description],
     location: [
-      `Located within ${project.location}, ${project.name} is positioned in one of the area's most sought-after residential zones.`,
+      `${project.name} sits within ${project.location} — one of the area's most sought-after residential zones.`,
     ],
     features:
       project.features.length > 0
@@ -134,9 +134,8 @@ const ProjectDetail = () => {
                     <h3 className="font-serif text-lg">{project.badge}</h3>
                   </div>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Strategically positioned to maximize open frontage, with residences
-                    enjoying uninterrupted views and a design that responds directly to the
-                    natural topography.
+                    Positioned for open frontage and uninterrupted views — a design
+                    that follows the land.
                   </p>
                 </div>
               )}

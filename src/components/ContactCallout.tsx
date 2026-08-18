@@ -42,8 +42,7 @@ const ContactCallout = () => (
             transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
             className="body-large mb-12"
           >
-            Whether you're looking for your dream residence or a prime commercial space, our
-            team is ready to guide you through our portfolio.
+            Looking for a home or a commercial space? Our team is ready to help you find it.
           </motion.p>
 
           <div className="space-y-6">

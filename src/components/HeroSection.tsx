@@ -44,7 +44,7 @@ const HeroSection = ({}: HeroSectionProps) => {
             transition={{ duration: 0.8, ease: EASE }}
             className="font-serif font-semibold text-white text-[2rem] leading-[1.2] sm:text-6xl sm:leading-[1.08] md:text-[4rem] md:leading-[1.1] max-w-3xl"
           >
-            Dhaka's Premium Addresses, Engineered for Generations
+            Dhaka's Finest Addresses, Built to Last Generations
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -52,9 +52,7 @@ const HeroSection = ({}: HeroSectionProps) => {
             transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
             className="text-white/75 text-base md:text-lg leading-[1.8] md:leading-relaxed max-w-xl mt-6"
           >
-            Built on a foundation of structural integrity and uncompromising trust. We create
-            enduring investment value through meticulous engineering and premium architectural
-            substance.
+            Structurally sound. Thoughtfully designed. Built on trust that lasts.
           </motion.p>
 
           <motion.div

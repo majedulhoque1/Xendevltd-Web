@@ -7,18 +7,18 @@ const VP = { once: true, margin: "0px 0px -50px 0px", amount: 0.15 } as const;
 const TRUST_POINTS = [
   {
     icon: CheckCircle,
-    title: "Uncompromising Structural Integrity",
-    description: "Engineered beyond standard codes for maximum earthquake resilience.",
+    title: "Structural Integrity",
+    description: "Engineered beyond code, for real earthquake resilience.",
   },
   {
     icon: Recycle,
-    title: "Sustainable & Green Design",
-    description: "Optimized for natural light, cross-ventilation, and energy efficiency.",
+    title: "Sustainable Design",
+    description: "Built for natural light, airflow, and energy efficiency.",
   },
   {
     icon: MapPin,
-    title: "Prime, Handpicked Locations",
-    description: "Strategically situated in Dhaka's most sought-after neighborhoods.",
+    title: "Prime Locations",
+    description: "Handpicked addresses in Dhaka's most desirable neighborhoods.",
   },
 ];
 
@@ -51,7 +51,7 @@ const TrustSection = () => (
             transition={{ duration: 1.0, ease: EASE }}
             className="heading-section mb-8"
           >
-            Building Trust Through Structural Integrity
+            Built on Trust. Engineered to Last.
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
@@ -60,9 +60,8 @@ const TrustSection = () => (
             transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
             className="body-large mb-8"
           >
-            We don't just build apartments; we engineer enduring homes. Every Xen Development
-            is a testament to our commitment to quality, sustainability, and the long-term
-            well-being of our residents.
+            We don't just build apartments — we engineer homes that endure. Every Xen
+            development stands for quality, sustainability, and the people who live in it.
           </motion.p>
 
           <ul className="space-y-4">

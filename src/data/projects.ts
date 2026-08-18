@@ -49,7 +49,7 @@ export const PROJECTS: Project[] = [
     location: "Jolshiri Abashon, Dhaka",
     badge: "Lakeview Project",
     description:
-      "Xen Lakeview Tasmee represents the pinnacle of modern living in Dhaka. This exclusive development combines the tranquility of lakeside living with contemporary architectural design. Each residence is thoughtfully crafted to maximize natural light and ventilation while offering stunning views of the surrounding landscape.",
+      "Xen Lakeview Tasmee brings lakeside calm to modern Dhaka living. Every residence is designed for natural light and airflow, with sweeping views of the water beyond.",
     features: ["Lake View", "Dual Aspect Design", "Premium Finishes"],
     expectedCompletion: "Q4 2026",
     image: xenLakeviewTasmeeAsset,
@@ -61,8 +61,8 @@ export const PROJECTS: Project[] = [
       completion: "Q4 2026",
     },
     vision: [
-      "Xen Lakeview Tasmee represents a paradigm shift in residential development within Jolshiri Abashon. The structural integrity is expressed through a rigid geometric framework, juxtaposed with the fluidity of the adjacent lake. By employing a tactile material palette of fair-faced concrete, warm timber accents, and extensive high-performance glazing, the building establishes a profound connection between the built environment and its natural context.",
-      "Our design prioritizes high information density in spatial planning, ensuring every square foot is optimized for modern luxury living while maintaining a rigorous adherence to structural permanence.",
+      "Xen Lakeview Tasmee is designed around its setting — clean geometric lines in fair-faced concrete and warm timber, framed by expansive glazing that opens each home to the lake.",
+      "Every square foot is planned with intent, balancing modern luxury with structural permanence built to last.",
     ],
   },
   {
@@ -85,7 +85,7 @@ export const PROJECTS: Project[] = [
     location: "Block B, Rd 18, Plot 21, Banani, Dhaka",
     badge: null,
     description:
-      "An upcoming residential project in a prime Banani location, featuring modern architectural design.",
+      "An upcoming residential development in prime Banani, with modern architectural design.",
     features: ["Prime Location", "Modern Design"],
     expectedCompletion: "TBD",
     image: upcomingBananiAsset,
@@ -110,7 +110,7 @@ export const PROJECTS: Project[] = [
     location: "Chittagong DOHS",
     badge: null,
     description:
-      "A successfully completed residential project showcasing our commitment to quality construction and timely delivery.",
+      "A completed residential project, built on quality and delivered on time.",
     features: ["Quality Construction", "Timely Delivery", "Premium Location"],
     expectedCompletion: "Completed",
     image: xenOrionAsset,
@@ -123,7 +123,7 @@ export const PROJECTS: Project[] = [
     location: "Chittagong DOHS",
     badge: null,
     description:
-      "A masterplanned commercial hub integrating green spaces with modern corporate design.",
+      "A commercial hub blending green space with modern corporate design.",
     features: ["Quality Construction", "Timely Delivery", "Premium Location"],
     expectedCompletion: "Completed",
     image: xenAndromedaAsset,
@@ -136,7 +136,7 @@ export const PROJECTS: Project[] = [
     location: "Chittagong DOHS",
     badge: null,
     description:
-      "A successfully completed residential project showcasing our commitment to quality construction and timely delivery.",
+      "A completed residential project, built on quality and delivered on time.",
     features: ["Quality Construction", "Timely Delivery", "Premium Location"],
     expectedCompletion: "Completed",
     image: xenPegasusAsset,
@@ -149,7 +149,7 @@ export const PROJECTS: Project[] = [
     location: "Chittagong DOHS",
     badge: null,
     description:
-      "Luxury condominiums offering unparalleled city views and state-of-the-art amenities.",
+      "Luxury condominiums with sweeping city views and modern amenities.",
     features: ["Quality Construction", "Timely Delivery", "Premium Location"],
     expectedCompletion: "Completed",
     image: xenNirvanaAsset,

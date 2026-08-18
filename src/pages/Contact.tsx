@@ -51,8 +51,7 @@ const Contact = () => {
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
             className="body-large max-w-xl mt-5"
           >
-            Connect with our executive team to discuss your next architectural investment or
-            bespoke real estate requirement.
+            Have a project in mind? Let's talk.
           </motion.p>
 
           <div className="grid lg:grid-cols-2 gap-6 mt-12">

@@ -60,9 +60,8 @@ const Projects = () => {
             transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
             className="body-large max-w-2xl mt-5"
           >
-            Delivering architectural excellence through meticulous planning and visionary
-            design. Explore our portfolio of ongoing developments, upcoming ventures, and
-            completed legacies.
+            Ongoing developments, upcoming ventures, completed legacies — explore the
+            full portfolio.
           </motion.p>
 
           <div className="grid md:grid-cols-3 gap-6 md:gap-8 mt-14">
