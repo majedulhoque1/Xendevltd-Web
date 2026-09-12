@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ShieldCheck, Info, MapPin, CheckSquare, Layout, Download, Maximize2 } from "lucide-react";
+import { Waves, Info, MapPin, CheckSquare, Layout, Download, Maximize2 } from "lucide-react";
 import { getProjectBySlug } from "@/data/projects";
 import FramedImage from "@/components/ui/FramedImage";
 import Lightbox, { useLightbox } from "@/components/ui/Lightbox";
@@ -123,8 +123,8 @@ const FeaturedProject = () => {
                 </motion.div>
               </AnimatePresence>
               <span className="absolute top-4 left-4 sm:top-6 sm:left-6 inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-ink/80 backdrop-blur-sm text-white text-[11px] sm:text-xs font-medium">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                Cantonment Board Approved
+                <Waves className="w-3.5 h-3.5" />
+                200 ft Lake Frontage
               </span>
               <button
                 type="button"

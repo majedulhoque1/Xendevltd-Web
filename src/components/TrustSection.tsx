@@ -1,4 +1,4 @@
-import { CheckCircle, Recycle, MapPin, Building2, Ruler, ShieldCheck, HeartHandshake } from "lucide-react";
+import { CheckCircle, Recycle, MapPin, FlaskConical, Ruler, ShieldCheck, Package } from "lucide-react";
 import { motion } from "framer-motion";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
@@ -8,12 +8,14 @@ const TRUST_POINTS = [
   {
     icon: CheckCircle,
     title: "Structural Integrity",
-    description: "Engineered beyond code, for real earthquake resilience.",
+    description:
+      "An RCC shear wall runs foundation to lift-core roof — resisting story drift and sway, not just carrying load.",
   },
   {
     icon: Recycle,
-    title: "Sustainable Design",
-    description: "Built for natural light, airflow, and energy efficiency.",
+    title: "Designed for the Climate",
+    description:
+      "Seven balconies per residence, cross-ventilation on both faces, and a heat-proofed top-floor roof.",
   },
   {
     icon: MapPin,
@@ -22,11 +24,16 @@ const TRUST_POINTS = [
   },
 ];
 
+// Code compliance and site approvals are the legal floor, not a selling point —
+// they're stated once as the baseline line under this grid. These four are
+// things most Dhaka developers can't claim, and each is verifiable: HBRI lab
+// testing and BUET engineers come from the brochure, the material brands are
+// named in its specification, and REHAB membership is a trade-body credential.
 const BADGES = [
-  { icon: Building2, title: "BNBC Code", caption: "Strictly Adhered" },
-  { icon: Ruler, title: "Grade A", caption: "Materials Used" },
-  { icon: ShieldCheck, title: "Cantonment Board", caption: "Approved Plans" },
-  { icon: HeartHandshake, title: "Transparent", caption: "Handover Process" },
+  { icon: FlaskConical, title: "HBRI-Tested", caption: "Concrete & steel sampled" },
+  { icon: Ruler, title: "BUET Engineers", caption: "Drawings & supervision" },
+  { icon: Package, title: "Named Brands", caption: "KSRM · Seven Rings · TOTO" },
+  { icon: ShieldCheck, title: "REHAB Member", caption: "Registered developer" },
 ];
 
 const TrustSection = () => (
@@ -60,8 +67,9 @@ const TrustSection = () => (
             transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
             className="body-large mb-8"
           >
-            We don't just build apartments — we engineer homes that endure. Every Xen
-            development stands for quality, sustainability, and the people who live in it.
+            Every developer promises quality. We'd rather hand you the receipts —
+            independent lab tests, the actual brand on every major material, and
+            engineers whose drawings you can check.
           </motion.p>
 
           <ul className="space-y-4">
@@ -96,10 +104,20 @@ const TrustSection = () => (
               className="bg-card border border-sage rounded-sm px-6 py-6 sm:py-10 md:py-12 text-center flex flex-col items-center justify-center -mt-px first:mt-0 sm:mt-0"
             >
               <badge.icon className="w-8 h-8 text-primary mb-4" strokeWidth={1.5} />
-              <p className="font-serif text-2xl font-medium">{badge.title}</p>
+              <p className="font-serif text-xl sm:text-2xl font-medium">{badge.title}</p>
               <p className="text-sm text-muted-foreground mt-2">{badge.caption}</p>
             </motion.div>
           ))}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={VP}
+            transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
+            className="sm:col-span-2 text-xs text-muted-foreground text-center mt-5 leading-relaxed"
+          >
+            BNBC 2020 structural design · Cantonment Board approved plans — the baseline
+            every Xen build starts from.
+          </motion.p>
         </div>
       </div>
     </div>

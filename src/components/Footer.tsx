@@ -31,7 +31,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="text-white/50 text-sm">
-              © {currentYear} Xen Developments. Cantonment Board Approved.
+              © {currentYear} Xen Developments Ltd. · REHAB member
             </p>
           </div>
 

@@ -29,25 +29,25 @@ const TENETS = [
     icon: Compass,
     title: "Structural Integrity",
     description:
-      "Built to strict BNBC and international codes — engineered to withstand time and the elements.",
+      "An RCC shear wall from foundation to the top of the lift core — stiffness against story drift and lateral wind, not frame strength alone.",
   },
   {
     icon: Gem,
-    title: "Premium Materials",
+    title: "Materials You Can Check",
     description:
-      "Only Grade A materials, from foundation steel to finishing tiles — durable and refined.",
+      "Grade-72 KSRM rebar, Seven Rings cement, Hatil doors, TOTO fittings — named brands, not a grade we award ourselves.",
   },
   {
     icon: Clock,
     title: "On-Time Delivery",
     description:
-      "A transparent process and rigorous management — timelines are commitments, not estimates.",
+      "Every project in our completed portfolio was handed over as promised — timelines are commitments, not estimates.",
   },
   {
     icon: BadgeCheck,
-    title: "Quality Assurance",
+    title: "Independently Tested",
     description:
-      "Cantonment Board approved, and checked at every stage by independent engineers.",
+      "Concrete and steel samples tested at HBRI, site work supervised by HBRI-trained managers, structural drawings by BUET engineers.",
   },
 ];
 
@@ -129,9 +129,9 @@ const About = () => {
                   fabric.
                 </p>
                 <p className="text-muted-foreground mt-4">
-                  Our process prioritizes meticulous planning, sourcing only Grade A
-                  materials, and adhering strictly to international building codes to
-                  ensure generations of stability.
+                  Our process prioritizes meticulous planning, materials sampled and
+                  tested at HBRI rather than taken on a supplier's word, and structural
+                  drawings from BUET engineers — so stability outlasts the sales pitch.
                 </p>
               </motion.div>
               <motion.div
