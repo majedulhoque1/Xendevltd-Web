@@ -35,6 +35,7 @@ const FeaturedProject = () => {
   const gallery = project.gallery ?? [project.image];
   const thumbs = gallery.map((src, i) => ({ src, label: THUMB_LABELS[i] ?? project.name }));
   const galleryImages = gallery.map((src, i) => ({ src, alt: thumbs[i].label }));
+  const floorPlanImages = (project.floorPlans ?? []).map((fp) => ({ src: fp.image, alt: fp.label }));
 
   const specRows = [
     { label: "Status", value: project.status },
@@ -196,6 +197,22 @@ const FeaturedProject = () => {
                 </div>
               ))}
             </div>
+
+            {activeTab === "floor" && project.floorPlans && project.floorPlans.length > 0 && (
+              <div className="grid grid-cols-2 gap-3 mb-6">
+                {project.floorPlans.map((fp, i) => (
+                  <button
+                    key={fp.label}
+                    type="button"
+                    onClick={(e) => lightbox.open(floorPlanImages, i, e.currentTarget)}
+                    aria-label={`View ${fp.label} full screen`}
+                    className="block text-left rounded overflow-hidden bg-white border border-white/10 cursor-zoom-in"
+                  >
+                    <img src={fp.image} alt={fp.label} className="w-full block" />
+                  </button>
+                ))}
+              </div>
+            )}
 
             <div className="border-t border-white/10 pt-6 mt-auto flex flex-col gap-4">
               <div>
