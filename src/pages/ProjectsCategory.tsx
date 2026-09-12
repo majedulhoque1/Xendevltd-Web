@@ -107,38 +107,38 @@ const ProjectsCategory = ({ status }: ProjectsCategoryProps) => {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.08, ease: EASE }}
-                  className="rounded-xl overflow-hidden border border-border group"
+                  className="rounded-xl overflow-hidden border border-border hover:border-primary/50 transition-colors group"
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <FramedImage src={project.image} alt={project.name} />
-                    <span className="absolute top-4 left-4 inline-flex items-center px-3 py-1 text-[11px] uppercase tracking-wider font-semibold rounded-full bg-primary text-primary-foreground">
-                      {status}
-                    </span>
-                  </div>
-                  <div className="bg-ink text-white p-6">
-                    <Link to={`/projects/${project.slug}`}>
-                      <h3 className="font-serif text-xl mb-3 hover:text-primary/90 transition-colors">
+                  {/* One link around the whole card — the title and "View Details"
+                      used to be the only hit targets, leaving most of the card dead. */}
+                  <Link to={`/projects/${project.slug}`} className="block h-full">
+                    <div className="relative aspect-[4/3] overflow-hidden">
+                      <FramedImage src={project.image} alt={project.name} />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors" />
+                      <span className="absolute top-4 left-4 inline-flex items-center px-3 py-1 text-[11px] uppercase tracking-wider font-semibold rounded-full bg-primary text-primary-foreground">
+                        {status}
+                      </span>
+                    </div>
+                    <div className="bg-ink text-white p-6">
+                      <h3 className="font-serif text-xl mb-3 group-hover:text-[#CCE9D8] transition-colors">
                         {project.name}
                       </h3>
-                    </Link>
-                    <div className="flex items-center gap-2 text-white/60 text-sm mb-1.5">
-                      <MapPin className="w-3.5 h-3.5 shrink-0" />
-                      {project.location}
+                      <div className="flex items-center gap-2 text-white/60 text-sm mb-1.5">
+                        <MapPin className="w-3.5 h-3.5 shrink-0" />
+                        {project.location}
+                      </div>
+                      <div className="flex items-center gap-2 text-white/60 text-sm">
+                        <CalendarDays className="w-3.5 h-3.5 shrink-0" />
+                        Expected {project.expectedCompletion}
+                      </div>
+                      <div className="border-t border-white/10 mt-5 pt-5">
+                        <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] font-semibold text-white/80 group-hover:text-white transition-colors">
+                          View Details
+                          <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 text-white/60 text-sm">
-                      <CalendarDays className="w-3.5 h-3.5 shrink-0" />
-                      Expected {project.expectedCompletion}
-                    </div>
-                    <div className="border-t border-white/10 mt-5 pt-5">
-                      <Link
-                        to={`/projects/${project.slug}`}
-                        className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.15em] font-semibold text-white/80 hover:text-white transition-colors"
-                      >
-                        View Details
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </Link>
-                    </div>
-                  </div>
+                  </Link>
                 </motion.div>
               ))}
             </div>
