@@ -25,7 +25,7 @@ const STATS = [
 
 const HeroSection = (_props: HeroSectionProps) => {
   return (
-    <section className="relative w-full min-h-[820px] flex flex-col overflow-hidden bg-ink">
+    <section className="relative w-full min-h-[640px] md:min-h-[820px] flex flex-col overflow-hidden bg-ink">
       {/* Background photo — Xen Lakeview Tasmee at dusk, mobile/desktop crops */}
       <div className="absolute inset-0">
         <Img

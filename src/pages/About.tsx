@@ -159,7 +159,7 @@ const About = () => {
                 transition={{ duration: 0.6, delay: index * 0.1, ease: EASE }}
               >
                 <CountUp value={stat.value} className="font-serif text-4xl md:text-5xl text-sage leading-none" />
-                <p className="text-white/60 text-xs uppercase tracking-[0.15em] mt-3">{stat.label}</p>
+                <p className="text-white/60 text-xs uppercase tracking-normal sm:tracking-[0.15em] mt-3">{stat.label}</p>
               </motion.div>
             ))}
           </div>

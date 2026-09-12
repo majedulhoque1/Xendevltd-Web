@@ -83,7 +83,7 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
           <div className="grid grid-cols-3 items-center w-full lg:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="justify-self-start p-1 text-white/90 hover:text-white transition-colors"
+              className="justify-self-start -ml-2 p-2.5 text-white/90 hover:text-white transition-colors"
               aria-label="Open menu"
             >
               <Menu className="w-6 h-6" />
@@ -95,7 +95,7 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
 
             <button
               onClick={onThemeToggle}
-              className="justify-self-end p-1 text-white/80 hover:text-white transition-colors"
+              className="justify-self-end -mr-2 p-2.5 text-white/80 hover:text-white transition-colors"
               aria-label="Toggle dark mode"
             >
               {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -140,7 +140,7 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
 
       {/* Full-screen mobile menu overlay */}
       <div
-        className={`fixed inset-0 z-[60] bg-ink transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 z-[60] overflow-y-auto overscroll-contain pb-12 bg-ink transition-opacity duration-300 lg:hidden ${
           isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >

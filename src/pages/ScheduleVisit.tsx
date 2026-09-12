@@ -222,7 +222,7 @@ const ScheduleVisit = () => {
             <div className="card-premium p-4 sm:p-6">
               {message && <p className="mb-4 text-sm text-destructive">{message}</p>}
               <div className="grid gap-6 md:grid-cols-[auto_1fr]">
-                <div className="flex justify-center md:border-r md:border-border md:pr-6">
+                <div className="flex justify-center max-w-full overflow-x-auto md:border-r md:border-border md:pr-6">
                   <Calendar
                     mode="single"
                     selected={selectedDay}
@@ -255,7 +255,7 @@ const ScheduleVisit = () => {
                           key={t}
                           type="button"
                           onClick={() => chooseTime(t)}
-                          className="rounded-lg border border-primary/40 bg-background px-3 py-2.5 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground transition"
+                          className="min-h-11 rounded-lg border border-primary/40 bg-background px-3 py-2.5 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground transition"
                         >
                           {fmtTime(t)}
                         </button>

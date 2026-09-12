@@ -122,7 +122,7 @@ const FeaturedProject = () => {
                   <FramedImage src={thumbs[selected].src} alt={thumbs[selected].label} priority />
                 </motion.div>
               </AnimatePresence>
-              <span className="absolute top-6 left-6 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink/80 backdrop-blur-sm text-white text-xs font-medium">
+              <span className="absolute top-4 left-4 sm:top-6 sm:left-6 inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-ink/80 backdrop-blur-sm text-white text-[11px] sm:text-xs font-medium">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 Cantonment Board Approved
               </span>
@@ -130,7 +130,7 @@ const FeaturedProject = () => {
                 type="button"
                 onClick={(e) => lightbox.open(galleryImages, selected, e.currentTarget)}
                 aria-label={`View ${thumbs[selected].label} full screen`}
-                className="absolute top-6 right-6 z-10 p-2.5 rounded-full bg-ink/60 backdrop-blur-sm text-white hover:bg-ink/80 transition-colors"
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 p-2.5 rounded-full bg-ink/60 backdrop-blur-sm text-white hover:bg-ink/80 transition-colors"
               >
                 <Maximize2 className="w-4 h-4" />
               </button>
@@ -157,14 +157,14 @@ const FeaturedProject = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={VP}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-            className="min-w-0 bg-ink text-white p-6 md:p-8 flex flex-col"
+            className="min-w-0 bg-ink text-white p-5 sm:p-6 md:p-8 flex flex-col"
           >
-            <div className="flex gap-6 border-b border-white/10 overflow-x-auto">
+            <div className="flex justify-between gap-1.5 sm:gap-6 border-b border-white/10 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {TABS.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`pb-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
+                  className={`pb-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
                     activeTab === tab.id
                       ? "border-[#CCE9D8] text-[#CCE9D8]"
                       : "border-transparent text-white/50 hover:text-white/80"
@@ -189,7 +189,7 @@ const FeaturedProject = () => {
               </AnimatePresence>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-6 gap-y-5 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 sm:gap-y-5 mb-6">
               {specRows.map((row) => (
                 <div key={row.label}>
                   <p className="text-white/45 text-xs font-bold mb-1">{row.label}</p>
@@ -199,18 +199,21 @@ const FeaturedProject = () => {
             </div>
 
             {activeTab === "floor" && project.floorPlans && project.floorPlans.length > 0 && (
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                {project.floorPlans.map((fp, i) => (
-                  <button
-                    key={fp.label}
-                    type="button"
-                    onClick={(e) => lightbox.open(floorPlanImages, i, e.currentTarget)}
-                    aria-label={`View ${fp.label} full screen`}
-                    className="block text-left rounded overflow-hidden bg-white border border-white/10 cursor-zoom-in"
-                  >
-                    <img src={fp.image} alt={fp.label} className="w-full block" />
-                  </button>
-                ))}
+              <div className="mb-6">
+                <p className="text-white/45 text-xs font-bold mb-2">Floor Plans — tap to enlarge</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {project.floorPlans.map((fp, i) => (
+                    <button
+                      key={fp.label}
+                      type="button"
+                      onClick={(e) => lightbox.open(floorPlanImages, i, e.currentTarget)}
+                      aria-label={`View ${fp.label} full screen`}
+                      className="block text-left rounded overflow-hidden bg-white border border-white/10 cursor-zoom-in"
+                    >
+                      <img src={fp.image} alt={fp.label} className="w-full block" />
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 

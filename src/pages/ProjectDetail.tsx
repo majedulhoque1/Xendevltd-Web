@@ -10,7 +10,6 @@ import {
   CheckSquare,
   Layout,
   Waves,
-  Box,
   Maximize2,
 } from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -38,10 +37,6 @@ const ProjectDetail = () => {
   const lightbox = useLightbox();
 
   const project = slug ? getProjectBySlug(slug) : undefined;
-  // Only this unit has a walkthrough build today. Keyed off the slug rather
-  // than a project-data field so adding the next one is a one-line change
-  // here, not a schema migration.
-  const hasWalkthrough = slug === "xen-lakeview-tasmee";
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -97,7 +92,7 @@ const ProjectDetail = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, ease: EASE }}
-            className="relative rounded-2xl overflow-hidden min-h-[460px] sm:min-h-0 sm:aspect-[16/10]"
+            className="relative rounded-2xl overflow-hidden min-h-[520px] sm:min-h-0 sm:aspect-[16/10]"
           >
             <FramedImage src={project.image} alt={project.name} priority />
             <button
@@ -108,7 +103,7 @@ const ProjectDetail = () => {
             >
               <Maximize2 className="w-4 h-4" />
             </button>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10 sm:from-black/80 sm:via-black/10 sm:to-transparent" />
             <div className="absolute inset-0 p-6 md:p-10 flex flex-col justify-end">
               <span className="inline-flex w-fit items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-wider mb-4">
                 {project.status}
@@ -121,22 +116,13 @@ const ProjectDetail = () => {
                     {project.location}
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-3 shrink-0">
-                  {hasWalkthrough && (
-                    <Link
-                      to="/walkthrough"
-                      className="inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm bg-[#CCE9D8] text-ink font-semibold hover:bg-[#CCE9D8]/90 transition-colors"
-                    >
-                      <Box className="mr-2 w-4 h-4" />
-                      Walk Through in 3D
-                    </Link>
-                  )}
-                  <Link to="/schedule-visit" className="btn-primary">
+                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 shrink-0 w-full sm:w-auto">
+                  <Link to="/schedule-visit" className="btn-primary w-full sm:w-auto">
                     Schedule a Visit
                   </Link>
                   <Link
                     to="/contact"
-                    className="inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm border border-white/60 text-white font-medium hover:bg-white/10 transition-colors"
+                    className="inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm border border-white/60 text-white font-medium hover:bg-white/10 transition-colors w-full sm:w-auto"
                   >
                     Download Brochure
                   </Link>
@@ -181,18 +167,18 @@ const ProjectDetail = () => {
 
             {/* Right — tabs + content */}
             <div className="min-w-0">
-              <div className="flex gap-6 border-b border-border overflow-x-auto">
+              <div className="flex justify-between sm:justify-start gap-1.5 sm:gap-6 border-b border-border overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {TABS.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`pb-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors flex items-center gap-2 ${
+                    className={`pb-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 transition-colors flex items-center gap-2 ${
                       activeTab === tab.id
                         ? "border-primary text-foreground"
                         : "border-transparent text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    <tab.icon className="w-4 h-4" />
+                    <tab.icon className="w-4 h-4 hidden sm:block" />
                     {tab.label}
                   </button>
                 ))}
@@ -244,34 +230,8 @@ const ProjectDetail = () => {
                 </AnimatePresence>
               </div>
 
-              {hasWalkthrough && (
-                <div className="mb-12">
-                  <h2 className="font-serif text-2xl md:text-3xl mb-6">Walk It Yourself</h2>
-                  {/* A recorded video tour was never produced (no file ships under
-                      public/videos/) — this links straight into the real,
-                      already-built interactive 3D walkthrough instead of a
-                      "play" button on a video that doesn't exist. */}
-                  <Link
-                    to="/walkthrough"
-                    aria-label="Launch the interactive 3D walkthrough"
-                    className="relative block aspect-video rounded-xl overflow-hidden bg-ink group"
-                  >
-                    <FramedImage src={project.image} alt="" />
-                    <div className="absolute inset-0 bg-black/25 group-hover:bg-black/35 transition-colors" />
-                    <span className="absolute inset-0 flex items-center justify-center">
-                      <span className="flex items-center justify-center w-16 h-16 rounded-full bg-[#CCE9D8] group-hover:scale-105 transition-transform">
-                        <Box className="w-6 h-6 text-ink" />
-                      </span>
-                    </span>
-                    <span className="absolute bottom-4 left-4 text-white text-sm font-medium">
-                      Launch 3D Walkthrough — move around every room yourself
-                    </span>
-                  </Link>
-                </div>
-              )}
-
               <h2 className="font-serif text-2xl md:text-3xl mb-6">Gallery</h2>
-              <div className="columns-2 gap-4 [column-fill:_balance]">
+              <div className="columns-1 sm:columns-2 gap-4 [column-fill:_balance]">
                 {gallery.map((img, i) => (
                   <button
                     key={i}

@@ -141,7 +141,7 @@ const ChatBotButton = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed bottom-24 right-6 z-50 w-80 overflow-hidden rounded-2xl bg-background shadow-2xl border border-border md:w-96"
+            className="fixed bottom-24 left-4 right-4 z-50 w-auto overflow-hidden rounded-2xl bg-background shadow-2xl border border-border sm:left-auto sm:right-6 sm:w-80 md:w-96"
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -168,7 +168,7 @@ const ChatBotButton = () => {
             </div>
 
             {/* Chat Body */}
-            <div className="h-72 overflow-y-auto bg-muted/30 p-4 space-y-4">
+            <div className="h-[min(60vh,18rem)] overflow-y-auto bg-muted/30 p-4 space-y-4">
               {messages.map((msg, index) => (
                 <div
                   key={index}
@@ -232,10 +232,10 @@ const ChatBotButton = () => {
         {showBackToTop && !isOpen && (
           <motion.button
             onClick={scrollToTop}
-            className={`fixed bottom-24 right-7 z-50 flex items-center justify-center transition-colors duration-300 md:bottom-[6.5rem] md:right-8 ${
-              isAtBottom 
-                ? "text-background/60 hover:text-background/90" 
-                : "text-foreground/40 hover:text-foreground/70"
+            className={`fixed bottom-[7.5rem] right-6 z-50 flex items-center justify-center rounded-full p-2.5 backdrop-blur-sm transition-colors duration-300 md:bottom-[8.5rem] md:right-8 ${
+              isAtBottom
+                ? "bg-foreground/10 text-background/80 hover:text-background"
+                : "bg-foreground/5 text-foreground/60 hover:text-foreground"
             }`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -244,7 +244,7 @@ const ChatBotButton = () => {
             whileHover={{ y: -2 }}
             aria-label="Back to top"
           >
-            <ArrowUp className="h-7 w-7 stroke-[1.5] md:h-8 md:w-8" />
+            <ArrowUp className="h-6 w-6 stroke-[1.5] md:h-7 md:w-7" />
           </motion.button>
         )}
       </AnimatePresence>

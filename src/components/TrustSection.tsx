@@ -93,7 +93,7 @@ const TrustSection = () => (
               whileInView={{ opacity: 1, y: 0 }}
               viewport={VP}
               transition={{ duration: 0.7, delay: index * 0.12, ease: EASE }}
-              className="bg-card border border-sage rounded-sm px-6 py-6 sm:py-10 md:py-12 text-center flex flex-col items-center justify-center"
+              className="bg-card border border-sage rounded-sm px-6 py-6 sm:py-10 md:py-12 text-center flex flex-col items-center justify-center -mt-px first:mt-0 sm:mt-0"
             >
               <badge.icon className="w-8 h-8 text-primary mb-4" strokeWidth={1.5} />
               <p className="font-serif text-2xl font-medium">{badge.title}</p>
