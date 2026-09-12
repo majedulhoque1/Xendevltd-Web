@@ -20,6 +20,8 @@ import project1026Asset from "@/assets/Project_1026.jpeg";
 import projectLakeside from "@/assets/project-lakeside.jpg";
 import projectRoadsideFront from "@/assets/project-roadside-front.jpg";
 import projectRoadsidePerspective from "@/assets/project-roadside-perspective.png";
+import xenLakeviewTasmeeGroundFloorPlan from "@/assets/Xen_Lakeview_Tasmee_Ground_Floor_Plan.png";
+import xenLakeviewTasmeeTypicalFloorPlan from "@/assets/Xen_Lakeview_Tasmee_Typical_Floor_Plan.png";
 
 export type ProjectStatus = "On-going" | "Up-coming" | "Completed";
 
@@ -47,6 +49,7 @@ export interface Project {
   };
   vision?: string[];
   gallery?: string[];
+  floorPlans?: { label: string; image: string }[];
 }
 
 export const PROJECTS: Project[] = [
@@ -85,6 +88,10 @@ export const PROJECTS: Project[] = [
       "Every residence carries 7 balconies and 5 bathrooms across 4 bedrooms, built on an RCC shear-wall core to BNBC 2020, with materials sample-tested by the Housing & Building Research Institute (HBRI) and structural drawings from BUET-trained engineers.",
     ],
     gallery: [projectLakeside, projectRoadsideFront, projectRoadsidePerspective],
+    floorPlans: [
+      { label: "Ground Floor Plan", image: xenLakeviewTasmeeGroundFloorPlan },
+      { label: "Typical Floor Plan — Type-A (2,505 sft)", image: xenLakeviewTasmeeTypicalFloorPlan },
+    ],
   },
   {
     id: 11,

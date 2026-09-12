@@ -56,6 +56,7 @@ const ProjectDetail = () => {
   // fallback only guards a future entry that forgets to set one.
   const gallery = project.gallery ?? [project.image];
   const galleryImages = gallery.map((src) => ({ src, alt: project.name }));
+  const floorPlanImages = (project.floorPlans ?? []).map((fp) => ({ src: fp.image, alt: fp.label }));
 
   const scroll = (dir: 1 | -1) => {
     scrollerRef.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
@@ -70,7 +71,10 @@ const ProjectDetail = () => {
       project.features.length > 0
         ? project.features
         : ["Quality construction throughout", "Modern architectural design"],
-    floor: ["Detailed floor plans are available on request — contact our team for the full unit layout brochure."],
+    floor:
+      project.floorPlans && project.floorPlans.length > 0
+        ? project.floorPlans.map((fp) => fp.label)
+        : ["Detailed floor plans are available on request — contact our team for the full unit layout brochure."],
   };
 
   return (
@@ -213,6 +217,22 @@ const ProjectDetail = () => {
                           </li>
                         ))}
                       </ul>
+                    ) : activeTab === "floor" && project.floorPlans && project.floorPlans.length > 0 ? (
+                      <div className="grid sm:grid-cols-2 gap-6">
+                        {project.floorPlans.map((fp, i) => (
+                          <div key={fp.label}>
+                            <button
+                              type="button"
+                              onClick={(e) => lightbox.open(floorPlanImages, i, e.currentTarget)}
+                              aria-label={`View ${fp.label} full screen`}
+                              className="block w-full rounded-lg overflow-hidden border border-border cursor-zoom-in bg-white"
+                            >
+                              <img src={fp.image} alt={fp.label} className="w-full block" />
+                            </button>
+                            <p className="mt-3 text-sm font-medium text-foreground">{fp.label}</p>
+                          </div>
+                        ))}
+                      </div>
                     ) : (
                       tabContent[activeTab].map((para, i) => (
                         <p key={i} className="text-muted-foreground leading-relaxed">
