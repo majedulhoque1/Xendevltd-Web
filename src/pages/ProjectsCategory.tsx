@@ -82,7 +82,13 @@ const ProjectsCategory = ({ status }: ProjectsCategoryProps) => {
                 <motion.button
                   key={project.slug}
                   type="button"
-                  onClick={(e) => lightbox.open([{ src: project.image, alt: project.name }], 0, e.currentTarget)}
+                  onClick={(e) =>
+                    lightbox.open(
+                      projects.map((p) => ({ src: p.image, alt: p.name, caption: p.description })),
+                      index,
+                      e.currentTarget,
+                    )
+                  }
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.06, ease: EASE }}

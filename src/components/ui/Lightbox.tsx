@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type TouchEvent } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface LightboxImage {
   src: string;
   alt: string;
+  caption?: string;
 }
 
 interface LightboxState {
@@ -49,10 +50,15 @@ interface LightboxProps {
   setIndex: (index: number) => void;
 }
 
+// Minimum horizontal drag (px) before a touch gesture counts as a swipe
+// rather than a tap or an attempt to scroll.
+const SWIPE_THRESHOLD = 50;
+
 const Lightbox = ({ state, close, setIndex }: LightboxProps) => {
   const { images, index } = state;
   const image = images[index];
   const hasMultiple = images.length > 1;
+  const touchStartX = useRef<number | null>(null);
 
   const next = () => setIndex((index + 1) % images.length);
   const prev = () => setIndex((index - 1 + images.length) % images.length);
@@ -72,12 +78,26 @@ const Lightbox = ({ state, close, setIndex }: LightboxProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, hasMultiple]);
 
+  const handleTouchStart = (e: TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: TouchEvent) => {
+    if (touchStartX.current === null || !hasMultiple) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    if (delta > SWIPE_THRESHOLD) next();
+    else if (delta < -SWIPE_THRESHOLD) prev();
+    touchStartX.current = null;
+  };
+
   if (!image) return null;
 
   return (
     <div
       className="fixed inset-0 z-[100] bg-background/90 backdrop-blur-sm flex items-center justify-center p-4"
       onClick={close}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       role="dialog"
       aria-modal="true"
     >
@@ -127,6 +147,11 @@ const Lightbox = ({ state, close, setIndex }: LightboxProps) => {
           className="max-h-[80vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
         />
         {image.alt && <p className="mt-4 text-center text-lg font-serif text-foreground">{image.alt}</p>}
+        {image.caption && (
+          <p className="mt-1.5 text-center text-sm text-muted-foreground max-w-xl leading-relaxed">
+            {image.caption}
+          </p>
+        )}
       </div>
     </div>
   );
