@@ -31,7 +31,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="text-white/50 text-sm">
-              © {currentYear} Xen Developments. RAJUK Approved.
+              © {currentYear} Xen Developments. Cantonment Board Approved.
             </p>
           </div>
 

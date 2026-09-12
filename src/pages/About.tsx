@@ -9,13 +9,17 @@ import ChatBotButton from "@/components/WhatsAppButton";
 import CountUp from "@/components/CountUp";
 import craneAsset from "@/assets/project-roadside-perspective.png";
 import facadeAsset from "@/assets/project-roadside-front.jpg";
+import { COMPLETED_PROJECTS_COUNT } from "@/data/projects";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 const VP = { once: true, margin: "0px 0px -50px 0px", amount: 0.15 } as const;
 
+// "Completed Projects" is derived from the project catalog (src/data/projects.ts)
+// so it can never drift out of sync with what's actually listed under /projects —
+// it previously read "24" while the catalog held 16 entries.
 const STATS = [
   { value: "15+", label: "Years of Excellence" },
-  { value: "24", label: "Completed Projects" },
+  { value: `${COMPLETED_PROJECTS_COUNT}`, label: "Completed Projects" },
   { value: "500+", label: "Happy Families" },
   { value: "100%", label: "On-time Delivery" },
 ];
@@ -43,7 +47,7 @@ const TENETS = [
     icon: BadgeCheck,
     title: "Quality Assurance",
     description:
-      "RAJUK approved, and checked at every stage by independent engineers.",
+      "Cantonment Board approved, and checked at every stage by independent engineers.",
   },
 ];
 

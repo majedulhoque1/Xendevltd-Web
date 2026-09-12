@@ -8,14 +8,25 @@ import Footer from "@/components/Footer";
 import ChatBotButton from "@/components/WhatsAppButton";
 import InquiryForm from "@/components/InquiryForm";
 import { BOOKABLE_PROJECTS } from "@/data/bookableProjects";
+import { SITE_CONTACT } from "@/lib/contact";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
 const DIRECT_CONTACT = [
-  { icon: Phone, label: "Phone", value: "01717-19-27-30", href: "tel:+8801717192730" },
-  { icon: MessageCircle, label: "WhatsApp", value: "Message Us", href: "https://wa.me/8801717192730" },
-  { icon: Mail, label: "Email", value: "info@xendevelopments.com", href: "mailto:info@xendevelopments.com" },
-  { icon: MapPin, label: "Corporate Office", value: "Level 5, Xen Tower\nGulshan Avenue, Dhaka", href: undefined },
+  {
+    icon: Phone,
+    label: "Phone",
+    value: `${SITE_CONTACT.phonePrimary}\n${SITE_CONTACT.phoneSecondary}\n${SITE_CONTACT.phoneTertiary}`,
+    href: `tel:${SITE_CONTACT.phonePrimaryTel}`,
+  },
+  { icon: MessageCircle, label: "WhatsApp", value: "Message Us", href: SITE_CONTACT.whatsapp },
+  { icon: Mail, label: "Email", value: SITE_CONTACT.email, href: `mailto:${SITE_CONTACT.email}` },
+  {
+    icon: MapPin,
+    label: "Corporate Office",
+    value: `${SITE_CONTACT.addressLine1}\n${SITE_CONTACT.addressLine2}`,
+    href: undefined,
+  },
 ];
 
 const Contact = () => {

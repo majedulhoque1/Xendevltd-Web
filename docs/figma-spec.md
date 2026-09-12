@@ -109,11 +109,11 @@ Content column is 1152px wide, centred → **64px page gutters**.
      3-item checklist with outline icons (Uncompromising Structural Integrity /
      Sustainable & Green Design / Prime, Handpicked Locations), each with a sub-line.
    - Right: 2×2 grid of `#F0EDED` rounded cards, each centred icon + serif title +
-     caption — BNBC Code / Grade A / RAJUK / Transparent.
+     caption — BNBC Code / Grade A / Cantonment Board / Transparent.
 
 3. **Featured Development** (~1780 – 2620) — bg `#F0EDED`
    - Eyebrow "Featured Development", serif H2 "Jolshiri Lakeview Residence", hairline rule.
-   - Split card: left large image with a "RAJUK Approved" pill badge top-left, and a
+   - Split card: left large image with a "Cantonment Board Approved" pill badge top-left, and a
      4-thumbnail selector strip beneath (first thumb active, green outline).
    - Right dark `#212322` panel: tab row `About · Key Features · Location · Floor`
      (active tab underlined), description paragraph, 2×2 spec grid
@@ -137,7 +137,7 @@ Content column is 1152px wide, centred → **64px page gutters**.
 
 6. **Footer** (~4090 – 4325) — bg `#212322`
    - Left: logo + serif "Xen Developments Ltd." wordmark, then
-     "© 2024 Xen Developments. RAJUK Approved."
+     "© 2024 Xen Developments. Cantonment Board Approved."
    - Two link columns: **Properties** (Residential Projects / Commercial Hubs / Our Locations)
      and **Corporate** (Legal Compliance / Privacy Policy / Contact Support).
 

@@ -25,7 +25,7 @@ const TRUST_POINTS = [
 const BADGES = [
   { icon: Building2, title: "BNBC Code", caption: "Strictly Adhered" },
   { icon: Ruler, title: "Grade A", caption: "Materials Used" },
-  { icon: ShieldCheck, title: "RAJUK", caption: "100% Approved" },
+  { icon: ShieldCheck, title: "Cantonment Board", caption: "Approved Plans" },
   { icon: HeartHandshake, title: "Transparent", caption: "Handover Process" },
 ];
 

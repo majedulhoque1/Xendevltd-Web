@@ -1,14 +1,15 @@
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin } from "lucide-react";
 import InquiryForm from "@/components/InquiryForm";
+import { SITE_CONTACT } from "@/lib/contact";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 const VP = { once: true, margin: "0px 0px -50px 0px", amount: 0.15 } as const;
 
 const CONTACT_ROWS = [
-  { icon: Phone, label: "Call Us", value: "+880 1234 567 890", href: "tel:+8801234567890" },
-  { icon: Mail, label: "Email Us", value: "info@xendevelopments.com", href: "mailto:info@xendevelopments.com" },
-  { icon: MapPin, label: "Visit Our Office", value: "Level 5, Xen Tower, Gulshan Avenue, Dhaka", href: undefined },
+  { icon: Phone, label: "Call Us", value: SITE_CONTACT.phonePrimary, href: `tel:${SITE_CONTACT.phonePrimaryTel}` },
+  { icon: Mail, label: "Email Us", value: SITE_CONTACT.email, href: `mailto:${SITE_CONTACT.email}` },
+  { icon: MapPin, label: "Visit Our Office", value: `${SITE_CONTACT.addressLine1}, ${SITE_CONTACT.addressLine2}`, href: undefined },
 ];
 
 const ContactCallout = () => (

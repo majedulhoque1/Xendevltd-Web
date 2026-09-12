@@ -1,20 +1,18 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ShieldCheck, Info, MapPin, CheckSquare, Layout, Download } from "lucide-react";
-import projectLakeside from "@/assets/project-lakeside.jpg";
-import projectRoadsideFront from "@/assets/project-roadside-front.jpg";
-import projectRoadsidePerspective from "@/assets/project-roadside-perspective.png";
+import { ShieldCheck, Info, MapPin, CheckSquare, Layout, Download, Maximize2 } from "lucide-react";
 import { getProjectBySlug } from "@/data/projects";
+import FramedImage from "@/components/ui/FramedImage";
+import Lightbox, { useLightbox } from "@/components/ui/Lightbox";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 const VP = { once: true, margin: "0px 0px -50px 0px", amount: 0.15 } as const;
 
-const THUMBS = [
-  { src: projectLakeside, label: "Lakeside View" },
-  { src: projectRoadsideFront, label: "Street Front" },
-  { src: projectRoadsidePerspective, label: "Perspective View" },
-];
+// Labels line up 1:1 with this project's own gallery array in
+// src/data/projects.ts (Lakeside NE view, then the two Roadside SW views
+// from brochure page 5) — not stock images, the real brochure renders.
+const THUMB_LABELS = ["Lakeside View", "Street Front", "Perspective View"];
 
 const TABS = [
   { id: "about", label: "About", icon: Info },
@@ -23,17 +21,33 @@ const TABS = [
   { id: "floor", label: "Floor Plans", icon: Layout },
 ] as const;
 
-const project = getProjectBySlug("xen-lakeview-tasmee")!;
-const specRows = [
-  { label: "Status", value: "On-going" },
-  { label: "Completion", value: project.specs?.completion ?? "Q4 2026" },
-  { label: "Total Units", value: project.specs?.totalUnits ?? "G+8 (9 Stories)" },
-  { label: "Sizes", value: project.specs?.unitSizes ?? "2,850 Sqft" },
-];
-
 const FeaturedProject = () => {
   const [activeTab, setActiveTab] = useState<(typeof TABS)[number]["id"]>("about");
   const [selected, setSelected] = useState(0);
+  const lightbox = useLightbox();
+
+  const project = getProjectBySlug("xen-lakeview-tasmee");
+
+  // Guard rather than crash the homepage at import time if this slug is ever
+  // renamed in projects.ts.
+  if (!project) return null;
+
+  const gallery = project.gallery ?? [project.image];
+  const thumbs = gallery.map((src, i) => ({ src, label: THUMB_LABELS[i] ?? project.name }));
+  const galleryImages = gallery.map((src, i) => ({ src, alt: thumbs[i].label }));
+
+  const specRows = [
+    { label: "Status", value: project.status },
+    { label: "Completion", value: project.specs?.completion ?? "On request" },
+    { label: "Total Units", value: project.specs?.totalUnits ?? "—" },
+    { label: "Sizes", value: project.specs?.unitSizes ?? "—" },
+  ];
+
+  // "On request" (the real value — no price is published) isn't a number,
+  // so it can't be wrapped in currency markup without reading as "৳ On
+  // request BDT". Only format it as currency when it actually is one.
+  const price = project.specs?.priceRange ?? "On request";
+  const isNumericPrice = /\d/.test(price);
 
   const tabContent = {
     about: (
@@ -57,8 +71,8 @@ const FeaturedProject = () => {
     ),
     floor: (
       <p className="text-white/70 leading-relaxed">
-        3BHK and 4BHK layouts designed to maximize lake-facing views and natural airflow.
-        Full floor plans are available on request.
+        4-bedroom, 5-bath layouts with 7 balconies, designed to maximize lake-facing
+        views and natural airflow. Full floor plans are available on request.
       </p>
     ),
   } as const;
@@ -94,31 +108,39 @@ const FeaturedProject = () => {
             transition={{ duration: 0.7, ease: EASE }}
             className="min-w-0"
           >
-            <div className="relative aspect-[3/2] overflow-hidden">
+            <div className="relative aspect-[4/3] overflow-hidden">
               <AnimatePresence mode="wait">
-                <motion.img
+                <motion.div
                   key={selected}
-                  src={THUMBS[selected].src}
-                  alt={THUMBS[selected].label}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
+                  className="absolute inset-0"
+                >
+                  <FramedImage src={thumbs[selected].src} alt={thumbs[selected].label} priority />
+                </motion.div>
               </AnimatePresence>
               <span className="absolute top-6 left-6 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink/80 backdrop-blur-sm text-white text-xs font-medium">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                RAJUK Approved
+                Cantonment Board Approved
               </span>
+              <button
+                type="button"
+                onClick={(e) => lightbox.open(galleryImages, selected, e.currentTarget)}
+                aria-label={`View ${thumbs[selected].label} full screen`}
+                className="absolute top-6 right-6 z-10 p-2.5 rounded-full bg-ink/60 backdrop-blur-sm text-white hover:bg-ink/80 transition-colors"
+              >
+                <Maximize2 className="w-4 h-4" />
+              </button>
             </div>
-            <div className="grid grid-cols-4 gap-2 p-4 bg-surface-alt">
-              {[...THUMBS, THUMBS[0]].map((thumb, i) => (
+            <div className="grid grid-cols-3 gap-2 p-4 bg-surface-alt">
+              {thumbs.map((thumb, i) => (
                 <button
                   key={i}
-                  onClick={() => setSelected(i % THUMBS.length)}
+                  onClick={() => setSelected(i)}
                   className={`relative aspect-[8/5] rounded overflow-hidden border-2 transition-colors ${
-                    selected === i % THUMBS.length ? "border-primary" : "border-transparent opacity-70 hover:opacity-100"
+                    selected === i ? "border-primary" : "border-transparent opacity-70 hover:opacity-100"
                   }`}
                   aria-label={`View ${thumb.label}`}
                 >
@@ -178,12 +200,16 @@ const FeaturedProject = () => {
             <div className="border-t border-white/10 pt-6 mt-auto flex flex-col gap-4">
               <div>
                 <p className="text-white/45 text-xs font-bold mb-1.5">Starting From</p>
-                <p className="flex items-baseline gap-2">
-                  <span className="font-serif text-2xl text-[#CCE9D8]">
-                    ৳ {project.specs?.priceRange?.replace(/^From\s+/i, "").replace(/\s+BDT$/i, "") ?? "—"}
-                  </span>
-                  <span className="text-white/70 text-sm font-semibold">BDT</span>
-                </p>
+                {isNumericPrice ? (
+                  <p className="flex items-baseline gap-2">
+                    <span className="font-serif text-2xl text-[#CCE9D8]">
+                      ৳ {price.replace(/^From\s+/i, "").replace(/\s+BDT$/i, "")}
+                    </span>
+                    <span className="text-white/70 text-sm font-semibold">BDT</span>
+                  </p>
+                ) : (
+                  <p className="font-serif text-2xl text-[#CCE9D8]">{price}</p>
+                )}
               </div>
               <Link
                 to={`/projects/${project.slug}`}
@@ -196,6 +222,8 @@ const FeaturedProject = () => {
           </motion.div>
         </div>
       </div>
+
+      {lightbox.state && <Lightbox state={lightbox.state} close={lightbox.close} setIndex={lightbox.setIndex} />}
     </section>
   );
 };

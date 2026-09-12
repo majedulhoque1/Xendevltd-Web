@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { FEATURED_DEVELOPMENTS } from "@/data/projects";
+import Lightbox, { useLightbox } from "@/components/ui/Lightbox";
+import FramedImage from "@/components/ui/FramedImage";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 const VP = { once: true, margin: "0px 0px -50px 0px", amount: 0.15 } as const;
@@ -11,18 +12,7 @@ const VP = { once: true, margin: "0px 0px -50px 0px", amount: 0.15 } as const;
 const DEVELOPMENTS = FEATURED_DEVELOPMENTS.filter((p) => p.status === "Completed");
 
 const ProjectsOverview = () => {
-  const [lightbox, setLightbox] = useState<{ image: string; name: string } | null>(null);
-
-  useEffect(() => {
-    if (!lightbox) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setLightbox(null);
-    window.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [lightbox]);
+  const lightbox = useLightbox();
 
   return (
     <section id="projects" className="section-padding bg-background">
@@ -76,14 +66,10 @@ const ProjectsOverview = () => {
             >
               <button
                 type="button"
-                onClick={() => setLightbox({ image: project.image, name: project.name })}
+                onClick={(e) => lightbox.open([{ src: project.image, alt: project.name }], 0, e.currentTarget)}
                 className="relative block w-full overflow-hidden rounded-sm border border-sage group aspect-[4/5] shadow-lg text-left"
               >
-                <img
-                  src={project.image}
-                  alt={project.name}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
+                <FramedImage src={project.image} alt={project.name} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white flex flex-col gap-2">
                   <div className="flex items-center gap-2 mb-1">
@@ -101,34 +87,7 @@ const ProjectsOverview = () => {
         </div>
       </div>
 
-      {lightbox && (
-        <div
-          className="fixed inset-0 z-[100] bg-background/90 backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={() => setLightbox(null)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setLightbox(null);
-            }}
-            aria-label="Close"
-            className="absolute top-4 right-4 p-2 rounded-full bg-secondary/80 hover:bg-secondary text-foreground transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-          <div className="max-w-5xl w-full flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
-            <img
-              src={lightbox.image}
-              alt={lightbox.name}
-              className="max-h-[80vh] w-auto max-w-full object-contain rounded-lg shadow-2xl"
-            />
-            <p className="mt-4 text-center text-lg font-serif text-foreground">{lightbox.name}</p>
-          </div>
-        </div>
-      )}
+      {lightbox.state && <Lightbox state={lightbox.state} close={lightbox.close} setIndex={lightbox.setIndex} />}
     </section>
   );
 };

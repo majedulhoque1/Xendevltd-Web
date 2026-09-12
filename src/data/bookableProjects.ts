@@ -1,14 +1,13 @@
+import { projectsByStatus } from "@/data/projects";
+
 // Developments currently open for site visits (the on-going + up-coming ones).
 //
-// The full public marketing catalog lives as a static array in
-// src/pages/Projects.tsx; this is the curated subset a visitor can actually
-// schedule a tour for — completed/delivered projects are intentionally excluded.
-// The booking RPC stores the chosen project as free text (no foreign key), so
-// this list is the single source of truth for the Schedule-a-Visit dropdown.
-// Update it here when a development opens for or closes to visits.
+// Derived from src/data/projects.ts rather than hardcoded, so renaming or
+// retiring a project there can't silently desync this dropdown — it used to
+// be a separate free-text list that drifted from the real catalog.
+// The booking RPC stores the chosen project as free text (no foreign key),
+// so the *names* below still have to match what's shown elsewhere on the site.
 export const BOOKABLE_PROJECTS: string[] = [
-  "Xen Lakeview Tasmee",
-  "Project 41",
-  "Project 07",
-  "Project 21",
-];
+  ...projectsByStatus("On-going"),
+  ...projectsByStatus("Up-coming"),
+].map((p) => p.name);

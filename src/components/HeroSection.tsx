@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import heroImageDesktop from "@/assets/hero-lakeview-desktop.jpg";
-import heroImageMobile from "@/assets/hero-lakeview-mobile.jpg";
+import heroImageDesktop from "@/assets/hero-lakeview-desktop.jpg?responsive";
+import heroImageMobile from "@/assets/hero-lakeview-mobile.jpg?responsive";
 import CountUp from "@/components/CountUp";
+import Img from "@/components/ui/Img";
+import { COMPLETED_PROJECTS_COUNT } from "@/data/projects";
 
 interface HeroSectionProps {
   isDark: boolean;
@@ -11,26 +13,30 @@ interface HeroSectionProps {
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
+// "Completed Projects" is derived from the project catalog so it can never
+// drift out of sync with what's actually listed under /projects again — it
+// previously read "24" while the catalog held 16 entries.
 const STATS = [
   { value: "15+", label: "Years of Excellence" },
-  { value: "24", label: "Completed Projects" },
+  { value: `${COMPLETED_PROJECTS_COUNT}`, label: "Completed Projects" },
   { value: "500+", label: "Happy Families" },
   { value: "100%", label: "On-time Delivery" },
 ];
 
-const HeroSection = ({}: HeroSectionProps) => {
+const HeroSection = (_props: HeroSectionProps) => {
   return (
     <section className="relative w-full min-h-[820px] flex flex-col overflow-hidden bg-ink">
       {/* Background photo — Xen Lakeview Tasmee at dusk, mobile/desktop crops */}
       <div className="absolute inset-0">
-        <picture>
-          <source media="(min-width: 768px)" srcSet={heroImageDesktop} />
-          <img
-            src={heroImageMobile}
-            alt="Xen Lakeview Tasmee at dusk"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        </picture>
+        <Img
+          src={heroImageDesktop}
+          art={[{ media: "(max-width: 767px)", src: heroImageMobile }]}
+          alt="Xen Lakeview Tasmee at dusk"
+          sizes="100vw"
+          priority
+          tone="#212322"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
       </div>
 

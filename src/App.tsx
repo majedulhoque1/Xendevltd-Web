@@ -12,6 +12,7 @@ import About from "./pages/About";
 import Projects from "./pages/Projects";
 import ProjectsCategory from "./pages/ProjectsCategory";
 import ProjectDetail from "./pages/ProjectDetail";
+import Walkthrough from "./pages/Walkthrough";
 import ScheduleVisit from "./pages/ScheduleVisit";
 import Contact from "./pages/Contact";
 import AdminLogin from "./pages/admin/Login";
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/projects/upcoming" element={<ProjectsCategory status="Up-coming" />} />
             <Route path="/projects/ongoing" element={<ProjectsCategory status="On-going" />} />
             <Route path="/projects/:slug" element={<ProjectDetail />} />
+            <Route path="/walkthrough" element={<Walkthrough />} />
             <Route path="/schedule-visit" element={<ScheduleVisit />} />
             <Route path="/contact" element={<Contact />} />
 

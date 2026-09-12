@@ -1,15 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useParams, Navigate } from "react-router-dom";
-import { MapPin, ArrowLeft, ArrowRight, Info, MapPinned, CheckSquare, Layout, Waves } from "lucide-react";
+import {
+  MapPin,
+  ArrowLeft,
+  ArrowRight,
+  Info,
+  MapPinned,
+  CheckSquare,
+  Layout,
+  Waves,
+  Box,
+  Maximize2,
+} from "lucide-react";
 import { useTheme } from "@/contexts/ThemeContext";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ChatBotButton from "@/components/WhatsAppButton";
 import { getProjectBySlug, PROJECTS } from "@/data/projects";
-import projectLakeside from "@/assets/project-lakeside.jpg";
-import projectRoadsideFront from "@/assets/project-roadside-front.jpg";
-import projectRoadsidePerspective from "@/assets/project-roadside-perspective.png";
+import FramedImage from "@/components/ui/FramedImage";
+import Lightbox, { useLightbox } from "@/components/ui/Lightbox";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
 
@@ -20,15 +30,18 @@ const TABS = [
   { id: "floor", label: "Floor Plans", icon: Layout },
 ] as const;
 
-const FALLBACK_GALLERY = [projectLakeside, projectRoadsideFront, projectRoadsidePerspective];
-
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const { isDark, toggleTheme } = useTheme();
   const [activeTab, setActiveTab] = useState<(typeof TABS)[number]["id"]>("about");
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const lightbox = useLightbox();
 
   const project = slug ? getProjectBySlug(slug) : undefined;
+  // Only this unit has a walkthrough build today. Keyed off the slug rather
+  // than a project-data field so adding the next one is a one-line change
+  // here, not a schema migration.
+  const hasWalkthrough = slug === "xen-lakeview-tasmee";
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -39,7 +52,10 @@ const ProjectDetail = () => {
   }
 
   const otherProjects = PROJECTS.filter((p) => p.slug !== project.slug).slice(0, 6);
-  const gallery = project.gallery ?? FALLBACK_GALLERY;
+  // Every project now carries its own gallery (src/data/projects.ts); the
+  // fallback only guards a future entry that forgets to set one.
+  const gallery = project.gallery ?? [project.image];
+  const galleryImages = gallery.map((src) => ({ src, alt: project.name }));
 
   const scroll = (dir: 1 | -1) => {
     scrollerRef.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
@@ -71,14 +87,23 @@ const ProjectDetail = () => {
             <span className="text-foreground font-medium">{project.name}</span>
           </nav>
 
-          {/* Hero */}
+          {/* Hero — framed, never cropped: portrait renders used to lose their
+              roofline and lake to a 2:1 object-cover box. */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, ease: EASE }}
-            className="relative rounded-2xl overflow-hidden min-h-[460px] sm:min-h-0 sm:aspect-[16/10] md:aspect-[2/1]"
+            className="relative rounded-2xl overflow-hidden min-h-[460px] sm:min-h-0 sm:aspect-[16/10]"
           >
-            <img src={project.image} alt={project.name} className="absolute inset-0 w-full h-full object-cover" />
+            <FramedImage src={project.image} alt={project.name} priority />
+            <button
+              type="button"
+              onClick={(e) => lightbox.open(galleryImages, 0, e.currentTarget)}
+              aria-label={`View ${project.name} full screen`}
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 p-2.5 rounded-full bg-ink/60 backdrop-blur-sm text-white hover:bg-ink/80 transition-colors"
+            >
+              <Maximize2 className="w-4 h-4" />
+            </button>
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
             <div className="absolute inset-0 p-6 md:p-10 flex flex-col justify-end">
               <span className="inline-flex w-fit items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-wider mb-4">
@@ -93,6 +118,15 @@ const ProjectDetail = () => {
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-3 shrink-0">
+                  {hasWalkthrough && (
+                    <Link
+                      to="/walkthrough"
+                      className="inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm bg-[#CCE9D8] text-ink font-semibold hover:bg-[#CCE9D8]/90 transition-colors"
+                    >
+                      <Box className="mr-2 w-4 h-4" />
+                      Walk Through in 3D
+                    </Link>
+                  )}
                   <Link to="/schedule-visit" className="btn-primary">
                     Schedule a Visit
                   </Link>
@@ -190,15 +224,48 @@ const ProjectDetail = () => {
                 </AnimatePresence>
               </div>
 
+              {hasWalkthrough && (
+                <div className="mb-12">
+                  <h2 className="font-serif text-2xl md:text-3xl mb-6">Walk It Yourself</h2>
+                  {/* A recorded video tour was never produced (no file ships under
+                      public/videos/) — this links straight into the real,
+                      already-built interactive 3D walkthrough instead of a
+                      "play" button on a video that doesn't exist. */}
+                  <Link
+                    to="/walkthrough"
+                    aria-label="Launch the interactive 3D walkthrough"
+                    className="relative block aspect-video rounded-xl overflow-hidden bg-ink group"
+                  >
+                    <FramedImage src={project.image} alt="" />
+                    <div className="absolute inset-0 bg-black/25 group-hover:bg-black/35 transition-colors" />
+                    <span className="absolute inset-0 flex items-center justify-center">
+                      <span className="flex items-center justify-center w-16 h-16 rounded-full bg-[#CCE9D8] group-hover:scale-105 transition-transform">
+                        <Box className="w-6 h-6 text-ink" />
+                      </span>
+                    </span>
+                    <span className="absolute bottom-4 left-4 text-white text-sm font-medium">
+                      Launch 3D Walkthrough — move around every room yourself
+                    </span>
+                  </Link>
+                </div>
+              )}
+
               <h2 className="font-serif text-2xl md:text-3xl mb-6">Gallery</h2>
               <div className="columns-2 gap-4 [column-fill:_balance]">
                 {gallery.map((img, i) => (
-                  <img
+                  <button
                     key={i}
-                    src={img}
-                    alt={`${project.name} — view ${i + 1}`}
-                    className="w-full rounded-lg mb-4 break-inside-avoid"
-                  />
+                    type="button"
+                    onClick={(e) => lightbox.open(galleryImages, i, e.currentTarget)}
+                    aria-label={`View ${project.name} — view ${i + 1} full screen`}
+                    className="block w-full mb-4 break-inside-avoid rounded-lg overflow-hidden cursor-zoom-in"
+                  >
+                    <img
+                      src={img}
+                      alt={`${project.name} — view ${i + 1}`}
+                      className="w-full block"
+                    />
+                  </button>
                 ))}
               </div>
             </div>
@@ -238,11 +305,7 @@ const ProjectDetail = () => {
                   className="shrink-0 w-[300px] snap-start rounded-xl overflow-hidden border border-border group"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
-                    <img
-                      src={p.image}
-                      alt={p.name}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
+                    <FramedImage src={p.image} alt={p.name} />
                     <span className="absolute top-3 right-3 inline-flex items-center px-2.5 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full bg-background/90 text-foreground">
                       {p.status}
                     </span>
@@ -268,6 +331,8 @@ const ProjectDetail = () => {
 
       <Footer />
       <ChatBotButton />
+
+      {lightbox.state && <Lightbox state={lightbox.state} close={lightbox.close} setIndex={lightbox.setIndex} />}
     </div>
   );
 };
