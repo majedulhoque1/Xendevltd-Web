@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { describeError } from "@/lib/describeError";
+import { useToast } from "@/hooks/use-toast";
 
 export type BookingStatus = "pending" | "confirmed" | "cancelled";
 
@@ -14,10 +16,11 @@ export interface BookingRow {
   contact: { name: string; phone: string | null } | null;
 }
 
-type RescheduleResult = { status: "ok" | "forbidden" | "not_found" | "invalid_slot" | "slot_taken" };
+export type RescheduleResult = { status: "ok" | "forbidden" | "not_found" | "invalid_slot" | "slot_taken" };
 
 export function useBookings() {
   const qc = useQueryClient();
+  const { toast } = useToast();
   const inv = () => qc.invalidateQueries({ queryKey: ["bookings"] });
 
   const { data: bookings = [], isLoading } = useQuery({
@@ -39,6 +42,9 @@ export function useBookings() {
       if (error) throw error;
     },
     onSuccess: inv,
+    onError: (error) => {
+      toast({ variant: "destructive", title: "Could not update booking", description: describeError(error) });
+    },
   });
 
   const reschedule = useMutation({

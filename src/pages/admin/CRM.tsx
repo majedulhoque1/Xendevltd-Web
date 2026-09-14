@@ -23,7 +23,7 @@ function NotesEditor({ contact, onSave }: { contact: Contact; onSave: (notes: st
           await onSave(notes);
           setSaving(false);
         }}
-        className="mt-0.5 rounded-md p-2 text-muted-foreground hover:bg-card hover:text-primary disabled:opacity-30"
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-card hover:text-primary disabled:opacity-30"
         aria-label="Save note"
         title="Save note"
       >

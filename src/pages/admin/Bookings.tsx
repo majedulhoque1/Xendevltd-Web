@@ -1,15 +1,10 @@
 import { useState } from "react";
-import { Check, X, CalendarClock } from "lucide-react";
+import { Check, X, CalendarClock, Phone, MessageCircle } from "lucide-react";
 import { useBookings, type BookingStatus } from "@/hooks/useBookings";
-import { useToast } from "@/hooks/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { ActionCard, type ActionCardAction } from "@/components/admin/ActionCard";
+import { RescheduleDialog } from "@/components/admin/RescheduleDialog";
+import { telLink, waLink } from "@/lib/phone";
 
 const TONE: Record<BookingStatus, string> = {
   pending: "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400",
@@ -19,21 +14,8 @@ const TONE: Record<BookingStatus, string> = {
 
 const AdminBookings = () => {
   const { bookings, isLoading, setStatus, reschedule } = useBookings();
-  const { toast } = useToast();
   const [rescheduling, setRescheduling] = useState<string | null>(null);
-  const [newDate, setNewDate] = useState("");
-  const [newTime, setNewTime] = useState("");
-
-  async function onReschedule() {
-    if (!rescheduling || !newDate || !newTime) return;
-    const res = await reschedule({ id: rescheduling, date: newDate, time: newTime });
-    if (res.status !== "ok") {
-      toast({ variant: "destructive", title: "Could not reschedule", description: res.status });
-    } else {
-      toast({ title: "Booking rescheduled" });
-      setRescheduling(null);
-    }
-  }
+  const reschedulingBooking = bookings.find((b) => b.id === rescheduling) ?? null;
 
   return (
     <div className="space-y-6">
@@ -51,123 +33,133 @@ const AdminBookings = () => {
           No bookings yet.
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-border bg-card shadow-sm">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-secondary/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="px-4 py-3 font-semibold">Date</th>
-                <th className="px-4 py-3 font-semibold">Time</th>
-                <th className="px-4 py-3 font-semibold">Contact</th>
-                <th className="px-4 py-3 font-semibold">Project</th>
-                <th className="px-4 py-3 font-semibold">Status</th>
-                <th className="px-4 py-3" />
-              </tr>
-            </thead>
-            <tbody>
-              {bookings.map((b) => (
-                <tr key={b.id} className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/30">
-                  <td className="px-4 py-3 text-foreground">
-                    {new Date(`${b.date}T00:00`).toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </td>
-                  <td className="px-4 py-3 text-muted-foreground">{b.time.slice(0, 5)}</td>
-                  <td className="px-4 py-3">
-                    <span className="font-medium text-foreground">{b.contact?.name ?? "—"}</span>
-                    {b.contact?.phone && (
-                      <span className="ml-2 text-xs text-muted-foreground">{b.contact.phone}</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-muted-foreground">{b.details?.project ?? "—"}</td>
-                  <td className="px-4 py-3">
-                    <Badge className={TONE[b.status]} variant="outline">
-                      {b.status}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-1">
-                      {b.status !== "confirmed" && (
-                        <button
-                          type="button"
-                          onClick={() => setStatus({ id: b.id, status: "confirmed" })}
-                          className="rounded-md p-1.5 text-muted-foreground hover:bg-background hover:text-emerald-600"
-                          aria-label="Confirm"
-                          title="Confirm"
-                        >
-                          <Check className="h-3.5 w-3.5" />
-                        </button>
-                      )}
-                      {b.status !== "cancelled" && (
-                        <button
-                          type="button"
-                          onClick={() => setStatus({ id: b.id, status: "cancelled" })}
-                          className="rounded-md p-1.5 text-muted-foreground hover:bg-background hover:text-destructive"
-                          aria-label="Cancel"
-                          title="Cancel"
-                        >
-                          <X className="h-3.5 w-3.5" />
-                        </button>
-                      )}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setRescheduling(b.id);
-                          setNewDate(b.date);
-                          setNewTime(b.time.slice(0, 5));
-                        }}
-                        className="rounded-md p-1.5 text-muted-foreground hover:bg-background hover:text-primary"
-                        aria-label="Reschedule"
-                        title="Reschedule"
-                      >
-                        <CalendarClock className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  </td>
+        <>
+          {/* Phone: card list, thumb-sized actions */}
+          <div className="grid gap-3 md:hidden">
+            {bookings.map((b) => {
+              const dateLabel = new Date(`${b.date}T00:00`).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              });
+              const primary: ActionCardAction[] = [];
+              if (b.status !== "confirmed") {
+                primary.push({ label: "Confirm", icon: Check, onClick: () => setStatus({ id: b.id, status: "confirmed" }) });
+              }
+              if (b.contact?.phone) primary.push({ label: "Call", icon: Phone, href: telLink(b.contact.phone) });
+
+              const secondary: ActionCardAction[] = [
+                { label: "Reschedule", icon: CalendarClock, onClick: () => setRescheduling(b.id) },
+              ];
+              if (b.contact?.phone) secondary.push({ label: "WhatsApp", icon: MessageCircle, href: waLink(b.contact.phone) });
+              if (b.status !== "cancelled") {
+                secondary.push({
+                  label: "Cancel booking",
+                  icon: X,
+                  variant: "destructive",
+                  onClick: () => setStatus({ id: b.id, status: "cancelled" }),
+                });
+              }
+
+              return (
+                <ActionCard
+                  key={b.id}
+                  title={b.contact?.name ?? "Unknown"}
+                  subtitle={`${dateLabel} · ${b.time.slice(0, 5)} · ${b.details?.project ?? "—"}`}
+                  badge={{ label: b.status, className: TONE[b.status] }}
+                  primaryActions={primary.slice(0, 2)}
+                  secondaryActions={secondary}
+                />
+              );
+            })}
+          </div>
+
+          {/* Desktop: dense table */}
+          <div className="hidden overflow-x-auto rounded-xl border border-border bg-card shadow-sm md:block">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border bg-secondary/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
+                  <th className="px-4 py-3 font-semibold">Date</th>
+                  <th className="px-4 py-3 font-semibold">Time</th>
+                  <th className="px-4 py-3 font-semibold">Contact</th>
+                  <th className="px-4 py-3 font-semibold">Project</th>
+                  <th className="px-4 py-3 font-semibold">Status</th>
+                  <th className="px-4 py-3" />
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {bookings.map((b) => (
+                  <tr key={b.id} className="border-b border-border/60 transition-colors last:border-0 hover:bg-secondary/30">
+                    <td className="px-4 py-3 text-foreground">
+                      {new Date(`${b.date}T00:00`).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">{b.time.slice(0, 5)}</td>
+                    <td className="px-4 py-3">
+                      <span className="font-medium text-foreground">{b.contact?.name ?? "—"}</span>
+                      {b.contact?.phone && (
+                        <span className="ml-2 text-xs text-muted-foreground">{b.contact.phone}</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">{b.details?.project ?? "—"}</td>
+                    <td className="px-4 py-3">
+                      <Badge className={TONE[b.status]} variant="outline">
+                        {b.status}
+                      </Badge>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center justify-end gap-1">
+                        {b.status !== "confirmed" && (
+                          <button
+                            type="button"
+                            onClick={() => setStatus({ id: b.id, status: "confirmed" })}
+                            className="rounded-md p-1.5 text-muted-foreground hover:bg-background hover:text-emerald-600"
+                            aria-label="Confirm"
+                            title="Confirm"
+                          >
+                            <Check className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                        {b.status !== "cancelled" && (
+                          <button
+                            type="button"
+                            onClick={() => setStatus({ id: b.id, status: "cancelled" })}
+                            className="rounded-md p-1.5 text-muted-foreground hover:bg-background hover:text-destructive"
+                            aria-label="Cancel"
+                            title="Cancel"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => setRescheduling(b.id)}
+                          className="rounded-md p-1.5 text-muted-foreground hover:bg-background hover:text-primary"
+                          aria-label="Reschedule"
+                          title="Reschedule"
+                        >
+                          <CalendarClock className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
 
-      <Dialog open={rescheduling !== null} onOpenChange={(open) => !open && setRescheduling(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Reschedule booking</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-2">
-            <label className="block">
-              <span className="mb-1.5 block text-sm font-medium text-foreground">New date</span>
-              <input
-                type="date"
-                value={newDate}
-                onChange={(e) => setNewDate(e.target.value)}
-                className="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-1.5 block text-sm font-medium text-foreground">New time</span>
-              <input
-                type="time"
-                value={newTime}
-                onChange={(e) => setNewTime(e.target.value)}
-                className="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-              />
-            </label>
-          </div>
-          <DialogFooter>
-            <button
-              type="button"
-              onClick={onReschedule}
-              className="btn-primary"
-            >
-              Save
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <RescheduleDialog
+        open={rescheduling !== null}
+        initialDate={reschedulingBooking?.date ?? ""}
+        initialTime={reschedulingBooking?.time ?? "09:00"}
+        onClose={() => setRescheduling(null)}
+        onSave={(args) => reschedule({ id: rescheduling!, ...args })}
+      />
     </div>
   );
 };
