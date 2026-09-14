@@ -4,18 +4,18 @@ import { useAvailability, type AvailabilityInput } from "@/hooks/useAvailability
 import { generateDaySlots } from "@/lib/slots";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-function AddWindowDialog({
-  open,
-  onClose,
+function AddWindowForm({
   onSave,
+  onSaved,
 }: {
-  open: boolean;
-  onClose: () => void;
   onSave: (input: AvailabilityInput) => Promise<void>;
+  onSaved: () => void;
 }) {
   const [weekday, setWeekday] = useState(1);
   const [startTime, setStartTime] = useState("09:00");
@@ -28,7 +28,111 @@ function AddWindowDialog({
     setSaving(true);
     await onSave({ weekday, start_time: startTime, end_time: endTime, slot_minutes: slotMinutes });
     setSaving(false);
-    onClose();
+    onSaved();
+  }
+
+  return (
+    <>
+      <div className="space-y-4 px-1 py-2">
+        <label className="block">
+          <span className="mb-1.5 block text-sm font-medium text-foreground">Day of week</span>
+          <select
+            value={weekday}
+            onChange={(e) => setWeekday(Number(e.target.value))}
+            className="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none"
+          >
+            {WEEKDAYS.map((d, i) => (
+              <option key={i} value={i}>
+                {d}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div className="grid grid-cols-2 gap-3">
+          <label className="block">
+            <span className="mb-1.5 block text-sm font-medium text-foreground">Start</span>
+            <input
+              type="time"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              className="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none"
+            />
+          </label>
+          <label className="block">
+            <span className="mb-1.5 block text-sm font-medium text-foreground">End</span>
+            <input
+              type="time"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              className="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none"
+            />
+          </label>
+        </div>
+        <label className="block">
+          <span className="mb-1.5 block text-sm font-medium text-foreground">Slot length (minutes)</span>
+          <input
+            type="number"
+            min={5}
+            max={480}
+            step={5}
+            value={slotMinutes}
+            onChange={(e) => setSlotMinutes(Number(e.target.value))}
+            className="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none"
+          />
+        </label>
+        <div className="rounded-lg border border-border bg-background p-3">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            Preview — {preview.length} slot{preview.length === 1 ? "" : "s"}
+          </p>
+          <div className="flex max-h-32 flex-wrap gap-1.5 overflow-y-auto">
+            {preview.length === 0 ? (
+              <span className="text-xs text-muted-foreground">No slots — widen the window.</span>
+            ) : (
+              preview.map((t) => (
+                <span key={t} className="rounded bg-card px-2 py-1 text-xs text-foreground">
+                  {t}
+                </span>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        onClick={handleSave}
+        disabled={saving}
+        className="btn-primary w-full disabled:opacity-50"
+      >
+        {saving ? "Saving…" : "Add window"}
+      </button>
+    </>
+  );
+}
+
+function AddWindowDialog({
+  open,
+  onClose,
+  onSave,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onSave: (input: AvailabilityInput) => Promise<void>;
+}) {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={(o) => !o && onClose()}>
+        <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle>Add availability window</DrawerTitle>
+          </DrawerHeader>
+          <div className="px-4 pb-4">
+            <AddWindowForm onSave={onSave} onSaved={onClose} />
+          </div>
+        </DrawerContent>
+      </Drawer>
+    );
   }
 
   return (
@@ -37,75 +141,7 @@ function AddWindowDialog({
         <DialogHeader>
           <DialogTitle>Add availability window</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4 py-2">
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-medium text-foreground">Day of week</span>
-            <select
-              value={weekday}
-              onChange={(e) => setWeekday(Number(e.target.value))}
-              className="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none"
-            >
-              {WEEKDAYS.map((d, i) => (
-                <option key={i} value={i}>
-                  {d}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div className="grid grid-cols-2 gap-3">
-            <label className="block">
-              <span className="mb-1.5 block text-sm font-medium text-foreground">Start</span>
-              <input
-                type="time"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-                className="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none"
-              />
-            </label>
-            <label className="block">
-              <span className="mb-1.5 block text-sm font-medium text-foreground">End</span>
-              <input
-                type="time"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
-                className="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none"
-              />
-            </label>
-          </div>
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-medium text-foreground">Slot length (minutes)</span>
-            <input
-              type="number"
-              min={5}
-              max={480}
-              step={5}
-              value={slotMinutes}
-              onChange={(e) => setSlotMinutes(Number(e.target.value))}
-              className="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none"
-            />
-          </label>
-          <div className="rounded-lg border border-border bg-background p-3">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Preview — {preview.length} slot{preview.length === 1 ? "" : "s"}
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {preview.length === 0 ? (
-                <span className="text-xs text-muted-foreground">No slots — widen the window.</span>
-              ) : (
-                preview.map((t) => (
-                  <span key={t} className="rounded bg-card px-2 py-1 text-xs text-foreground">
-                    {t}
-                  </span>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-        <DialogFooter>
-          <button type="button" onClick={handleSave} disabled={saving} className="btn-primary disabled:opacity-50">
-            {saving ? "Saving…" : "Add window"}
-          </button>
-        </DialogFooter>
+        <AddWindowForm onSave={onSave} onSaved={onClose} />
       </DialogContent>
     </Dialog>
   );
@@ -124,7 +160,11 @@ const AdminAvailability = () => {
             Define the weekly windows visitors can book site visits in.
           </p>
         </div>
-        <button type="button" onClick={() => setDialogOpen(true)} className="btn-primary inline-flex items-center gap-1.5">
+        <button
+          type="button"
+          onClick={() => setDialogOpen(true)}
+          className="btn-primary inline-flex items-center justify-center gap-1.5"
+        >
           <Plus className="h-3.5 w-3.5" /> Add window
         </button>
       </div>
@@ -147,9 +187,9 @@ const AdminAvailability = () => {
                   {dayWindows.map((w) => (
                     <li
                       key={w.id}
-                      className="flex items-center justify-between rounded-lg border border-border/60 bg-background px-3 py-2"
+                      className="flex flex-col gap-2 rounded-lg border border-border/60 bg-background px-3 py-2 sm:flex-row sm:items-center sm:justify-between"
                     >
-                      <div className="flex items-center gap-3 text-sm">
+                      <div className="flex flex-wrap items-center gap-2 text-sm">
                         <span className="font-medium text-foreground">
                           {w.start_time.slice(0, 5)} – {w.end_time.slice(0, 5)}
                         </span>
@@ -165,25 +205,25 @@ const AdminAvailability = () => {
                           {w.active ? "Active" : "Off"}
                         </Badge>
                       </div>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center justify-end gap-1">
                         <button
                           type="button"
                           onClick={() => toggle({ id: w.id, active: !w.active })}
                           className={cn(
-                            "rounded-md p-1.5 transition-colors hover:bg-card",
+                            "flex h-11 w-11 items-center justify-center rounded-md transition-colors hover:bg-card",
                             w.active ? "text-muted-foreground hover:text-destructive" : "text-muted-foreground hover:text-emerald-600",
                           )}
                           aria-label={w.active ? "Disable" : "Enable"}
                         >
-                          {w.active ? <X className="h-3.5 w-3.5" /> : <Check className="h-3.5 w-3.5" />}
+                          {w.active ? <X className="h-4 w-4" /> : <Check className="h-4 w-4" />}
                         </button>
                         <button
                           type="button"
                           onClick={() => remove(w.id)}
-                          className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-card hover:text-destructive"
+                          className="flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-card hover:text-destructive"
                           aria-label="Remove"
                         >
-                          <Trash2 className="h-3.5 w-3.5" />
+                          <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
                     </li>

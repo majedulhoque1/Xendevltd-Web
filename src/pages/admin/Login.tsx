@@ -11,7 +11,7 @@ const AdminLogin = () => {
   const [submitting, setSubmitting] = useState(false);
 
   if (!isLoading && isAuthenticated) {
-    return <Navigate replace to="/admin/bookings" />;
+    return <Navigate replace to="/admin" />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
