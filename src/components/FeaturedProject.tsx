@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
 import { Waves, Info, MapPin, CheckSquare, Layout, Download, Maximize2 } from "lucide-react";
 import { getProjectBySlug } from "@/data/projects";
 import FramedImage from "@/components/ui/FramedImage";
@@ -231,13 +230,14 @@ const FeaturedProject = () => {
                   <p className="font-serif text-2xl text-[#CCE9D8]">{price}</p>
                 )}
               </div>
-              <Link
-                to={`/projects/${project.slug}`}
+              <a
+                href="/Xen-Developments-Brochure.pdf"
+                download="Xen-Developments-Brochure.pdf"
                 className="w-full inline-flex items-center justify-center h-12 px-7 rounded text-sm bg-primary text-primary-foreground font-semibold tracking-wide hover:bg-primary/90 transition-colors"
               >
                 <Download className="mr-2 w-4 h-4" />
                 Download Brochure
-              </Link>
+              </a>
             </div>
           </motion.div>
         </div>

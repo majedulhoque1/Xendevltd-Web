@@ -120,12 +120,13 @@ const ProjectDetail = () => {
                   <Link to="/schedule-visit" className="btn-primary w-full sm:w-auto">
                     Schedule a Visit
                   </Link>
-                  <Link
-                    to="/contact"
+                  <a
+                    href="/Xen-Developments-Brochure.pdf"
+                    download="Xen-Developments-Brochure.pdf"
                     className="inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm border border-white/60 text-white font-medium hover:bg-white/10 transition-colors w-full sm:w-auto"
                   >
                     Download Brochure
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>

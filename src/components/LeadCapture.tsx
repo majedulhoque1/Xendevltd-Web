@@ -158,7 +158,8 @@ const LeadCapture = () => {
               </motion.a>
 
               <motion.a
-                href="#"
+                href="/Xen-Developments-Brochure.pdf"
+                download="Xen-Developments-Brochure.pdf"
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "0px 0px -50px 0px", amount: 0.15 }}

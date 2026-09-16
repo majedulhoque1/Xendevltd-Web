@@ -130,10 +130,10 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
           </button>
 
           <Link
-            to="/contact"
+            to="/schedule-visit"
             className="hidden lg:inline-flex items-center justify-center px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap"
           >
-            Contact Us
+            Book a Site Visit
           </Link>
         </div>
       </motion.nav>
@@ -192,10 +192,10 @@ const Navigation = ({ isDark, onThemeToggle }: NavigationProps) => {
           </div>
 
           <Link
-            to="/contact"
+            to="/schedule-visit"
             className="w-full inline-flex items-center justify-center px-5 py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
           >
-            Contact Us
+            Book a Site Visit
           </Link>
 
           <div className="text-center">
