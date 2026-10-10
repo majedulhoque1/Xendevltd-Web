@@ -4,6 +4,7 @@ import { Send, Phone, Download, Shield, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { leadSchema } from "@/lib/validation";
 import { useToast } from "@/hooks/use-toast";
+import { track } from "@/lib/analytics";
 
 const LeadCapture = () => {
   const { toast } = useToast();
@@ -79,6 +80,7 @@ const LeadCapture = () => {
         },
       });
 
+      track("generate_lead", { form: "contact" });
       toast({
         title: "Thank you for showing interest!",
         description: "We will get back to you shortly.",

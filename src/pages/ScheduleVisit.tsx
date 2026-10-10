@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { Calendar } from "@/components/ui/calendar";
 import { getAvailableSlots, requestBooking, type AvailableSlot } from "@/lib/booking";
 import { BOOKABLE_PROJECTS } from "@/data/bookableProjects";
+import { track } from "@/lib/analytics";
 
 const inputCls =
   "w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition";
@@ -100,6 +101,7 @@ const ScheduleVisit = () => {
         time: selectedTime,
       });
       if (res.status === "ok") {
+        track("generate_lead", { form: "site_visit", project: form.project });
         setDone(true);
       } else if (res.status === "slot_taken" || res.status === "invalid_slot") {
         setMessage("Sorry, that slot was just taken. Please pick another.");
