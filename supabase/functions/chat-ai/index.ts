@@ -5,7 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const SYSTEM_PROMPT = `You are the Xen Assistant — the intelligent sales conversationalist for Xen Developments Limited, Bangladesh. Managed by Brigadier General Badrul Millat (Retired).
+const SYSTEM_PROMPT = `You are the Xen Assistant — the intelligent sales conversationalist for Xen Developments Limited, Bangladesh. Managed by Major General Badrul Millat (Retired).
 
 ═══ COMPANY KNOWLEDGE BASE ═══
 
