@@ -15,6 +15,7 @@ import ProjectsCategory from "./pages/ProjectsCategory";
 import ProjectDetail from "./pages/ProjectDetail";
 import ScheduleVisit from "./pages/ScheduleVisit";
 import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
 import AdminLogin from "./pages/admin/Login";
 import AdminToday from "./pages/admin/Today";
 import AdminBookings from "./pages/admin/Bookings";
@@ -43,6 +44,7 @@ const App = () => (
             <Route path="/projects/:slug" element={<ProjectDetail />} />
             <Route path="/schedule-visit" element={<ScheduleVisit />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<Privacy />} />
 
             <Route
               path="/admin/login"

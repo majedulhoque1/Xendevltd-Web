@@ -9,7 +9,7 @@ const PROPERTY_LINKS = [
 
 const CORPORATE_LINKS = [
   { label: "Legal Compliance", to: "/about" },
-  { label: "Privacy Policy", to: "/about" },
+  { label: "Privacy Policy", to: "/privacy" },
   { label: "Contact Support", to: "/contact" },
 ];
 
