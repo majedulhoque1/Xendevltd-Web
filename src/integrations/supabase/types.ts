@@ -393,6 +393,24 @@ export type Database = {
         }
         Relationships: []
       }
+      tasmee_floors: {
+        Row: {
+          level: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          level: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          level?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

@@ -1,82 +1,18 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "@/contexts/ThemeContext";
-import { AdminAuthProvider } from "@/contexts/AdminAuthContext";
-import { ProtectedRoute } from "@/components/admin/ProtectedRoute";
-import { AdminLayout } from "@/components/admin/AdminLayout";
+import { BrowserRouter } from "react-router-dom";
 import { AnalyticsTracker } from "@/components/AnalyticsTracker";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import Projects from "./pages/Projects";
-import ProjectsCategory from "./pages/ProjectsCategory";
-import ProjectDetail from "./pages/ProjectDetail";
-import ScheduleVisit from "./pages/ScheduleVisit";
-import Contact from "./pages/Contact";
-import Privacy from "./pages/Privacy";
-import AdminLogin from "./pages/admin/Login";
-import AdminToday from "./pages/admin/Today";
-import AdminBookings from "./pages/admin/Bookings";
-import AdminAvailability from "./pages/admin/Availability";
-import AdminSubmissions from "./pages/admin/Submissions";
-import AdminCRM from "./pages/admin/CRM";
-import NotFound from "./pages/NotFound";
+import { ScrollManager } from "@/site/layout/ScrollManager";
+import { AppRoutes } from "./AppRoutes";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AnalyticsTracker />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/projects/completed" element={<ProjectsCategory status="Completed" />} />
-            <Route path="/projects/upcoming" element={<ProjectsCategory status="Up-coming" />} />
-            <Route path="/projects/ongoing" element={<ProjectsCategory status="On-going" />} />
-            <Route path="/projects/:slug" element={<ProjectDetail />} />
-            <Route path="/schedule-visit" element={<ScheduleVisit />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/privacy" element={<Privacy />} />
-
-            <Route
-              path="/admin/login"
-              element={
-                <AdminAuthProvider>
-                  <AdminLogin />
-                </AdminAuthProvider>
-              }
-            />
-            <Route
-              path="/admin"
-              element={
-                <AdminAuthProvider>
-                  <ProtectedRoute>
-                    <AdminLayout />
-                  </ProtectedRoute>
-                </AdminAuthProvider>
-              }
-            >
-              <Route index element={<AdminToday />} />
-              <Route path="bookings" element={<AdminBookings />} />
-              <Route path="availability" element={<AdminAvailability />} />
-              <Route path="submissions" element={<AdminSubmissions />} />
-              <Route path="crm" element={<AdminCRM />} />
-            </Route>
-
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </ThemeProvider>
+    <BrowserRouter>
+      <AnalyticsTracker />
+      <ScrollManager />
+      <AppRoutes />
+    </BrowserRouter>
   </QueryClientProvider>
 );
 

@@ -15,5 +15,5 @@ export const SITE_CONTACT = {
   email: "XenDevLtd@gmail.com",
   addressLine1: "House 808, Road 11, Avenue 6",
   addressLine2: "DOHS Mirpur, Dhaka",
-  facebook: "https://www.facebook.com/XenDevelopments",
+  facebook: "https://www.facebook.com/XenDevLtd",
 } as const;

@@ -1,133 +1,45 @@
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { Phone, MessageCircle, Mail, MapPin } from "lucide-react";
-import { useEffect } from "react";
-import { useTheme } from "@/contexts/ThemeContext";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import ChatBotButton from "@/components/WhatsAppButton";
-import InquiryForm from "@/components/InquiryForm";
-import { BOOKABLE_PROJECTS } from "@/data/bookableProjects";
-import { SITE_CONTACT } from "@/lib/contact";
-
-const EASE = [0.25, 0.1, 0.25, 1] as const;
-
-const DIRECT_CONTACT = [
-  {
-    icon: Phone,
-    label: "Phone",
-    value: `${SITE_CONTACT.phonePrimary}\n${SITE_CONTACT.phoneSecondary}\n${SITE_CONTACT.phoneTertiary}`,
-    href: `tel:${SITE_CONTACT.phonePrimaryTel}`,
-  },
-  { icon: MessageCircle, label: "WhatsApp", value: "Message Us", href: SITE_CONTACT.whatsapp },
-  { icon: Mail, label: "Email", value: SITE_CONTACT.email, href: `mailto:${SITE_CONTACT.email}` },
-  {
-    icon: MapPin,
-    label: "Corporate Office",
-    value: `${SITE_CONTACT.addressLine1}\n${SITE_CONTACT.addressLine2}`,
-    href: undefined,
-  },
-];
+// /contact (#visit) — prototype contact.html. The form column is the real slot booking
+// (DEVIATIONS.md B1), with a switch to the prototype's quick-request form.
+import { useState } from "react";
+import { SiteLayout } from "@/site/layout/SiteLayout";
+import { ContactList, LeadForm } from "@/site/components/Contact";
+import { VisitBooking } from "@/site/components/VisitBooking";
+import { SHOW_INTERNAL_NOTES } from "@/site/data/site";
 
 const Contact = () => {
-  const { isDark, toggleTheme } = useTheme();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
+  const [quick, setQuick] = useState(false);
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-500">
-      <Navigation isDark={isDark} onThemeToggle={toggleTheme} />
-
-      <main className="pt-28 md:pt-32 pb-20 md:pb-28">
-        <div className="container-wide">
-          <nav className="text-sm text-muted-foreground mb-8">
-            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-            <span className="mx-2">›</span>
-            <span className="text-foreground font-medium">Contact</span>
-          </nav>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-            className="font-serif text-4xl sm:text-5xl md:text-6xl"
-          >
-            Get in Touch
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
-            className="body-large max-w-xl mt-5"
-          >
-            Have a project in mind? Let's talk.
-          </motion.p>
-
-          <div className="grid lg:grid-cols-2 gap-6 mt-12">
-            {/* Direct Contact */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-              className="border border-border rounded-2xl p-6 md:p-8"
-            >
-              <h2 className="font-serif text-2xl mb-6">Direct Contact</h2>
-              <div className="space-y-6">
-                {DIRECT_CONTACT.map((row) => {
-                  const content = (
-                    <>
-                      <row.icon className="w-5 h-5 text-primary mt-0.5 shrink-0" />
-                      <div>
-                        <p className="text-xs uppercase tracking-[0.15em] text-muted-foreground font-semibold">
-                          {row.label}
-                        </p>
-                        <p className="font-medium whitespace-pre-line mt-0.5">{row.value}</p>
-                      </div>
-                    </>
-                  );
-                  return row.href ? (
-                    <a
-                      key={row.label}
-                      href={row.href}
-                      target={row.href.startsWith("http") ? "_blank" : undefined}
-                      rel={row.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                      className="flex items-start gap-4 hover:opacity-80 transition-opacity"
-                    >
-                      {content}
-                    </a>
-                  ) : (
-                    <div key={row.label} className="flex items-start gap-4">
-                      {content}
-                    </div>
-                  );
-                })}
+    <SiteLayout page="contact" crumbs={[{ label: "Home", to: "/" }, { label: "Contact" }]}>
+      <section className="band band--dark" id="visit" style={{ paddingTop: 56 }}>
+        <div className="wrap enquiry">
+          <div>
+            <div className="section-head" style={{ margin: 0 }}>
+              <span className="eyebrow">Contact &amp; site visits</span>
+              <h1 style={{ fontSize: "var(--step-4)" }}>Come and see the lake for yourself.</h1>
+              <p className="lede">
+                Visit at sunset, when the lake looks its best.{" "}
+                {/* DEVIATIONS.md A3: free pickup is unconfirmed (tbc) */}
+                {SHOW_INTERNAL_NOTES && <><span className="tbc">We can pick you up from Gulshan, Baridhara or Mirpur DOHS.</span>{" "}</>}
+                Living abroad? We will walk the site with you on a WhatsApp video call.
+              </p>
+            </div>
+            <ContactList />
+          </div>
+          <div>
+            {quick ? (
+              <div className="stack">
+                <LeadForm source="contact" />
+                <p style={{ fontSize: ".92rem" }}>
+                  <button type="button" className="link-arrow" style={{ background: "none", border: 0, padding: 0, cursor: "pointer", font: "inherit", fontWeight: 700 }} onClick={() => setQuick(false)}>Back to booking a visit time</button>
+                </p>
               </div>
-            </motion.div>
-
-            {/* Send an Inquiry */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
-              className="border border-border rounded-2xl p-6 md:p-8"
-            >
-              <h2 className="font-serif text-2xl mb-6">Send an Inquiry</h2>
-              <InquiryForm
-                variant="underline"
-                showProjectSelect
-                projectOptions={BOOKABLE_PROJECTS}
-                submitLabel="Send Inquiry"
-              />
-            </motion.div>
+            ) : (
+              <VisitBooking onQuickRequest={() => setQuick(true)} />
+            )}
           </div>
         </div>
-      </main>
-
-      <Footer />
-      <ChatBotButton />
-    </div>
+      </section>
+    </SiteLayout>
   );
 };
 

@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { LayoutGrid, CalendarClock, Clock, Inbox, Users, LogOut } from "lucide-react";
+import { LayoutGrid, CalendarClock, Clock, Inbox, Users, LogOut, Building2 } from "lucide-react";
 import { useAdminAuth } from "@/contexts/AdminAuthContext";
 import { useSubmissions } from "@/hooks/useSubmissions";
 import { AdminTabBar } from "@/components/admin/AdminTabBar";
@@ -11,6 +11,7 @@ const NAV = [
   { to: "/admin/availability", label: "Availability", icon: Clock, end: false },
   { to: "/admin/submissions", label: "Submissions", icon: Inbox, end: false },
   { to: "/admin/crm", label: "CRM", icon: Users, end: false },
+  { to: "/admin/floors", label: "Floors", icon: Building2, end: false },
 ];
 
 export function AdminLayout() {

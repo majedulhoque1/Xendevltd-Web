@@ -1,243 +1,40 @@
-import { Compass, Gem, Clock, BadgeCheck } from "lucide-react";
-import { motion } from "framer-motion";
+// /about — prototype about.html, verbatim copy.
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { useTheme } from "@/contexts/ThemeContext";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import ChatBotButton from "@/components/WhatsAppButton";
-import CountUp from "@/components/CountUp";
-import craneAsset from "@/assets/project-roadside-perspective.png";
-import facadeAsset from "@/assets/project-roadside-front.jpg";
-import { COMPLETED_PROJECTS_COUNT } from "@/data/projects";
+import { SiteLayout } from "@/site/layout/SiteLayout";
+import { PageHead } from "@/site/components/Blocks";
+import { ProjectCard } from "@/site/components/Cards";
+import { byStatus, statusPath } from "@/site/data/site";
 
-const EASE = [0.25, 0.1, 0.25, 1] as const;
-const VP = { once: true, margin: "0px 0px -50px 0px", amount: 0.15 } as const;
-
-// "Completed Projects" is derived from the project catalog (src/data/projects.ts)
-// so it can never drift out of sync with what's actually listed under /projects —
-// it previously read "24" while the catalog held 16 entries.
-const STATS = [
-  { value: "15+", label: "Years of Excellence" },
-  { value: `${COMPLETED_PROJECTS_COUNT}`, label: "Completed Projects" },
-  { value: "500+", label: "Happy Families" },
-  { value: "100%", label: "On-time Delivery" },
-];
-
-const TENETS = [
-  {
-    icon: Compass,
-    title: "Structural Integrity",
-    description:
-      "An RCC shear wall from foundation to the top of the lift core — stiffness against story drift and lateral wind, not frame strength alone.",
-  },
-  {
-    icon: Gem,
-    title: "Materials You Can Check",
-    description:
-      "Grade-72 KSRM rebar, Seven Rings cement, Hatil doors, TOTO fittings — named brands, not a grade we award ourselves.",
-  },
-  {
-    icon: Clock,
-    title: "On-Time Delivery",
-    description:
-      "Every project in our completed portfolio was handed over as promised — timelines are commitments, not estimates.",
-  },
-  {
-    icon: BadgeCheck,
-    title: "Independently Tested",
-    description:
-      "Concrete and steel samples tested at HBRI, site work supervised by HBRI-trained managers, structural drawings by BUET engineers.",
-  },
-];
-
-const About = () => {
-  const { isDark, toggleTheme } = useTheme();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-500">
-      <Navigation isDark={isDark} onThemeToggle={toggleTheme} />
-
-      <main className="pt-28 md:pt-32">
-        {/* Breadcrumb + hero */}
-        <section className="container-wide">
-          <div className="max-w-[896px] flex flex-col gap-6">
-            <nav className="text-sm text-muted-foreground">
-              <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-              <span className="mx-2">›</span>
-              <span className="text-foreground font-medium">About</span>
-            </nav>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: EASE }}
-              className="font-serif text-4xl sm:text-5xl md:text-6xl leading-[1.1]"
-            >
-              Where Vision Meets Engineering.
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.15, ease: EASE }}
-              className="body-large"
-            >
-              We build Dhaka's skyline on structural integrity, premium materials, and
-              lasting value.
-            </motion.p>
+const About = () => (
+  <SiteLayout page="about" crumbs={[{ label: "Home", to: "/" }, { label: "About" }]}>
+    <PageHead
+      bg="/img/xen-andromeda-plot-29-rd-2-dohs-chittagong.webp"
+      eyebrow="About Xen Developments Ltd."
+      title="A construction company with a little difference."
+      lede="We build fewer buildings and supervise every one closely. Three promises guide all of them."
+    />
+    <section className="band">
+      <div className="wrap trust-grid">
+        <div className="leader"><span className="eyebrow">Our commitments</span><blockquote>Highest quality. Your satisfaction. Timely handover.</blockquote><cite>Led by Maj Gen (Retd) Badrul Millat</cite></div>
+        <div className="stack">
+          <p className="lede" style={{ color: "var(--text)" }}>Xen Developments Ltd. is led by Major General (Retd) Badrul Millat. Experienced civil engineers handle all engineering and technical work, and managers trained at the Housing and Building Research Institute (HBRI) supervise every phase of construction.</p>
+          <p style={{ color: "var(--muted)" }}>Our architects and civil engineers come from BUET, so each building is both well designed and structurally strong. We use only premium fittings, and every major material, including concrete mix samples, is tested at HBRI.</p>
+          <div className="pillars">
+            <div><b>15+ years</b><span>Building homes in Dhaka and Chattogram</span></div>
+            <div><b>12 buildings handed over</b><span>Mirpur DOHS and DOHS Chattogram</span></div>
+            <div><b>REHAB member</b><span>Real Estate &amp; Housing Association of Bangladesh</span></div>
+            <div><b>BNBC 2020</b><span>Structural design standard for every building</span></div>
           </div>
-        </section>
-
-        {/* Company Narrative — bento grid */}
-        <section className="container-wide mt-14 md:mt-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={VP}
-              transition={{ duration: 0.7, ease: EASE }}
-              className="relative rounded border border-border overflow-hidden aspect-[350/600] lg:aspect-[760/600] lg:col-span-8"
-            >
-              <img src={craneAsset} alt="Xen construction site" className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-              <div className="relative h-full flex flex-col justify-end p-6 md:p-8">
-                <h3 className="font-serif text-2xl mb-2 text-white">Our Foundation</h3>
-                <p className="text-white/70">
-                  Built on the premise that true luxury is derived from structural
-                  permanence and meticulous planning.
-                </p>
-              </div>
-            </motion.div>
-
-            <div className="flex flex-col gap-6 lg:col-span-4">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={VP}
-                transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-                className="border-l-2 border-primary bg-surface rounded p-6 md:p-8 aspect-[368/250] flex flex-col justify-center shrink-0"
-              >
-                <h3 className="font-serif text-2xl mb-3">The Xen Philosophy</h3>
-                <p className="text-muted-foreground">
-                  Xen was founded to bridge the gap between ambitious architectural
-                  vision and rigorous engineering execution. We view every project not
-                  just as a development, but as a long-term contribution to the urban
-                  fabric.
-                </p>
-                <p className="text-muted-foreground mt-4">
-                  Our process prioritizes meticulous planning, materials sampled and
-                  tested at HBRI rather than taken on a supplier's word, and structural
-                  drawings from BUET engineers — so stability outlasts the sales pitch.
-                </p>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={VP}
-                transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
-                className="rounded overflow-hidden aspect-[368/417.56] flex-1"
-              >
-                <img src={facadeAsset} alt="Xen facade detail" className="w-full h-full object-cover" />
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Stats band */}
-        <section className="bg-ink text-white mt-16 md:mt-20 py-14 md:py-16">
-          <div className="container-wide grid grid-cols-2 md:grid-cols-4 gap-8">
-            {STATS.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={VP}
-                transition={{ duration: 0.6, delay: index * 0.1, ease: EASE }}
-              >
-                <CountUp value={stat.value} className="font-serif text-4xl md:text-5xl text-sage leading-none" />
-                <p className="text-white/60 text-xs uppercase tracking-normal sm:tracking-[0.15em] mt-3">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* Core Tenets */}
-        <section className="section-padding">
-          <div className="container-wide">
-            <div className="flex items-end justify-between pb-6 mb-10 border-b border-border">
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={VP}
-                transition={{ duration: 0.8, ease: EASE }}
-                className="heading-section"
-              >
-                Core Tenets
-              </motion.h2>
-              <span className="text-xs uppercase tracking-[0.2em] font-semibold text-muted-foreground hidden sm:block">
-                The Xen Standard
-              </span>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {TENETS.map((tenet, index) => (
-                <motion.div
-                  key={tenet.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={VP}
-                  transition={{ duration: 0.6, delay: index * 0.1, ease: EASE }}
-                  className="border border-border rounded-xl p-6"
-                >
-                  <span className="flex items-center justify-center w-11 h-11 rounded-lg bg-surface mb-5">
-                    <tenet.icon className="w-5 h-5 text-foreground" strokeWidth={1.5} />
-                  </span>
-                  <p className="text-xs uppercase tracking-[0.15em] font-semibold mb-3">{tenet.title}</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{tenet.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="container-wide pb-20 md:pb-28">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={VP}
-            transition={{ duration: 0.8, ease: EASE }}
-            className="bg-ink text-white rounded-2xl p-8 md:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-8"
-          >
-            <div>
-              <h2 className="font-serif text-3xl md:text-4xl mb-3">Interested in a Project?</h2>
-              <p className="text-white/60 max-w-md">
-                Talk to our team and find the right space for you.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-4 shrink-0">
-              <Link to="/projects" className="btn-primary">
-                Explore Developments
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm border border-white/30 text-white font-medium hover:bg-white/10 transition-colors"
-              >
-                Contact Us
-              </Link>
-            </div>
-          </motion.div>
-        </section>
-      </main>
-
-      <Footer />
-      <ChatBotButton />
-    </div>
-  );
-};
+        </div>
+      </div>
+    </section>
+    <section className="band band--tint">
+      <div className="wrap">
+        <div className="port-head"><div className="section-head" style={{ margin: 0 }}><span className="eyebrow">Our record</span><h2>Buildings we handed over.</h2></div><Link className="link-arrow" to={statusPath("completed")}>All completed projects</Link></div>
+        <div className="cards">{byStatus("completed").slice(0, 4).map((p) => <ProjectCard key={p.slug} p={p} />)}</div>
+      </div>
+    </section>
+  </SiteLayout>
+);
 
 export default About;

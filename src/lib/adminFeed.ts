@@ -1,4 +1,4 @@
-import { differenceInCalendarDays, isToday, format, formatDistanceToNow } from "date-fns";
+import { differenceInCalendarDays, format, formatDistanceToNow } from "date-fns";
 import type { BookingRow } from "@/hooks/useBookings";
 import type { Submission } from "@/hooks/useSubmissions";
 
@@ -38,7 +38,7 @@ function isOverdue(b: BookingRow, now: Date): boolean {
 
 export function buildCounts(bookings: BookingRow[], submissions: Submission[], now: Date): FeedCounts {
   const visitsToday = bookings.filter(
-    (b) => (b.status === "pending" || b.status === "confirmed") && isToday(bookingDate(b)),
+    (b) => (b.status === "pending" || b.status === "confirmed") && differenceInCalendarDays(bookingDate(b), now) === 0,
   ).length;
   const pending = bookings.filter((b) => b.status === "pending");
   const awaitingConfirm = pending.length;
@@ -56,11 +56,11 @@ export function buildCounts(bookings: BookingRow[], submissions: Submission[], n
  */
 export function buildFeed(bookings: BookingRow[], submissions: Submission[], now: Date): FeedItem[] {
   const visitsToday: FeedItem[] = bookings
-    .filter((b) => (b.status === "pending" || b.status === "confirmed") && isToday(bookingDate(b)))
+    .filter((b) => (b.status === "pending" || b.status === "confirmed") && differenceInCalendarDays(bookingDate(b), now) === 0)
     .sort((a, b) => bookingDate(a).getTime() - bookingDate(b).getTime())
     .map((b) => bookingToFeedItem(b, "visit-today"));
 
-  const pending = bookings.filter((b) => b.status === "pending" && !isToday(bookingDate(b)));
+  const pending = bookings.filter((b) => b.status === "pending" && differenceInCalendarDays(bookingDate(b), now) !== 0);
 
   const overdue: FeedItem[] = pending
     .filter((b) => isOverdue(b, now))

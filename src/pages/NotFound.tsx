@@ -1,24 +1,22 @@
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { SiteLayout } from "@/site/layout/SiteLayout";
+import { FEATURED, projectPath, statusPath } from "@/site/data/site";
 
-const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
-  }, [location.pathname]);
-
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-muted">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
-        <p className="mb-4 text-xl text-muted-foreground">Oops! Page not found</p>
-        <a href="/" className="text-primary underline hover:text-primary/90">
-          Return to Home
-        </a>
+const NotFound = () => (
+  <SiteLayout page="other" crumbs={[{ label: "Home", to: "/" }, { label: "Page not found" }]}>
+    <section className="page-head">
+      <div className="wrap">
+        <span className="eyebrow">Error 404</span>
+        <h1>We couldn't find that page.</h1>
+        <p className="lede">The link may be old, or the page has moved. These are the places most people are looking for.</p>
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 28 }}>
+          <Link className="btn" to={projectPath(FEATURED)}>See Lakeview Tasmee</Link>
+          <Link className="btn btn--line" to={statusPath("ongoing")}>All projects</Link>
+          <Link className="btn btn--line" to="/">Home</Link>
+        </div>
       </div>
-    </div>
-  );
-};
+    </section>
+  </SiteLayout>
+);
 
 export default NotFound;

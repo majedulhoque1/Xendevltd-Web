@@ -1,8 +1,4 @@
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { useTheme } from "@/contexts/ThemeContext";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
+import { SiteLayout } from "@/site/layout/SiteLayout";
 import { SITE_CONTACT } from "@/lib/contact";
 
 const UPDATED = "11 November 2026";
@@ -53,62 +49,32 @@ const SECTIONS: { title: string; body: string[] }[] = [
   },
 ];
 
-const Privacy = () => {
-  const { isDark, toggleTheme } = useTheme();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    document.title = "Privacy Policy | Xen Developments";
-  }, []);
-
-  return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-500">
-      <Navigation isDark={isDark} onThemeToggle={toggleTheme} />
-
-      <main className="pt-28 md:pt-32 pb-20 md:pb-28">
-        <div className="container-wide max-w-3xl">
-          <nav className="text-sm text-muted-foreground mb-8">
-            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-            <span className="mx-2">›</span>
-            <span className="text-foreground font-medium">Privacy Policy</span>
-          </nav>
-
-          <h1 className="font-serif text-4xl sm:text-5xl">Privacy Policy</h1>
-          <p className="mt-4 text-sm text-muted-foreground">Last updated: {UPDATED}</p>
-
-          <div className="mt-12 space-y-10">
-            {SECTIONS.map((s) => (
-              <section key={s.title}>
-                <h2 className="font-serif text-2xl mb-4">{s.title}</h2>
-                <div className="space-y-3 text-muted-foreground leading-relaxed">
-                  {s.body.map((p, i) => (
-                    <p key={i}>{p}</p>
-                  ))}
-                </div>
-              </section>
-            ))}
-
-            <section>
-              <h2 className="font-serif text-2xl mb-4">Contact us</h2>
-              <div className="space-y-1 text-muted-foreground leading-relaxed">
-                <p>Xen Developments Ltd.</p>
-                <p>{SITE_CONTACT.addressLine1}</p>
-                <p>{SITE_CONTACT.addressLine2}</p>
-                <p>
-                  Phone: <a className="text-primary hover:underline" href={`tel:${SITE_CONTACT.phonePrimaryTel}`}>{SITE_CONTACT.phonePrimary}</a>
-                </p>
-                <p>
-                  Email: <a className="text-primary hover:underline" href={`mailto:${SITE_CONTACT.email}`}>{SITE_CONTACT.email}</a>
-                </p>
-              </div>
+const Privacy = () => (
+  <SiteLayout page="other" crumbs={[{ label: "Home", to: "/" }, { label: "Privacy policy" }]}>
+    <section className="page-head">
+      <div className="wrap"><span className="eyebrow">Privacy</span><h1>Privacy policy</h1><p className="lede">Last updated: {UPDATED}</p></div>
+    </section>
+    <section className="band">
+      <div className="wrap" style={{ maxWidth: 820 }}>
+        <div className="stack" style={{ gap: 40 }}>
+          {SECTIONS.map((s) => (
+            <section key={s.title} className="stack" style={{ gap: 12 }}>
+              <h2 style={{ fontSize: "var(--step-2)" }}>{s.title}</h2>
+              {s.body.map((p, i) => <p key={i} style={{ color: "var(--muted)" }}>{p}</p>)}
             </section>
-          </div>
+          ))}
+          <section className="stack" style={{ gap: 6 }}>
+            <h2 style={{ fontSize: "var(--step-2)", marginBottom: 6 }}>Contact us</h2>
+            <p>Xen Developments Ltd.</p>
+            <p>{SITE_CONTACT.addressLine1}</p>
+            <p>{SITE_CONTACT.addressLine2}</p>
+            <p>Phone: <a className="link-arrow" href={`tel:${SITE_CONTACT.phonePrimaryTel}`}>{SITE_CONTACT.phonePrimary}</a></p>
+            <p>Email: <a className="link-arrow" href={`mailto:${SITE_CONTACT.email}`}>{SITE_CONTACT.email}</a></p>
+          </section>
         </div>
-      </main>
-
-      <Footer />
-    </div>
-  );
-};
+      </div>
+    </section>
+  </SiteLayout>
+);
 
 export default Privacy;

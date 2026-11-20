@@ -1,4 +1,4 @@
-import { supabase } from "@/integrations/supabase/client";
+import { getSupabase } from "@/site/lib/db";
 
 // Calls ONLY the security-definer RPCs (supabase/migrations/20260704120005_*). The
 // browser never touches the bookings/contacts tables directly.
@@ -24,12 +24,14 @@ export interface BookingInput {
 }
 
 export async function getAvailableSlots(from: string, to: string): Promise<AvailableSlot[]> {
+  const supabase = await getSupabase();
   const { data, error } = await supabase.rpc("get_available_slots", { p_from: from, p_to: to });
   if (error) throw error;
   return (data ?? []) as AvailableSlot[];
 }
 
 export async function requestBooking(input: BookingInput): Promise<RequestBookingResult> {
+  const supabase = await getSupabase();
   const { data, error } = await supabase.rpc("request_booking", {
     p_name: input.name,
     p_phone: input.phone,

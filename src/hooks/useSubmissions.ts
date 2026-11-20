@@ -1,3 +1,4 @@
+import type { Json } from "@/integrations/supabase/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -60,7 +61,7 @@ export function useSubmissions() {
           phone: s.phone,
           email: s.email,
           source_submission_id: s.id,
-          details: s.details ?? {},
+          details: (s.details ?? {}) as Json,
           notes: s.message,
         });
         if (error) throw error;

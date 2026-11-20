@@ -1,321 +1,227 @@
-import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Link, useParams, Navigate } from "react-router-dom";
-import {
-  MapPin,
-  ArrowLeft,
-  ArrowRight,
-  Info,
-  MapPinned,
-  CheckSquare,
-  Layout,
-  Waves,
-  Maximize2,
-} from "lucide-react";
-import { useTheme } from "@/contexts/ThemeContext";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import ChatBotButton from "@/components/WhatsAppButton";
-import { getProjectBySlug, PROJECTS } from "@/data/projects";
-import FramedImage from "@/components/ui/FramedImage";
-import Lightbox, { useLightbox } from "@/components/ui/Lightbox";
+// One template for every project; layout depends on status (spec §5). Port of renderProject().
+import { useEffect, useState, type ReactNode } from "react";
+import { Link, useParams } from "react-router-dom";
+import { SiteLayout } from "@/site/layout/SiteLayout";
+import { Film } from "@/site/components/Film";
+import { JolshiriMap } from "@/site/components/Drawings";
+import { FloorTower } from "@/site/components/FloorTower";
+import { ProjectCard } from "@/site/components/Cards";
+import { ContactList, LeadForm } from "@/site/components/Contact";
+import { Facts } from "@/site/components/Blocks";
+import { IcDoc, IcWa } from "@/site/components/icons";
+import { BROCHURE, FEATURED, PROJECTS, SHOW_INTERNAL_NOTES, STATUS_LABEL, getProject, projectPath, statusPath, waLink, type Project } from "@/site/data/site";
+import NotFound from "./NotFound";
 
-const EASE = [0.25, 0.1, 0.25, 1] as const;
+const Tbc = ({ children }: { children: ReactNode }) => (SHOW_INTERNAL_NOTES ? <p className="note-tbc">{children}</p> : null);
 
-const TABS = [
-  { id: "about", label: "About", icon: Info },
-  { id: "location", label: "Location", icon: MapPinned },
-  { id: "features", label: "Key Features", icon: CheckSquare },
-  { id: "floor", label: "Floor Plans", icon: Layout },
-] as const;
+export default function ProjectDetail() {
+  const { slug } = useParams();
+  const p = getProject(slug);
+  if (!p) return <NotFound />;
+  return <ProjectPage key={p.slug} p={p} />;
+}
 
-const ProjectDetail = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const { isDark, toggleTheme } = useTheme();
-  const [activeTab, setActiveTab] = useState<(typeof TABS)[number]["id"]>("about");
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const lightbox = useLightbox();
+function ProjectPage({ p }: { p: Project }) {
+  const status = STATUS_LABEL[p.status];
+  const gallery = p.gallery ?? [{ src: p.image, cap: p.name }];
+  const isFeat = !!p.specs, isUp = p.status === "upcoming", isDone = p.status === "completed";
+  const hasFilm = !!p.film;
+  const [shown, setShown] = useState(0);
+  const [active, setActive] = useState("overview");
+  const intro = p.summary ?? (isDone ? `${p.name} is a residential building at ${p.address}, built and handed over by Xen Developments Ltd. Owners live here today.` : "");
+  const waText = isDone ? `Hi, I'd like to know more about ${p.name}.` : `Hi, please send me details and the price for ${p.name}.`;
+  const facts: [string, string][] = p.facts ?? [["Location", p.address], ["Area", p.area], ["Status", isDone ? "Handed over to owners" : status], ["Developer", "Xen Developments Ltd."]];
+  const others = PROJECTS.filter((x) => x.slug !== p.slug && (x.status === p.status || x.featured)).slice(0, 3);
 
-  const project = slug ? getProjectBySlug(slug) : undefined;
+  const sections: [id: string, label: string][] = [["overview", "Overview"]];
+  if (isFeat) sections.push(["film", hasFilm ? "Film" : "Renders"], ["plans", "Floor plans"], ["location", "Location"], ["specs", "Specifications"], ["payment", "Payment"]);
+  sections.push(["enquire", isDone ? "Contact" : "Enquire"]);
 
+  // Scroll-spy for the sub-nav.
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [slug]);
+    const spy = new IntersectionObserver((es) => es.forEach((en) => { if (en.isIntersecting) setActive(en.target.id); }), { rootMargin: "-40% 0px -55% 0px" });
+    sections.forEach(([id]) => { const el = document.getElementById(id); if (el) spy.observe(el); });
+    return () => spy.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [p.slug]);
 
-  if (!project) {
-    return <Navigate to="/projects" replace />;
-  }
-
-  const otherProjects = PROJECTS.filter((p) => p.slug !== project.slug).slice(0, 6);
-  // Every project now carries its own gallery (src/data/projects.ts); the
-  // fallback only guards a future entry that forgets to set one.
-  const gallery = project.gallery ?? [project.image];
-  const galleryImages = gallery.map((src) => ({ src, alt: project.name }));
-  const floorPlanImages = (project.floorPlans ?? []).map((fp) => ({ src: fp.image, alt: fp.label }));
-
-  const scroll = (dir: 1 | -1) => {
-    scrollerRef.current?.scrollBy({ left: dir * 340, behavior: "smooth" });
-  };
-
-  const tabContent: Record<(typeof TABS)[number]["id"], string[]> = {
-    about: project.vision ?? [project.description],
-    location: [
-      `${project.name} sits within ${project.location} — one of the area's most sought-after residential zones.`,
-    ],
-    features:
-      project.features.length > 0
-        ? project.features
-        : ["Quality construction throughout", "Modern architectural design"],
-    floor:
-      project.floorPlans && project.floorPlans.length > 0
-        ? project.floorPlans.map((fp) => fp.label)
-        : ["Detailed floor plans are available on request — contact our team for the full unit layout brochure."],
-  };
+  const primary = isDone
+    ? <Link className="btn" to={statusPath("ongoing")}>See projects for sale</Link>
+    : isUp ? <Link className="btn" to="#enquire" replace>Register interest</Link>
+    : <Link className="btn" to="/contact#visit">Book a site visit</Link>;
 
   return (
-    <div className="min-h-screen bg-background text-foreground transition-colors duration-500">
-      <Navigation isDark={isDark} onThemeToggle={toggleTheme} />
-
-      <main className="pt-28 md:pt-32 pb-20 md:pb-28">
-        <div className="container-wide">
-          <nav className="text-sm text-muted-foreground mb-6">
-            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-            <span className="mx-2">›</span>
-            <Link to="/projects" className="hover:text-primary transition-colors">Projects</Link>
-            <span className="mx-2">›</span>
-            <span className="text-foreground font-medium">{project.name}</span>
-          </nav>
-
-          {/* Hero — framed, never cropped: portrait renders used to lose their
-              roofline and lake to a 2:1 object-cover box. */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: EASE }}
-            className="relative rounded-2xl overflow-hidden min-h-[520px] sm:min-h-0 sm:aspect-[16/10]"
-          >
-            <FramedImage src={project.image} alt={project.name} priority />
-            <button
-              type="button"
-              onClick={(e) => lightbox.open(galleryImages, 0, e.currentTarget)}
-              aria-label={`View ${project.name} full screen`}
-              className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10 p-2.5 rounded-full bg-ink/60 backdrop-blur-sm text-white hover:bg-ink/80 transition-colors"
-            >
-              <Maximize2 className="w-4 h-4" />
-            </button>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10 sm:from-black/80 sm:via-black/10 sm:to-transparent" />
-            <div className="absolute inset-0 p-6 md:p-10 flex flex-col justify-end">
-              <span className="inline-flex w-fit items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-xs font-semibold uppercase tracking-wider mb-4">
-                {project.status}
-              </span>
-              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-                <div>
-                  <h1 className="font-serif text-white text-4xl sm:text-5xl leading-tight">{project.name}</h1>
-                  <div className="flex items-center gap-2 text-white/80 mt-3">
-                    <MapPin className="w-4 h-4" />
-                    {project.location}
-                  </div>
-                </div>
-                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 shrink-0 w-full sm:w-auto">
-                  <Link to="/schedule-visit" className="btn-primary w-full sm:w-auto">
-                    Schedule a Visit
-                  </Link>
-                  <a
-                    href="/Xen-Developments-Brochure.pdf"
-                    download="Xen-Developments-Brochure.pdf"
-                    className="inline-flex items-center justify-center h-12 px-7 rounded-lg text-sm border border-white/60 text-white font-medium hover:bg-white/10 transition-colors w-full sm:w-auto"
-                  >
-                    Download Brochure
-                  </a>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Body */}
-          <div className="grid lg:grid-cols-[320px_1fr] gap-8 lg:gap-10 mt-10 min-w-0">
-            {/* Left rail */}
-            <div className="flex flex-col gap-6 min-w-0">
-              {project.specs && (
-                <div className="bg-ink text-white rounded-xl p-6">
-                  <h3 className="font-serif text-xl mb-4">Project Specifications</h3>
-                  <div className="border-t border-white/10 divide-y divide-white/10">
-                    {Object.entries(project.specs).map(([key, value]) => (
-                      <div key={key} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 py-3 text-sm">
-                        <span className="text-white/50 capitalize">
-                          {key.replace(/([A-Z])/g, " $1")}
-                        </span>
-                        <span className="font-medium text-right">{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {project.badge && (
-                <div className="border border-border rounded-xl p-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Waves className="w-4 h-4 text-primary" />
-                    <h3 className="font-serif text-lg">{project.badge}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Positioned for open frontage and uninterrupted views — a design
-                    that follows the land.
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Right — tabs + content */}
-            <div className="min-w-0">
-              <div className="flex justify-between sm:justify-start gap-1.5 sm:gap-6 border-b border-border overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                {TABS.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`pb-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 transition-colors flex items-center gap-2 ${
-                      activeTab === tab.id
-                        ? "border-primary text-foreground"
-                        : "border-transparent text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    <tab.icon className="w-4 h-4 hidden sm:block" />
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-
-              <div className="py-8 min-h-[140px]">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25 }}
-                    className="space-y-4"
-                  >
-                    {activeTab === "features" ? (
-                      <ul className="space-y-3">
-                        {tabContent.features.map((f) => (
-                          <li key={f} className="flex items-center gap-3 text-foreground">
-                            <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                            {f}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : activeTab === "floor" && project.floorPlans && project.floorPlans.length > 0 ? (
-                      <div className="grid sm:grid-cols-2 gap-6">
-                        {project.floorPlans.map((fp, i) => (
-                          <div key={fp.label}>
-                            <button
-                              type="button"
-                              onClick={(e) => lightbox.open(floorPlanImages, i, e.currentTarget)}
-                              aria-label={`View ${fp.label} full screen`}
-                              className="block w-full rounded-lg overflow-hidden border border-border cursor-zoom-in bg-white"
-                            >
-                              <img src={fp.image} alt={fp.label} className="w-full block" />
-                            </button>
-                            <p className="mt-3 text-sm font-medium text-foreground">{fp.label}</p>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      tabContent[activeTab].map((para, i) => (
-                        <p key={i} className="text-muted-foreground leading-relaxed">
-                          {para}
-                        </p>
-                      ))
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              <h2 className="font-serif text-2xl md:text-3xl mb-6">Gallery</h2>
-              <div className="columns-1 sm:columns-2 gap-4 [column-fill:_balance]">
-                {gallery.map((img, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={(e) => lightbox.open(galleryImages, i, e.currentTarget)}
-                    aria-label={`View ${project.name} — view ${i + 1} full screen`}
-                    className="block w-full mb-4 break-inside-avoid rounded-lg overflow-hidden cursor-zoom-in"
-                  >
-                    <img
-                      src={img}
-                      alt={`${project.name} — view ${i + 1}`}
-                      className="w-full block"
-                    />
-                  </button>
-                ))}
-              </div>
+    <SiteLayout page="projects" crumbs={[{ label: "Home", to: "/" }, { label: "Projects", to: statusPath(p.status) }, { label: status, to: statusPath(p.status) }, { label: p.name }]}>
+      <section className="p-hero" id="p-hero">
+        <div className="wrap">
+          <div className="copy">
+            <span className={`badge badge--${p.status}`} style={{ position: "static", justifySelf: "start" }}>{status}{isFeat ? " · Now booking" : ""}</span>
+            <h1>{p.name}</h1>
+            <p className="addr">{p.address}</p>
+            <p className="lede" style={{ color: "#c9d3cc" }}>{intro}</p>
+            <div className="ctas">
+              {primary}
+              <a className="btn btn--wa" href={waLink(waText)} target="_blank" rel="noopener"><IcWa /> WhatsApp</a>
+              {isFeat && <a className="btn btn--ghost" href={BROCHURE}><IcDoc /> Brochure</a>}
             </div>
           </div>
+          <div className="gallery">
+            <figure className="gallery-main" style={{ margin: 0 }}>
+              <img key={gallery[shown].src} src={gallery[shown].src} alt={`${p.name}: ${gallery[shown].cap}`} />
+              <figcaption>{gallery[shown].cap}</figcaption>
+            </figure>
+            {gallery.length > 1 && (
+              <div className="thumbs">
+                {gallery.map((g, i) => (
+                  <button key={g.src} type="button" aria-pressed={i === shown} aria-label={`Show ${g.cap}`} onClick={() => setShown(i)}><img src={g.src} alt="" loading="lazy" /></button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
+      </section>
 
-        {/* Explore more */}
-        {otherProjects.length > 0 && (
-          <section className="container-wide mt-16 md:mt-20 pt-12 border-t border-border">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="font-serif text-2xl md:text-3xl">Explore More Portfolios</h2>
-              <div className="hidden sm:flex gap-2">
-                <button
-                  onClick={() => scroll(-1)}
-                  aria-label="Scroll left"
-                  className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={() => scroll(1)}
-                  aria-label="Scroll right"
-                  className="w-10 h-10 rounded-full border border-border flex items-center justify-center hover:bg-secondary transition-colors"
-                >
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+      <nav className="subnav" id="p-subnav" aria-label="On this page">
+        <div className="wrap">
+          {sections.map(([id, label]) => <Link key={id} to={`#${id}`} replace className={active === id ? "is-active" : undefined}>{label}</Link>)}
+          {!isDone && <Link className="btn" to="#enquire" replace>{isUp ? "Register" : "Get price"}</Link>}
+        </div>
+      </nav>
+
+      <section className="band" id="overview">
+        <div className="wrap glance">
+          <div className="stack">
+            <div className="section-head" style={{ margin: 0 }}>
+              <span className="eyebrow">At a glance</span>
+              <h2>{isFeat ? "Lakeside living, one home per floor." : isDone ? "Built, handed over and lived in." : isUp ? `Coming soon to ${p.area}.` : `Under construction in ${p.area}.`}</h2>
+            </div>
+            {p.facts ? <Facts facts={p.facts} price={p.price} handover={p.handover} name={p.name} /> : <Facts facts={facts} name={p.name} />}
+            {isFeat && <div className="guarantee"><b>৳40,000</b><span>a month paid to you for every month of late handover, written into the Deed of Agreement.</span></div>}
+          </div>
+          <div className="stack">
+            {isFeat ? <FloorTower />
+              : isDone ? (
+                <div className="panel">
+                  <h3>What owners got</h3>
+                  <p style={{ color: "var(--muted)" }}>Every Xen building uses the same standard: BUET-designed structure to BNBC, HBRI-tested materials, KSRM steel, TOTO sanitary fittings and Hatil doors.</p>
+                  <Tbc>To add: handover year, number of apartments, sizes and an owner's quote</Tbc>
+                  <Link className="link-arrow" to={projectPath(FEATURED)}>See our current project at Jolshiri</Link>
+                </div>
+              ) : isUp ? (
+                <div className="panel">
+                  <h3>Be first in line</h3>
+                  <p style={{ color: "var(--muted)" }}>Registered buyers see floor plans and prices before the public launch and get first choice of floors.</p>
+                  <Tbc>To add: land size (katha), storeys, apartment sizes, expected launch date</Tbc>
+                  <Link className="btn btn--green" to="#enquire" replace>Register interest</Link>
+                </div>
+              ) : (
+                <div className="panel">
+                  <h3>Ask about this building</h3>
+                  <p style={{ color: "var(--muted)" }}>Built to the same specification as Lakeview Tasmee. Call or WhatsApp us for apartment sizes, open floors and prices.</p>
+                  <Tbc>To add: storeys, sizes, price, handover date and progress photos</Tbc>
+                  <Link className="btn btn--green" to="#enquire" replace>Ask for details</Link>
+                </div>
+              )}
+          </div>
+        </div>
+      </section>
+
+      {isFeat && (
+        <>
+          <section className="band band--dark" id="film">
+            <div className="wrap film-grid">
+              <div className="section-head" style={{ margin: 0 }}>
+                {/* DEVIATIONS.md A1 */}
+                <span className="eyebrow">{hasFilm ? "Project film" : "The project"}</span>
+                <h2>{hasFilm ? "See the lake from Level 8." : "See Lakeview Tasmee from every side."}</h2>
+                <p className="lede">{hasFilm ? "A drone and walkthrough film of the plot, the lake edge and the finished look." : "Renders of the lakeside, the road front and the evening view."}</p>
+              </div>
+              <div>
+                <Film reel={gallery.slice(0, 4).map((g) => g.src)} video={p.film} title={p.name} sub={hasFilm ? "Project film" : "Artist's impressions"} label="Play project film" />
               </div>
             </div>
-            <div
-              ref={scrollerRef}
-              className="flex gap-6 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            >
-              {otherProjects.map((p) => (
-                <Link
-                  key={p.slug}
-                  to={`/projects/${p.slug}`}
-                  className="shrink-0 w-[300px] snap-start rounded-xl overflow-hidden border border-border group"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <FramedImage src={p.image} alt={p.name} />
-                    <span className="absolute top-3 right-3 inline-flex items-center px-2.5 py-1 text-[10px] uppercase tracking-wider font-semibold rounded-full bg-background/90 text-foreground">
-                      {p.status}
-                    </span>
-                  </div>
-                  <div className="p-5">
-                    <h3 className="font-serif text-lg mb-1.5">{p.name}</h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-                      {p.description || "A Xen Developments project."}
-                    </p>
-                    <div className="border-t border-border pt-3 flex items-center justify-between text-xs">
-                      <span className="text-muted-foreground">{p.location}</span>
-                      <span className="inline-flex items-center gap-1 font-semibold text-primary uppercase tracking-wide">
-                        View Details <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
+          </section>
+
+          <section className="band band--tint" id="plans">
+            <div className="wrap">
+              <div className="section-head"><span className="eyebrow">Floor plans</span><h2>4 bedrooms, 5 baths, 7 balconies.</h2><p className="lede">Bedrooms and the living room open to the lake on the north-east. You can ask for layout changes before you sign the Deed of Agreement.</p></div>
+              <div className="plans">
+                {(p.plans ?? []).map((pl) => (
+                  <figure key={pl.src}>
+                    <a href={pl.src} target="_blank" rel="noopener"><img src={pl.src} alt={pl.cap} loading="lazy" /></a>
+                    <figcaption>{pl.cap}<a className="link-arrow" style={{ fontSize: ".85rem" }} href={waLink(`Price for ${p.name}, ${pl.cap}?`)} target="_blank" rel="noopener">Ask price</a></figcaption>
+                  </figure>
+                ))}
+              </div>
             </div>
           </section>
-        )}
-      </main>
 
-      <Footer />
-      <ChatBotButton />
+          <section className="band band--dusk" id="location">
+            <div className="wrap jol-grid">
+              <div className="stack">
+                <span className="eyebrow">Location</span><h2>Sector 14, on Jolshiri Lake.</h2>
+                <p className="lede">Close to Jolshiri Central Park and the Central Business District. Enter from the 300 ft Purbachal expressway in the north or Madani Avenue in the south.</p>
+                <div className="amen"><span>NE: 30 ft green + 8 ft track + 200 ft lake</span><span>SW: 60 ft road</span><span>Near Central Park</span><span>Near CBD</span></div>
+                <Link className="link-arrow" to="/jolshiri-abashon">Why Jolshiri Abashon</Link>
+              </div>
+              <figure className="map-card" style={{ margin: 0 }}>
+                <JolshiriMap />
+                {SHOW_INTERNAL_NOTES && <figcaption>Google Map pin to be added on the live site.</figcaption>}
+              </figure>
+            </div>
+          </section>
 
-      {lightbox.state && <Lightbox state={lightbox.state} close={lightbox.close} setIndex={lightbox.setIndex} />}
-    </div>
+          <section className="band" id="specs">
+            <div className="wrap">
+              <div className="section-head"><span className="eyebrow">Building specifications</span><h2>Every brand named, every sample tested.</h2></div>
+              <dl className="spec-list">{(p.specs ?? []).map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+            </div>
+          </section>
+
+          <section className="band band--tint" id="payment">
+            <div className="wrap">
+              <div className="section-head"><span className="eyebrow">Booking &amp; payment</span><h2>Clear terms, written into your agreement.</h2></div>
+              <div className="terms">
+                <div><b>৳5 lakh booking</b><span>Non-refundable. Your apartment is allotted and a receipt issued.</span></div>
+                <div><b>30% at agreement</b><span>Paid when the Deed of Agreement is signed, less the booking money.</span></div>
+                <div><b>Up to 30 instalments</b><span>Monthly, counted from the start of piling. Join later and the count is shorter.</span></div>
+                <div><b>৳40,000 / month if late</b><span>Paid to you for late handover, as long as your instalments are on time.</span></div>
+              </div>
+              <h3 style={{ margin: "48px 0 20px" }}>Construction progress</h3>
+              <ol className="progress">
+                {["Booking open", "Piling", "Structure", "Brickwork", "Finishing", "Handover"].map((s, i) => (
+                  <li key={s} className={i === 0 ? "done" : undefined}><b>{s}</b>{i === 0 ? "Now" : ""}</li>
+                ))}
+              </ol>
+              {SHOW_INTERNAL_NOTES && <p className="note-tbc" style={{ marginTop: 16 }}>To add: current stage, monthly site photos and projected handover date</p>}
+            </div>
+          </section>
+        </>
+      )}
+
+      <section className="band band--dark" id="enquire">
+        <div className="wrap enquiry">
+          <div>
+            <div className="section-head" style={{ margin: 0 }}>
+              <span className="eyebrow">{isDone ? "Talk to us" : "Price & visit"}</span>
+              <h2>{isDone ? "Want a home like this?" : `Get the price for ${p.name}.`}</h2>
+              <p className="lede">{isDone ? "Our new homes are in Jolshiri Abashon. We will show you the plot and the finished buildings." : "We reply within one working day with the price, open floors and a visit time."}</p>
+            </div>
+            <ContactList />
+          </div>
+          <LeadForm project={p} source="project" />
+        </div>
+      </section>
+
+      <section className="band band--tint" id="more">
+        <div className="wrap">
+          <div className="port-head">
+            <div className="section-head" style={{ margin: 0 }}><span className="eyebrow">Keep exploring</span><h2>{isDone ? "More buildings we handed over" : "Other Xen projects"}</h2></div>
+            <Link className="link-arrow" to={statusPath(p.status)}>All {status.toLowerCase()} projects</Link>
+          </div>
+          <div className="cards">{others.map((o) => <ProjectCard key={o.slug} p={o} />)}</div>
+        </div>
+      </section>
+    </SiteLayout>
   );
-};
-
-export default ProjectDetail;
+}

@@ -8,6 +8,15 @@ import type { PostgrestError } from "@supabase/supabase-js";
  * "duplicate key value violates unique constraint …" or a silent failure.
  */
 export function describeError(error: unknown): string {
+  // Offline / blocked request: supabase-js reports it as "TypeError: Failed to fetch".
+  const msg = typeof error === "object" && error !== null && "message" in error ? String((error as { message: unknown }).message) : "";
+  if (/Failed to fetch|NetworkError|Load failed|fetch failed/i.test(msg)) {
+    return "We couldn't reach our server. Please check your connection and try again.";
+  }
+  // Enquiry spam limit (migration 20261119120002_inquiries_rate_limit).
+  if (msg === "rate_limited") {
+    return "You've already sent a few requests. We'll call you soon, or call us on 01717-19 27 30.";
+  }
   if (isPostgrestError(error)) {
     const parts = [error.message];
     if (error.hint) parts.push(error.hint);

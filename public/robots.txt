@@ -12,3 +12,9 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+# Staff area
+User-agent: *
+Disallow: /admin
+
+Sitemap: https://xendevltd.com/sitemap.xml

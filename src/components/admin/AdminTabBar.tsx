@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { LayoutGrid, CalendarClock, Inbox, Users, Clock } from "lucide-react";
+import { LayoutGrid, CalendarClock, Inbox, Users, Clock, Building2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface AdminTabBarProps {
@@ -13,6 +13,7 @@ const TABS = [
   { to: "/admin/submissions", label: "Inbox", icon: Inbox, end: false },
   { to: "/admin/crm", label: "Contacts", icon: Users, end: false },
   { to: "/admin/availability", label: "Hours", icon: Clock, end: false },
+  { to: "/admin/floors", label: "Floors", icon: Building2, end: false },
 ] as const;
 
 export function AdminTabBar({ hasNewInquiries }: AdminTabBarProps) {
