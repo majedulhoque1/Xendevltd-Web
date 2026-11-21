@@ -224,7 +224,12 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .film-meta small { font: 500 .72rem/1.4 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: #ddd; }
 .film-note { margin-top: 12px; font: 500 .75rem/1.5 var(--f-mono); color: #8d998f; }
 .film-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
-@media (max-width: 900px) { .film-grid { grid-template-columns: 1fr; } }
+.film-grid--portrait { grid-template-columns: 1.3fr 1fr; }
+/* Vertical (9:16) film: a portrait card, centred in its column. */
+.film--portrait { aspect-ratio: 9/16; width: min(100%, 360px); margin-inline: auto; }
+.film--portrait video { object-fit: cover; background: #000; }
+.film--portrait { outline: 1px solid rgba(15,61,39,.18); outline-offset: -1px; }
+@media (max-width: 900px) { .film-grid, .film-grid--portrait { grid-template-columns: 1fr; } }
 @media (max-width: 560px) {
   .film-overlay { place-items: start center; padding-top: 18%; }
   .film-play { width: 60px; height: 60px; }

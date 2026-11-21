@@ -122,6 +122,19 @@ Still open with Xen (not changed): the typical plan image is captioned "TYPE-A (
 
 ---
 
+## F. Project film: Xen's first ad, silent and looping (21 Nov 2026, local only)
+
+Xen's first Lakeview Tasmee ad (`Ad 2.0/Xen Ad.mp4`, 19 s, vertical 9:16) fills the film slot. This replaces the A1 placeholder reel.
+
+- **Silent loop:** it autoplays muted, loops, and has no play button or controls. It pauses when scrolled off-screen. Visitors with reduced motion get a still with controls instead of autoplay.
+- **Vertical card:** the frame is a 9:16 card (max 360 px wide) instead of 16:9, so the ad is not letter-boxed.
+- **Copy:** home lede now reads "A 20-second look at Lakeview Tasmee: the building at night, the lake and its reflection."; the project page film band reads "Lakeview Tasmee in 20 seconds." The ad's own end card says "Architectural rendering, under construction".
+- **File:** re-encoded to H.264, 720x1280, audio removed, 1.8 MB (`public/video/`). The 4K HEVC original (38 MB) stays on Majedul's disk.
+
+☐ Approve  ☐ Change: ______________________
+
+---
+
 ## D. Added from your handoff's "Not built yet" list (§6)
 No sign-off needed. This is so you know it is covered:
 - **Enquiries:** saved to Xen's admin, copied to the Google Sheet, and an **email alert to sales** for every enquiry and booking. Spam protection with a honeypot and a limit of 3 per phone per hour.

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IcPlay } from "./icons";
 
 interface Props {
@@ -15,10 +15,28 @@ interface Props {
   /** Right-hand meta, e.g. "Project film · 2:00" or "YouTube". Only shown with a playable source. */
   aside?: string;
   label: string;
+  /** Vertical (9:16) film: the frame becomes a portrait card instead of 16:9. */
+  portrait?: boolean;
+  /** Silent clip: autoplays muted and loops, with no controls. Pauses when off-screen. */
+  loop?: boolean;
 }
 
-export function Film({ reel = [], video, youtube, poster, posterFallback, title, sub, aside, label }: Props) {
+export function Film({ reel = [], video, youtube, poster, posterFallback, title, sub, aside, label, portrait, loop }: Props) {
   const [playing, setPlaying] = useState(false);
+  const loopRef = useRef<HTMLVideoElement>(null);
+  const reduceMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Silent loop: play only while on screen. Reduced-motion visitors get controls instead of autoplay.
+  useEffect(() => {
+    const v = loopRef.current;
+    if (!loop || !v) return;
+    v.muted = true;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { v.controls = true; return; }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); }, { threshold: 0.25 });
+    io.observe(v);
+    return () => io.disconnect();
+  }, [loop]);
+
   const playable = !!video || !!youtube;
   const meta = (
     <span className="film-meta">
@@ -27,8 +45,16 @@ export function Film({ reel = [], video, youtube, poster, posterFallback, title,
     </span>
   );
 
+  if (loop && video) {
+    return (
+      <div className={portrait ? "film film--portrait" : "film"}>
+        <video ref={loopRef} src={video} poster={poster} muted loop playsInline preload="auto" autoPlay={!reduceMotion} aria-label={label} />
+      </div>
+    );
+  }
+
   return (
-    <div className="film">
+    <div className={portrait ? "film film--portrait" : "film"}>
       {reel.length > 0 && (
         <div className="reel" aria-hidden="true">{reel.slice(0, 4).map((src) => <img key={src} src={src} alt="" loading="lazy" />)}</div>
       )}
@@ -41,7 +67,7 @@ export function Film({ reel = [], video, youtube, poster, posterFallback, title,
           onError={(e) => { if (posterFallback && !e.currentTarget.src.endsWith(posterFallback)) e.currentTarget.src = posterFallback; }}
         />
       )}
-      {playing && video && <video src={video} controls autoPlay playsInline />}
+      {playing && video && <video src={video} poster={poster} controls autoPlay playsInline />}
       {playing && youtube && (
         <iframe
           src={`https://www.youtube-nocookie.com/embed/${youtube}?autoplay=1&rel=0`}

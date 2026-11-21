@@ -129,15 +129,15 @@ function ProjectPage({ p }: { p: Project }) {
       {isFeat && (
         <>
           <section className="band band--dark" id="film">
-            <div className="wrap film-grid">
+            <div className={p.filmPortrait ? "wrap film-grid film-grid--portrait" : "wrap film-grid"}>
               <div className="section-head" style={{ margin: 0 }}>
                 {/* DEVIATIONS.md A1 */}
                 <span className="eyebrow">{hasFilm ? "Project film" : "The project"}</span>
-                <h2>{hasFilm ? "See the lake from Level 8." : "See Lakeview Tasmee from every side."}</h2>
-                <p className="lede">{hasFilm ? "A drone and walkthrough film of the plot, the lake edge and the finished look." : "Renders of the lakeside, the road front and the evening view."}</p>
+                <h2>{hasFilm ? "Lakeview Tasmee in 20 seconds." : "See Lakeview Tasmee from every side."}</h2>
+                <p className="lede">{hasFilm ? "The building at night, the lake and its reflection. Architectural renders: the building is under construction." : "Renders of the lakeside, the road front and the evening view."}</p>
               </div>
               <div>
-                <Film reel={gallery.slice(0, 4).map((g) => g.src)} video={p.film} title={p.name} sub={hasFilm ? "Project film" : "Artist's impressions"} label="Play project film" />
+                <Film reel={gallery.slice(0, 4).map((g) => g.src)} video={p.film} poster={p.filmPoster} portrait={p.filmPortrait} loop={p.filmLoop} title={p.name} sub={hasFilm ? "Project film" : "Artist's impressions"} label="Play project film" />
               </div>
             </div>
           </section>

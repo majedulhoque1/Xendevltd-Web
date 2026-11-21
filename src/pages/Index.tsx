@@ -22,13 +22,13 @@ const Index = () => {
 
       {/* 2. FILM: featured project video */}
       <section className="band band--film-light" id="film" aria-labelledby="film-title">
-        <div className="wrap film-grid">
+        <div className={FEATURED.filmPortrait ? "wrap film-grid film-grid--portrait" : "wrap film-grid"}>
           <div className="section-head reveal" style={{ margin: 0 }}>
             {/* DEVIATIONS.md A1: until the film exists, don't promise "two minutes" of video. */}
             <span className="eyebrow">{hasFilm ? "Project film" : "The project"}</span>
             <h2 id="film-title">Walk through Lakeview Tasmee before you visit.</h2>
             <p className="lede">{hasFilm
-              ? "See the lake from the balconies, the walking track below and the 60 ft road behind. Two minutes, then come and stand on the plot."
+              ? "A 20-second look at Lakeview Tasmee: the building at night, the lake and its reflection. Then come and stand on the plot."
               : "See the lake side, the road front and the building at dusk. Then come and stand on the plot."}</p>
             <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "center", marginTop: 8 }}>
               <Link className="btn btn--green" to={projectPath(FEATURED)}>See full project</Link>
@@ -39,9 +39,12 @@ const Index = () => {
             <Film
               reel={["/img/tasmee-evening.webp", "/img/project-lakeside.webp", "/img/hero-lakeview-desktop.webp", "/img/project-roadside-perspective.webp"]}
               video={FEATURED.film}
+              poster={FEATURED.filmPoster}
+              portrait={FEATURED.filmPortrait}
+              loop={FEATURED.filmLoop}
               title="Xen Lakeview Tasmee"
               sub="Sector 14 · Jolshiri Abashon"
-              aside="Project film · 2:00"
+              aside="Project film · 0:19"
               label="Play the Lakeview Tasmee project film"
             />
           </div>

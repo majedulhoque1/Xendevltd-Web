@@ -24,6 +24,11 @@ export interface Project {
   specs?: Pair[];
   /** MP4 URL of the project film. Empty until Xen supplies it (DEVIATIONS.md A1). */
   film?: string;
+  /** Still shown before play, and whether the film is vertical (9:16). */
+  filmPoster?: string;
+  filmPortrait?: boolean;
+  /** Silent clip that autoplays and loops (no controls, no sound). */
+  filmLoop?: boolean;
 }
 
 /** Samir's sign-off switch for DEVIATIONS.md A3: show the prototype's yellow "tbc" /
@@ -96,7 +101,10 @@ export const PROJECTS: Project[] = [
       ["Power", "Dedicated 150 kVA sub-station with transformer."],
       ["Other", "Two 3 hp pumps. Intercom, Wi-Fi, TV and phone lines. Landscaped garden and lighting front, back and on the roof. 3.75 ft roof parapet. Heat-proofed top roof."],
     ],
-    film: "",
+    film: "/video/lakeview-tasmee-ad.mp4", // Xen Ad.mp4 (Ad 2.0), 19 s, 9:16, re-encoded to H.264
+    filmPoster: "/video/lakeview-tasmee-ad-poster.webp",
+    filmPortrait: true,
+    filmLoop: true,
   },
   {
     slug: "project-07-jolshiri",
