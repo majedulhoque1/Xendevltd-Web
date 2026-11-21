@@ -70,14 +70,14 @@ export function Hero() {
                 <Link className="btn btn--ghost" to="#film">See the project</Link>
               )}
             </div>
-            <p className="hero-assure fade-up">Late handover? We pay you ৳40,000 every month. It's in your agreement.</p>
+            <p className="hero-assure fade-up">Late handover? We pay you ৳40,000 every month while your instalments are on time. It's in your agreement.</p>
           </div>
         </div>
 
         <div className="hero-facts" aria-label="Lakeview Tasmee at a glance">
           <div className="wrap">
             <div><b>4 beds · 5 baths</b><small>7 balconies</small></div>
-            <div><b>2,505 sft</b><small>Apartment (Type-A)</small></div>
+            <div><b>2,850 sft</b><small>Per floor</small></div>
             <div><b>8 homes only</b><small>One per floor</small></div>
             <div><b>200 ft lake</b><small>North-east facing</small></div>
             <div><b>৳5 lakh</b><small>Books your floor</small></div>

@@ -34,7 +34,8 @@
   - pg_net 0.19.5 + `notify_sales` triggers (no-op until Vault `notify_secret` exists);
   - `notify-sales` deployed (verify_jwt off, returns 401 without the secret).
 - [ ] **OPEN (Majedul sets secrets):** Vault `notify_secret`; function secrets `NOTIFY_SECRET` (same value), `RESEND_API_KEY`, `SALES_EMAIL`, `NOTIFY_FROM` (domain verified in Resend). Existing `trg_booking_notification` on bookings may already alert someone, so check for double alerts.
-- [x] Dead code deleted 2026-11-20 (old components/pages/data + all `src/assets/*` + `public/og-card.jpg`). `public/walkthrough-app/` kept pending his call.
+- [x] Dead code deleted 2026-11-20 (old components/pages/data + all `src/assets/*` + `public/og-card.jpg`). `public/walkthrough-app/` deleted too.
+- [x] Committed 2026-11-20 as `2b66d62` on `feat/redesign-v1` (pushed to origin/feat/redesign-v1).
 - [ ] **WAITING:** Samir's sign-off on DEVIATIONS.md.
 - [ ] **GATED:** delete old public components and assets:
   - components: `HeroSection`, `FeaturedProject`, `TrustSection`, `ProjectsOverview`, `ContactCallout`, `LeadCapture`, `InquiryForm`, `Navigation`, `Footer`, `WhatsAppButton`, `ThemeToggle`, `CountUp`, `NavLink`;

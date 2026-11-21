@@ -104,6 +104,24 @@ These four we fix:
 
 ---
 
+## E. Facts corrected against Xen's brochure (21 Nov 2026)
+
+Majedul's audit of the preview found copy that disagreed with the brochure or the floor plans. Fixed on the live build:
+
+| # | Prototype said | Live now | Source |
+|---|---|---|---|
+| E1 | Hero: "2,505 sft, Apartment (Type-A)"; Facts: "2,505 sft (Type-A)" | Hero: "2,850 sft, Per floor"; Facts keep "2,850 sft per floor" and drop 2,505 | Brochure p1: "2850 sft area per floor" |
+| E2 | "Late handover? We pay you ৳40,000 every month." (hero, home, project page) | Adds "while your instalments are on time" | Brochure p7: paid only if the buyer's payments are on schedule |
+| E3 | "The bedrooms face the water" / "Bedrooms and the living room open to the lake" | Master bedroom, a second bedroom and the family living room | Typical floor plan (drawn 180° rotated; lake side = M.BED, C.BED-01, F.LIVING) |
+| E4 | Jolshiri guide: "Jolshiri Cantonment School & College" and "Bangladesh International School & College are inside the township"; chip "Shuttle to Dhaka Cantonment" | Names only Bangladesh International School & College (confirmed campus at Jolshiri) plus the brochure's planned schools; shuttle chip removed | Public sources; no source found for the other two |
+| E5 | Project 07: "same specification as Lakeview Tasmee"; Project 41: "next to three handed-over Xen buildings" | Claims removed; Project 41 names Orion and Andromeda (both on Road 2) | Brochure p8 gives only location and status |
+
+Still open with Xen (not changed): the typical plan image is captioned "TYPE-A (2505 SFT)" (see `docs/client-questions.md` #2); the brochure says 60 ft road on p1 and 40 ft on the plans; "15+ years", "REHAB member" and "Plans approved by Cantonment Board" have no source in the brochure.
+
+☐ Approve  ☐ Change: ______________________
+
+---
+
 ## D. Added from your handoff's "Not built yet" list (§6)
 No sign-off needed. This is so you know it is covered:
 - **Enquiries:** saved to Xen's admin, copied to the Google Sheet, and an **email alert to sales** for every enquiry and booking. Spam protection with a honeypot and a limit of 3 per phone per hour.

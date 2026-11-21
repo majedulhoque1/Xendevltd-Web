@@ -35,7 +35,7 @@ const Jolshiri = () => (
           <div><b>Over 2,100 acres</b><span>About 52% for homes and commerce. The other 48% is lakes, roads, parks, playing fields and walking and cycle tracks.</span></div>
           <div><b>Underground utilities</b><span>Power, water, sewerage, fire hydrants, phone and fibre-optic lines all run underground.</span></div>
           <div><b>Wide roads</b><span>Main roads 80 to 150 ft wide. Block roads 30 to 60 ft wide.</span></div>
-          <div><b>Schools &amp; colleges</b><span>Jolshiri Cantonment School &amp; College and Bangladesh International School &amp; College are inside the township.</span></div>
+          <div><b>Schools &amp; colleges</b><span>Bangladesh International School &amp; College has a campus in Jolshiri. The master plan adds more schools, colleges, a university, a medical college and a hospital.</span></div>
           <div><b>Everyday needs in each sector</b><span>Clinics, mosques, mini-malls and bazars planned for every sector.</span></div>
           <div><b>Central Business District</b><span>A commercial hub at the centre, with a 5-star hotel planned.</span></div>
           <div><b>Central Park &amp; lakes</b><span>A large central park, lakes with walkways and a planned golf course.</span></div>
@@ -48,7 +48,7 @@ const Jolshiri = () => (
         <div className="stack">
           <span className="eyebrow">Getting there</span><h2>Minutes from Gulshan and Purbachal.</h2>
           <p className="lede">Enter from the north on the 300 ft Purbachal expressway, or from the south on Madani Avenue, which starts near the US Embassy in Baridhara about 6 km away. A metro line is planned along the 300 ft road.</p>
-          <div className="amen"><span>300 ft Purbachal expressway</span><span>Madani Avenue</span><span>Shuttle to Dhaka Cantonment</span><span>Planned metro line</span></div>
+          <div className="amen"><span>300 ft Purbachal expressway</span><span>Madani Avenue</span><span>Planned metro line</span></div>
         </div>
         <figure className="map-card" style={{ margin: 0 }} id="jol-map">
           <JolshiriMap />

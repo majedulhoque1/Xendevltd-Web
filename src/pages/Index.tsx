@@ -91,12 +91,12 @@ const Index = () => {
             <span className="eyebrow">Now booking · Xen Lakeview Tasmee</span>
             <h2 id="tasmee-title">On the lake, not near it.</h2>
             <p className="pull">In most of Dhaka a lake view is a rare luxury. Here it comes with every home.</p>
-            <p className="lede">The building faces north-east over a 30 ft green belt, an 8 ft walking track and the 200 ft wide Jolshiri Lake. The 60 ft road runs behind it, so the bedrooms face the water.</p>
+            <p className="lede">The building faces north-east over a 30 ft green belt, an 8 ft walking track and the 200 ft wide Jolshiri Lake. The 60 ft road runs behind it, so the master bedroom, a second bedroom and the family living room face the water.</p>
           </div>
           <div className="glance">
             <div className="stack reveal">
               <Facts facts={FEATURED.facts ?? []} price={FEATURED.price} handover={FEATURED.handover} name={FEATURED.name} />
-              <div className="guarantee"><b>৳40,000</b><span>We pay you ৳40,000 a month for every month we hand over late, as written in your Deed of Agreement.</span></div>
+              <div className="guarantee"><b>৳40,000</b><span>We pay you ৳40,000 a month for every month we hand over late, as written in your Deed of Agreement, as long as your instalments are on time.</span></div>
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                 <Link className="btn btn--green" to={projectPath(FEATURED)}>Floor plans &amp; specifications</Link>
                 <a className="btn btn--ghost" href={BROCHURE} style={{ color: "var(--forest)" }}><IcDoc />Brochure (PDF)</a>

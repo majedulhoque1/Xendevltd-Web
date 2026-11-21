@@ -68,7 +68,7 @@ export const PROJECTS: Project[] = [
     facts: [
       ["Building", "9 storey (G+8)"],
       ["Floor area", "2,850 sft per floor"],
-      ["Apartment", "2,505 sft (Type-A) · 4 beds · 5 baths · 7 balconies"],
+      ["Apartment", "4 beds · 5 baths · 7 balconies"],
       ["Lake side (NE)", "30 ft green · 8 ft track · 200 ft lake"],
       ["Road side (SW)", "60 ft wide road"],
       ["Parking", "1 space per apartment (11 in all)"],
@@ -106,7 +106,7 @@ export const PROJECTS: Project[] = [
     address: "Plot 007, Road 403, Sector 8, Jolshiri Abashon",
     image: "/img/upcoming-jolshiri.webp",
     gallery: [{ src: "/img/upcoming-jolshiri.webp", cap: "Front view" }, { src: "/img/project-07-desktop.webp", cap: "Street view" }],
-    summary: "A residential building in Sector 8 of Jolshiri Abashon, built to the same specification as Lakeview Tasmee.",
+    summary: "A residential building in Sector 8 of Jolshiri Abashon. Construction is on-going.",
     facts: [["Location", "Sector 8, Jolshiri"], ["Status", "Construction on-going"]],
   },
   {
@@ -117,7 +117,7 @@ export const PROJECTS: Project[] = [
     address: "Plot 41, Road 2, DOHS Chattogram",
     image: "/img/completed-dohs-chittagong.webp",
     gallery: [{ src: "/img/completed-dohs-chittagong.webp", cap: "Front view" }, { src: "/img/project-41-desktop.webp", cap: "Street view" }],
-    summary: "A residential building on Road 2 of DOHS Chattogram, next to three handed-over Xen buildings.",
+    summary: "A residential building on Road 2 of DOHS Chattogram, where Xen has already handed over Orion and Andromeda.",
     facts: [["Location", "Road 2, DOHS Chattogram"], ["Status", "Construction on-going"]],
   },
   {

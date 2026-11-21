@@ -96,7 +96,7 @@ function ProjectPage({ p }: { p: Project }) {
               <h2>{isFeat ? "Lakeside living, one home per floor." : isDone ? "Built, handed over and lived in." : isUp ? `Coming soon to ${p.area}.` : `Under construction in ${p.area}.`}</h2>
             </div>
             {p.facts ? <Facts facts={p.facts} price={p.price} handover={p.handover} name={p.name} /> : <Facts facts={facts} name={p.name} />}
-            {isFeat && <div className="guarantee"><b>৳40,000</b><span>a month paid to you for every month of late handover, written into the Deed of Agreement.</span></div>}
+            {isFeat && <div className="guarantee"><b>৳40,000</b><span>a month paid to you for every month of late handover, written into the Deed of Agreement, while your instalments are on time.</span></div>}
           </div>
           <div className="stack">
             {isFeat ? <FloorTower />
@@ -117,7 +117,7 @@ function ProjectPage({ p }: { p: Project }) {
               ) : (
                 <div className="panel">
                   <h3>Ask about this building</h3>
-                  <p style={{ color: "var(--muted)" }}>Built to the same specification as Lakeview Tasmee. Call or WhatsApp us for apartment sizes, open floors and prices.</p>
+                  <p style={{ color: "var(--muted)" }}>Call or WhatsApp us for apartment sizes, open floors and prices.</p>
                   <Tbc>To add: storeys, sizes, price, handover date and progress photos</Tbc>
                   <Link className="btn btn--green" to="#enquire" replace>Ask for details</Link>
                 </div>
@@ -144,7 +144,7 @@ function ProjectPage({ p }: { p: Project }) {
 
           <section className="band band--tint" id="plans">
             <div className="wrap">
-              <div className="section-head"><span className="eyebrow">Floor plans</span><h2>4 bedrooms, 5 baths, 7 balconies.</h2><p className="lede">Bedrooms and the living room open to the lake on the north-east. You can ask for layout changes before you sign the Deed of Agreement.</p></div>
+              <div className="section-head"><span className="eyebrow">Floor plans</span><h2>4 bedrooms, 5 baths, 7 balconies.</h2><p className="lede">The master bedroom, a second bedroom and the family living room open to the lake on the north-east. You can ask for layout changes before you sign the Deed of Agreement.</p></div>
               <div className="plans">
                 {(p.plans ?? []).map((pl) => (
                   <figure key={pl.src}>
