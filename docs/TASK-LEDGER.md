@@ -36,14 +36,14 @@
 - [ ] **OPEN (Majedul sets secrets):** Vault `notify_secret`; function secrets `NOTIFY_SECRET` (same value), `RESEND_API_KEY`, `SALES_EMAIL`, `NOTIFY_FROM` (domain verified in Resend). Existing `trg_booking_notification` on bookings may already alert someone, so check for double alerts.
 - [x] Dead code deleted 2026-11-20 (old components/pages/data + all `src/assets/*` + `public/og-card.jpg`). `public/walkthrough-app/` deleted too.
 - [x] Committed 2026-11-20 as `2b66d62` on `feat/redesign-v1` (pushed to origin/feat/redesign-v1).
-- [ ] **WAITING:** Samir's sign-off on DEVIATIONS.md.
+- [x] Samir signed off DEVIATIONS.md (A-E) 2026-11-21.
 - [ ] **GATED:** delete old public components and assets:
   - components: `HeroSection`, `FeaturedProject`, `TrustSection`, `ProjectsOverview`, `ContactCallout`, `LeadCapture`, `InquiryForm`, `Navigation`, `Footer`, `WhatsAppButton`, `ThemeToggle`, `CountUp`, `NavLink`;
   - pages and data: `pages/ProjectsCategory.tsx`, `pages/ScheduleVisit.tsx`, `pages/Walkthrough.tsx`(?), `contexts/ThemeContext.tsx`, `data/projects.ts`, `data/bookableProjects.ts`;
   - unused `src/assets/*` and `public/og-card.jpg`.
 
   Nothing imports them now; deleting also shrinks the Tailwind CSS.
-- [ ] **GATED:** commit, Vercel preview for Samir, then production.
+- [x] **LIVE 2026-11-21:** `main` fast-forwarded to `d34e1b8`, production deploy `dpl_3321mu2Gr1KnXPRnkebc5nJavE7P` READY on xendevltd.com. Rollback candidate: `dpl_DxgtkdpfiGJRuqU21Gr9WTTYAx3m` (old site, 25fef5f).
 
 ## Gotchas
 - The repo's Playwright 1.57 expects Chromium build 1228; only 1243 is installed. Launch with `executablePath: %LOCALAPPDATA%/ms-playwright/chromium-1243/chrome-win64/chrome.exe`.
